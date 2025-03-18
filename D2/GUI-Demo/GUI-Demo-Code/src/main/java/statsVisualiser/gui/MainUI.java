@@ -532,7 +532,7 @@ public class MainUI extends JFrame {
 	
 	public MainUI() {
         setTitle("Parking Management System");
-        setSize(400, 300);
+        setSize(450, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -732,7 +732,7 @@ public class MainUI extends JFrame {
 	            lblWelcome.setText("Welcome, Manager");
 	            cardLayout.show(mainPanel, "ManagerDashboard");
 	        } else {
-	            currentUser = UserFactory.createUser(userType.toUpperCase(), username, 1001, email, password, 1001, "Extra Info");
+	            currentUser = UserFactory.createUser(userType.toUpperCase(), username, 1001, email, password, 1001, username);
 	            lblWelcome.setText("Welcome, " + currentUser.getName());
 	            cardLayout.show(mainPanel, "Dashboard");
 	        }
