@@ -1,3 +1,4 @@
+package logic;
 
 public class UserFactory {
 	public static User createUser(String type, String name, int id, String email, String password, int uniqueID, String extraInfo) {

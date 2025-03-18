@@ -1,3 +1,4 @@
+package logic;
 import java.time.ZonedDateTime;
 
 public class Booking {
@@ -24,6 +25,11 @@ public class Booking {
 		this.user = user;
 	}
 	
+	public Booking(User user, ParkingSpot spot) {
+		this.user = user;
+		this.spot = spot;
+	}
+
 	// each user at the same time can book
 	// generating unique ID's for each new booking 
 	private synchronized static int generateBookingId() {

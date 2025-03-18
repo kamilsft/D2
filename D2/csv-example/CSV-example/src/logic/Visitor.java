@@ -1,3 +1,4 @@
+package logic;
 import java.time.ZonedDateTime;
 
 public class Visitor extends User {
