@@ -1,19 +1,20 @@
+package logic;
 
 public class ParkingSpot {
-	private int spotId;
+	private String spotId;
 	private boolean isOccupied;
 	private int sensorId;
 	
-	public ParkingSpot(int spotId, boolean isOccupied) {
+	public ParkingSpot(String spotId, boolean isOccupied) {
 		this.spotId = spotId;
 		this.isOccupied = isOccupied;
 	}
 
-	public int getSpotId() {
+	public String getSpotId() {
 		return spotId;
 	}
 
-	public void setSpotId(int spotId) {
+	public void setSpotId(String spotId) {
 		this.spotId = spotId;
 	}
 
