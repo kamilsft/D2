@@ -267,6 +267,43 @@ public class MainUI extends JFrame {
 				cardLayout.show(mainPanel, "ManagerDashboard");
 			} else {
 				currentUser = UserFactory.createUser(userType.toUpperCase(), username, 1001, email, password, 1001, username);
+				String[] paymentOptions = {"Credit Card", "Debit Card", "Mobile App"};
+				String selection = (String) JOptionPane.showInputDialog(this,
+				        "Choose your payment method:",
+				        "Payment Method",
+				        JOptionPane.QUESTION_MESSAGE,
+				        null,
+				        paymentOptions,
+				        paymentOptions[0]);
+				
+				switch (selection) {
+			    case "Debit Card":
+			        currentUser.setPaymentStrategy(new DebitCardPaymentsStrategy());
+			        break;
+			    case "Mobile App":
+			        currentUser.setPaymentStrategy(new MobileAppPaymentsStrategy());
+			        break;
+			    default:
+			        currentUser.setPaymentStrategy(new CreditCardPaymentStrategy());
+			}
+				// setting the pricing strategy based on user type
+				switch(userType.toLowerCase()) {
+				case "student":
+					currentUser.setPricingStrategy(new StudentPricing());
+					break;
+				case "faculty":
+					currentUser.setPricingStrategy(new FacultyPricing());
+					break;
+				case "nonfaculty":
+					currentUser.setPricingStrategy(new NonFacultyPricing());
+					break;
+				case "visitor":
+					currentUser.setPricingStrategy(new VisitorPricing());
+					break;
+				}
+				
+				currentUser.setPaymentStrategy(new CreditCardPaymentStrategy());
+				
 				lblWelcome.setText("Welcome, " + currentUser.getName());
 				updateBookingStatusDisplay();
 				cardLayout.show(mainPanel, "Dashboard");
@@ -274,6 +311,8 @@ public class MainUI extends JFrame {
 		} else {
 			JOptionPane.showMessageDialog(this, "Please fill in all fields!", "Error", JOptionPane.ERROR_MESSAGE);
 		}
+		
+		
 	}
 
 	// Booking Logic with duration
@@ -308,12 +347,20 @@ public class MainUI extends JFrame {
 			JOptionPane.showMessageDialog(this, "Please enter a valid positive number for duration!", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+		
+		double cost = currentUser.calculateParkingPrice(duration);
+		PaymentStrategy strategy = currentUser.getPaymentStrategy();
+		if(strategy == null || !strategy.pay(currentUser, cost)) {
+			JOptionPane.showMessageDialog(this, "Payment failed.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 
 		ParkingSpot selectedSpot = new ParkingSpot(spotId, true);
 		currentBooking = new ParkingBooking(currentUser, selectedSpot, duration);
 
 		JOptionPane.showMessageDialog(this, "Parking Spot " + currentBooking.getSpot().getSpotId() +
-				" Booked until " + currentBooking.getExpirationTimeString() + "!");
+	            " Booked until " + currentBooking.getExpirationTimeString() + "!\nCharged: $" + cost +
+	            "\nRemaining balance: $" + currentUser.getBalance());
 
 		// Start timer to update booking status
 		startBookingTimer();
