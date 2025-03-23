@@ -50,7 +50,7 @@ public class MaintainUser {
 			}
 	}
 	public static void main(String [] args) throws Exception{
-		String path = "C:\\Users\\wangs\\Desktop\\EECS3311\\project\\user.csv";
+		String path = "C:\\Users\\dursa\\IdeaProjects\\D2\\D2\\csv-example\\user.csv";
 		MaintainUser maintain = new MaintainUser();
 	
 		maintain.load(path);
