@@ -2,32 +2,9 @@ package logic;
 import java.time.ZonedDateTime;
 
 public class Visitor extends User {
-	private int visitorID;
-	private String visitorName;
 	
 	public Visitor(String name, int id, String email, String password, int visitorID, String visitorName) {
 		super(name, id, email, password);
-		this.visitorID = visitorID;
-		this.visitorName = visitorName;
-	}
-
-	public int getVisitorID() {
-		return visitorID;
-	}
-
-
-	public void setVisitorID(int visitorID) {
-		this.visitorID = visitorID;
-	}
-
-
-	public String getVisitorName() {
-		return visitorName;
-	}
-
-
-	public void setVisitorName(String visitorName) {
-		this.visitorName = visitorName;
 	}
 
 
@@ -47,9 +24,5 @@ public class Visitor extends User {
 		return false; // visitors are not auto approved
 	}
 
-	@Override
-	public String toString() {
-		return "NonFacultyStaff [NonFacultyStaffID=" + visitorID + ", NonFacultyStaffName="
-				+ visitorName + "]";
-	}
+	
 }

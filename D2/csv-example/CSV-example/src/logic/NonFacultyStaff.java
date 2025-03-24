@@ -2,30 +2,13 @@ package logic;
 import java.time.ZonedDateTime;
 
 public class NonFacultyStaff extends User {
-	private int NonFacultyStaffID;
-	private String NonFacultyStaffName;
+	
 	
 	public NonFacultyStaff(String name, int id, String email, String password, int NonFacultyStaffID, String NonFacultyStaffName) {
 		super(name, id, email, password);
-		this.NonFacultyStaffID = NonFacultyStaffID;
-		this.NonFacultyStaffName = NonFacultyStaffName;
+		
 	}
 
-	public int getNonFacultyStaffID() {
-		return NonFacultyStaffID;
-	}
-
-	public void setNonFacultyStaffID(int nonFacultyStaffID) {
-		NonFacultyStaffID = nonFacultyStaffID;
-	}
-
-	public String getNonFacultyStaffName() {
-		return NonFacultyStaffName;
-	}
-
-	public void setNonFacultyStaffName(String nonFacultyStaffName) {
-		NonFacultyStaffName = nonFacultyStaffName;
-	}
 	
 	public Booking bookParkingLot(ParkingSpot spot, int hours) {
 		ZonedDateTime startTime = ZonedDateTime.now();
@@ -44,9 +27,4 @@ public class NonFacultyStaff extends User {
 		return false; // NonFaculty are not auto approved
 	}
 
-	@Override
-	public String toString() {
-		return "NonFacultyStaff [NonFacultyStaffID=" + NonFacultyStaffID + ", NonFacultyStaffName="
-				+ NonFacultyStaffName + "]";
-	}
 }
