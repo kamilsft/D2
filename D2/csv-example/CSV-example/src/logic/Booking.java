@@ -1,7 +1,8 @@
 package logic;
 import java.time.ZonedDateTime;
+import DesignPatternClasses.Observer;
 
-public class Booking {
+public class Booking implements Observer{
 	public int bookingId;
 	public ZonedDateTime bookingStartTime;
 	public ZonedDateTime bookingEndTime;
@@ -9,13 +10,14 @@ public class Booking {
 	public boolean isValid;
 	public ParkingSpot spot;
 	public User user;
+	private boolean showUp;
 	
 	// the next new booking id will be 1, then 2 and so on
 	private static int bookingCounter = 0;
 	
 	public Booking(ZonedDateTime bookingStartTime, 
-			ZonedDateTime bookingEndTime, String carLicensePlate, 
-			boolean isValid, ParkingSpot spot, User user) {
+		ZonedDateTime bookingEndTime, String carLicensePlate, 
+		boolean isValid, ParkingSpot spot, User user) {
 		this.bookingId = generateBookingId();
 		this.bookingStartTime = bookingStartTime;
 		this.bookingEndTime = bookingEndTime;
@@ -23,6 +25,7 @@ public class Booking {
 		this.isValid = isValid;
 		this.spot = spot;
 		this.user = user;
+		this.showUp = false;
 	}
 	
 	public Booking(User user, ParkingSpot spot) {
@@ -91,9 +94,23 @@ public class Booking {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
-	
-	
-	
-	
+	public boolean isShowUp() {
+		return showUp;
+	}
+
+	public void setShowUp(boolean showUp) {
+		this.showUp = showUp;
+	} 
+
+	// Override the update method from Observer interface
+    @Override
+    public void update() {
+		ParkingSpot spot = this.getSpot();
+		Sensor sensor = spot.getSensor();
+
+		//if statement to check if the sensor is on
+		if(sensor.isSensorOn()) {
+			sensor.setCarArrived(true);
+		}
+    }
 }

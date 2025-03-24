@@ -4,10 +4,18 @@ public class ParkingSpot {
 	private String spotId;
 	private boolean isOccupied;
 	private int sensorId;
+	private Sensor sensor;
 	
 	public ParkingSpot(String spotId, boolean isOccupied) {
 		this.spotId = spotId;
 		this.isOccupied = isOccupied;
+	}
+
+	public ParkingSpot(String spotId, boolean isOccupied, int sensorId) {
+		this.spotId = spotId;
+		this.isOccupied = isOccupied;
+		this.sensorId = sensorId;
+		this.sensor = new Sensor(sensorId);
 	}
 
 	public String getSpotId() {
@@ -32,6 +40,14 @@ public class ParkingSpot {
 
 	public void setSensorId(int sensorId) {
 		this.sensorId = sensorId;
+	}
+ 
+	public Sensor getSensor() {
+		return sensor;
+	}
+
+	public void setSensor(Sensor sensor) {
+		this.sensor = sensor;
 	}
 
 	@Override
