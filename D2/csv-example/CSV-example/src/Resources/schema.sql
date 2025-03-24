@@ -9,6 +9,19 @@ CREATE TABLE User (
     )
 );
 
+-- Table for ParkingLot
+CREATE TABLE ParkingLot (
+    lotId INT PRIMARY KEY
+);
+
+-- Table for ParkingSpot
+CREATE TABLE ParkingSpot (
+    sensorId INT PRIMARY KEY,
+    isOccupied BOOLEAN,
+    lotId INT,
+    FOREIGN KEY (lotId) REFERENCES ParkingLot(lotId)
+);
+
 -- Table for Booking
 CREATE TABLE Booking (
     bookingId INT PRIMARY KEY,
@@ -68,15 +81,3 @@ CREATE TABLE Visitor (
     FOREIGN KEY (userId) REFERENCES User(userId)
 );
 
--- Table for ParkingLot
-CREATE TABLE ParkingLot (
-    lotId INT PRIMARY KEY
-);
-
--- Table for ParkingSpot
-CREATE TABLE ParkingSpot (
-    sensorId INT PRIMARY KEY,
-    isOccupied BOOLEAN,
-    lotId INT,
-    FOREIGN KEY (lotId) REFERENCES ParkingLot(lotId)
-);
