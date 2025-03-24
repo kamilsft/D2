@@ -42,3 +42,6 @@ Thumbs.db
 
 # Generated files
 *.generated
+
+# SQLite database file
+parkingsystem.db
