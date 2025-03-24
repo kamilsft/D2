@@ -19,7 +19,7 @@ public class MainUI extends JFrame {
 	private JComboBox<String> userTypeBox;
 	private JTextField txtUsername, txtEmail;
 	private JPasswordField txtPassword;
-	private JButton btnLogin, btnBookSpot, btnCancelBooking, btnLogout, btnExtendBooking;
+	private JButton btnLogin, btnBookSpot, btnCancelBooking, btnLogout, btnExtendBooking, btnViewParkingSpaces;
 	private JLabel lblWelcome, lblBookingStatus, lblExpirationTime, lblRemainingTime;
 	private User currentUser;
 	private ParkingBooking currentBooking;
@@ -111,11 +111,13 @@ public class MainUI extends JFrame {
 		btnBookSpot = new JButton("Book Parking Spot");
 		btnExtendBooking = new JButton("Extend Booking");
 		btnCancelBooking = new JButton("Cancel Booking");
+		btnViewParkingSpaces = new JButton("View Parking Spaces");
 		btnLogout = new JButton("Logout");
 
 		panel.add(btnBookSpot);
 		panel.add(btnExtendBooking);
 		panel.add(btnCancelBooking);
+		panel.add(btnViewParkingSpaces);
 		panel.add(btnLogout);
 
 		// Button Actions
@@ -125,7 +127,13 @@ public class MainUI extends JFrame {
 				handleBooking();
 			}
 		});
-
+		btnViewParkingSpaces.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ParkingSpaceViewer viewer = new ParkingSpaceViewer(manager);
+				viewer.setVisible(true);
+			}
+		});
 		btnExtendBooking.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -162,7 +170,7 @@ public class MainUI extends JFrame {
 	private JPanel createManagerDashboardPanel() {
 		// Create info panel to display messages
 		JPanel infoPanel = new JPanel(new BorderLayout());
-		JTextArea infoArea = new JTextArea(5, 30);
+		JTextArea infoArea = new JTextArea(6, 30);
 		infoArea.setEditable(false);
 		infoArea.setLineWrap(true);
 		infoArea.setWrapStyleWord(true);
@@ -185,16 +193,18 @@ public class MainUI extends JFrame {
 		lblManagerWelcome.setFont(new Font("Arial", Font.BOLD, 16));
 		panel.add(lblManagerWelcome, BorderLayout.NORTH);
 
-		JPanel buttonPanel = new JPanel(new GridLayout(4, 1, 10, 10));
+		JPanel buttonPanel = new JPanel(new GridLayout(5, 1, 10, 10));
 
 		JButton btnAdd = new JButton("Add Spot");
 		JButton btnEnable = new JButton("Enable Spot");
 		JButton btnDisable = new JButton("Disable Spot");
+		JButton btnViewSpaces = new JButton("View Parking Spaces");
 		JButton btnLogout = new JButton("Logout");
 
 		buttonPanel.add(btnAdd);
 		buttonPanel.add(btnEnable);
 		buttonPanel.add(btnDisable);
+		buttonPanel.add(btnViewSpaces);
 		buttonPanel.add(btnLogout);
 
 		panel.add(buttonPanel, BorderLayout.CENTER);
@@ -298,6 +308,12 @@ public class MainUI extends JFrame {
 			}
 		});
 
+		// View Parking Spaces Button
+		btnViewSpaces.addActionListener(e -> {
+			ParkingSpaceViewer viewer = new ParkingSpaceViewer(manager);
+			viewer.setVisible(true);
+			logMessage.accept("Manager opened parking space viewer");
+		});
 		btnLogout.addActionListener(e -> {
 			logMessage.accept("Manager logged out");
 			cardLayout.show(mainPanel, "Login");
