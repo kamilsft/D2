@@ -1,23 +1,15 @@
 package statsVisualiser.gui;
 
-import java.awt.CardLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import logic.*;
 
@@ -32,6 +24,7 @@ public class MainUI extends JFrame {
 	private User currentUser;
 	private ParkingBooking currentBooking;
 	private Timer bookingTimer;
+	private static ParkingManager manager; // Changed to static
 
 	private static MainUI instance;
 
@@ -44,13 +37,18 @@ public class MainUI extends JFrame {
 
 	public MainUI() {
 		setTitle("Parking Management System");
-		setSize(500, 400);
+		setSize(600, 400);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 
 		// CardLayout to switch between screens
 		cardLayout = new CardLayout();
 		mainPanel = new JPanel(cardLayout);
+
+		// Initialize the manager
+		if (manager == null) {
+			manager = new ParkingManager();
+		}
 
 		// Add screens
 		mainPanel.add(createLoginPanel(), "Login");
@@ -162,47 +160,150 @@ public class MainUI extends JFrame {
 	// Other dashboard panels remain the same...
 	// creating a dashboard for the manager
 	private JPanel createManagerDashboardPanel() {
-		JPanel panel = new JPanel(new GridLayout(4, 1, 10, 10));
+		// Create info panel to display messages
+		JPanel infoPanel = new JPanel(new BorderLayout());
+		JTextArea infoArea = new JTextArea(5, 30);
+		infoArea.setEditable(false);
+		infoArea.setLineWrap(true);
+		infoArea.setWrapStyleWord(true);
+		JScrollPane infoScrollPane = new JScrollPane(infoArea);
+		infoPanel.add(new JLabel("System Messages:"), BorderLayout.NORTH);
+		infoPanel.add(infoScrollPane, BorderLayout.CENTER);
+
+		// Add log method to display messages in the info panel
+		Consumer<String> logMessage = (message) -> {
+			infoArea.append(message + "\n");
+			infoArea.setCaretPosition(infoArea.getDocument().getLength());
+		};
+
+		// Initialize spots message
+		logMessage.accept("System initialized with parking spots A1-A9, B1-B9, C1-C9 (all enabled)");
+
+		JPanel panel = new JPanel(new BorderLayout());
 
 		JLabel lblManagerWelcome = new JLabel("Manager Dashboard", SwingConstants.CENTER);
-		panel.add(lblManagerWelcome);
+		lblManagerWelcome.setFont(new Font("Arial", Font.BOLD, 16));
+		panel.add(lblManagerWelcome, BorderLayout.NORTH);
 
-		JButton btnEnableParking = new JButton("Enable Parking Lot");
-		JButton btnDisableParking = new JButton("Disable Parking Lot");
-		JButton btnApproveUser = new JButton("Approve User");
+		JPanel buttonPanel = new JPanel(new GridLayout(4, 1, 10, 10));
+
+		JButton btnAdd = new JButton("Add Spot");
+		JButton btnEnable = new JButton("Enable Spot");
+		JButton btnDisable = new JButton("Disable Spot");
 		JButton btnLogout = new JButton("Logout");
 
-		panel.add(btnEnableParking);
-		panel.add(btnDisableParking);
-		panel.add(btnApproveUser);
-		panel.add(btnLogout);
+		buttonPanel.add(btnAdd);
+		buttonPanel.add(btnEnable);
+		buttonPanel.add(btnDisable);
+		buttonPanel.add(btnLogout);
 
-		btnEnableParking.addActionListener(e -> enableParkingLot());
-		btnDisableParking.addActionListener(e -> disableParkingLot());
+		panel.add(buttonPanel, BorderLayout.CENTER);
+		panel.add(infoPanel, BorderLayout.SOUTH);
 
-		btnLogout.addActionListener(e -> cardLayout.show(mainPanel, "Login"));
+		// Function to validate spot ID format (one letter followed by one digit)
+		Predicate<String> isValidSpotFormat = (id) -> {
+			if (id == null || id.length() != 2) return false;
+			return Character.isLetter(id.charAt(0)) && Character.isDigit(id.charAt(1));
+		};
+
+		// Add Spot Button
+		btnAdd.addActionListener(e -> {
+			String id = JOptionPane.showInputDialog(this,
+					"Enter Spot ID to add:\n(Format: One letter followed by one digit, e.g. A6, R5, T7)");
+
+			if (id != null && !id.isEmpty()) {
+				if (isValidSpotFormat.test(id)) {
+					// Check if max spots limit is reached
+					if (manager.getSpotsCount() >= 100) {
+						JOptionPane.showMessageDialog(this,
+								"Maximum limit of 100 parking spots reached!",
+								"Limit Reached", JOptionPane.WARNING_MESSAGE);
+						logMessage.accept("Failed to add spot " + id + " - maximum limit reached");
+						return;
+					}
+
+					if (manager.spotExists(id)) {
+						JOptionPane.showMessageDialog(this,
+								"Spot " + id + " already exists!",
+								"Duplicate Spot", JOptionPane.WARNING_MESSAGE);
+						logMessage.accept("Failed to add spot " + id + " - already exists");
+					} else {
+						Command addCommand = new AddParkingSpotCommand(manager, id);
+						addCommand.execute();
+						JOptionPane.showMessageDialog(this,
+								"Added spot: " + id,
+								"Success", JOptionPane.INFORMATION_MESSAGE);
+						logMessage.accept("Added new spot: " + id);
+					}
+				} else {
+					JOptionPane.showMessageDialog(this,
+							"Invalid spot ID format. Please use one letter followed by one digit (e.g. A6, R5, T7).",
+							"Format Error", JOptionPane.ERROR_MESSAGE);
+					logMessage.accept("Failed to add spot - invalid format: " + id);
+				}
+			}
+		});
+
+		// Enable Spot Button
+		btnEnable.addActionListener(e -> {
+			String id = JOptionPane.showInputDialog(this, "Enter Spot ID to enable:");
+			if (id != null && !id.isEmpty()) {
+				if (isValidSpotFormat.test(id)) {
+					if (manager.spotExists(id)) {
+						Command enableCommand = new EnableParkingSpotCommand(manager, id);
+						enableCommand.execute();
+						JOptionPane.showMessageDialog(this,
+								"Enabled spot: " + id,
+								"Success", JOptionPane.INFORMATION_MESSAGE);
+						logMessage.accept("Enabled spot: " + id);
+					} else {
+						JOptionPane.showMessageDialog(this,
+								"Spot " + id + " has not been added. Please add it first using the Add feature.",
+								"Spot Not Found", JOptionPane.WARNING_MESSAGE);
+						logMessage.accept("Failed to enable spot " + id + " - not found");
+					}
+				} else {
+					JOptionPane.showMessageDialog(this,
+							"Invalid spot ID format. Please use one letter followed by one digit (e.g. A1, B2, C3).",
+							"Format Error", JOptionPane.ERROR_MESSAGE);
+					logMessage.accept("Failed to enable spot - invalid format: " + id);
+				}
+			}
+		});
+
+		// Disable Spot Button
+		btnDisable.addActionListener(e -> {
+			String id = JOptionPane.showInputDialog(this, "Enter Spot ID to disable:");
+			if (id != null && !id.isEmpty()) {
+				if (isValidSpotFormat.test(id)) {
+					if (manager.spotExists(id)) {
+						Command disableCommand = new DisableParkingSpotCommand(manager, id);
+						disableCommand.execute();
+						JOptionPane.showMessageDialog(this,
+								"Disabled spot: " + id,
+								"Success", JOptionPane.INFORMATION_MESSAGE);
+						logMessage.accept("Disabled spot: " + id);
+					} else {
+						JOptionPane.showMessageDialog(this,
+								"Spot " + id + " has not been added. Please add it first using the Add feature.",
+								"Spot Not Found", JOptionPane.WARNING_MESSAGE);
+						logMessage.accept("Failed to disable spot " + id + " - not found");
+					}
+				} else {
+					JOptionPane.showMessageDialog(this,
+							"Invalid spot ID format. Please use one letter followed by one digit (e.g. A1, B2, C3).",
+							"Format Error", JOptionPane.ERROR_MESSAGE);
+					logMessage.accept("Failed to disable spot - invalid format: " + id);
+				}
+			}
+		});
+
+		btnLogout.addActionListener(e -> {
+			logMessage.accept("Manager logged out");
+			cardLayout.show(mainPanel, "Login");
+		});
 
 		return panel;
-	}
-
-	// enabling the parking lot
-	private void enableParkingLot() {
-		if (currentUser instanceof Manager) {
-			((Manager) currentUser).enableParkingLot(new ParkingLot("Lot1"));
-			JOptionPane.showMessageDialog(this, "Parking lot enabled successfully!");
-		} else {
-			JOptionPane.showMessageDialog(this, "Access Denied!", "Error", JOptionPane.ERROR_MESSAGE);
-		}
-	}
-
-	// disabling the parking lot
-	private void disableParkingLot() {
-		if (currentUser instanceof Manager) {
-			((Manager) currentUser).disableParkingLot(new ParkingLot("Lot1"));
-			JOptionPane.showMessageDialog(this, "Parking lot disabled successfully!");
-		} else {
-			JOptionPane.showMessageDialog(this, "Access Denied!", "Error", JOptionPane.ERROR_MESSAGE);
-		}
 	}
 
 	// super manager dashboard
@@ -269,41 +370,39 @@ public class MainUI extends JFrame {
 				currentUser = UserFactory.createUser(userType.toUpperCase(), username, 1001, email, password, 1001, username);
 				String[] paymentOptions = {"Credit Card", "Debit Card", "Mobile App"};
 				String selection = (String) JOptionPane.showInputDialog(this,
-				        "Choose your payment method:",
-				        "Payment Method",
-				        JOptionPane.QUESTION_MESSAGE,
-				        null,
-				        paymentOptions,
-				        paymentOptions[0]);
-				
+						"Choose your payment method:",
+						"Payment Method",
+						JOptionPane.QUESTION_MESSAGE,
+						null,
+						paymentOptions,
+						paymentOptions[0]);
+
 				switch (selection) {
-			    case "Debit Card":
-			        currentUser.setPaymentStrategy(new DebitCardPaymentsStrategy());
-			        break;
-			    case "Mobile App":
-			        currentUser.setPaymentStrategy(new MobileAppPaymentsStrategy());
-			        break;
-			    default:
-			        currentUser.setPaymentStrategy(new CreditCardPaymentStrategy());
-			}
+					case "Debit Card":
+						currentUser.setPaymentStrategy(new DebitCardPaymentsStrategy());
+						break;
+					case "Mobile App":
+						currentUser.setPaymentStrategy(new MobileAppPaymentsStrategy());
+						break;
+					default:
+						currentUser.setPaymentStrategy(new CreditCardPaymentStrategy());
+				}
 				// setting the pricing strategy based on user type
 				switch(userType.toLowerCase()) {
-				case "student":
-					currentUser.setPricingStrategy(new StudentPricing());
-					break;
-				case "faculty":
-					currentUser.setPricingStrategy(new FacultyPricing());
-					break;
-				case "nonfaculty":
-					currentUser.setPricingStrategy(new NonFacultyPricing());
-					break;
-				case "visitor":
-					currentUser.setPricingStrategy(new VisitorPricing());
-					break;
+					case "student":
+						currentUser.setPricingStrategy(new StudentPricing());
+						break;
+					case "faculty":
+						currentUser.setPricingStrategy(new FacultyPricing());
+						break;
+					case "nonfaculty":
+						currentUser.setPricingStrategy(new NonFacultyPricing());
+						break;
+					case "visitor":
+						currentUser.setPricingStrategy(new VisitorPricing());
+						break;
 				}
-				
-				currentUser.setPaymentStrategy(new CreditCardPaymentStrategy());
-				
+
 				lblWelcome.setText("Welcome, " + currentUser.getName());
 				updateBookingStatusDisplay();
 				cardLayout.show(mainPanel, "Dashboard");
@@ -311,11 +410,10 @@ public class MainUI extends JFrame {
 		} else {
 			JOptionPane.showMessageDialog(this, "Please fill in all fields!", "Error", JOptionPane.ERROR_MESSAGE);
 		}
-		
-		
 	}
 
 	// Booking Logic with duration
+	// Booking Logic with duration and consistent validation
 	private void handleBooking() {
 		if (currentUser == null) {
 			JOptionPane.showMessageDialog(this, "No user logged in!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -327,11 +425,52 @@ public class MainUI extends JFrame {
 			return;
 		}
 
+		// Function to validate spot ID format (one letter followed by one digit)
+		Predicate<String> isValidSpotFormat = (id) -> {
+			if (id == null || id.length() != 2) return false;
+			return Character.isLetter(id.charAt(0)) && Character.isDigit(id.charAt(1));
+		};
+
 		// Asking the user for the parking spot
-		String spotId = JOptionPane.showInputDialog(this, "Enter Parking Spot ID (e.g., A1, B2):");
+		String spotId = JOptionPane.showInputDialog(this,
+				"Enter Parking Spot ID:\n(Format: One letter followed by one digit, e.g. A1, B2, C3)");
 
 		if (spotId == null || spotId.trim().isEmpty()) {
-			JOptionPane.showMessageDialog(this, "Invalid parking spot!", "Error", JOptionPane.ERROR_MESSAGE);
+			return; // User canceled
+		}
+
+		// Validate spot format
+		if (!isValidSpotFormat.test(spotId)) {
+			JOptionPane.showMessageDialog(this,
+					"Invalid spot ID format. Please use one letter followed by one digit (e.g. A1, B2, C3).",
+					"Format Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		// Check if spot exists
+		if (!manager.spotExists(spotId)) {
+			JOptionPane.showMessageDialog(this,
+					"Spot " + spotId + " has not been added by the manager. Please select a different spot (e.g. A1, B2, C3).",
+					"Spot Not Found", JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+
+		// Get the actual spot from the manager
+		ParkingSpot selectedSpot = manager.getSpots().get(spotId);
+
+		// Check if the spot is enabled
+		if (!selectedSpot.isEnabled()) {
+			JOptionPane.showMessageDialog(this,
+					"Spot " + spotId + " is currently disabled by the manager. Please select a different spot.",
+					"Spot Disabled", JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+
+		// Check if spot is already booked
+		if (selectedSpot.isOccupied()) {
+			JOptionPane.showMessageDialog(this,
+					"Spot " + spotId + " is already occupied. Please select a different spot.",
+					"Spot Occupied", JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 
@@ -344,23 +483,31 @@ public class MainUI extends JFrame {
 				throw new NumberFormatException();
 			}
 		} catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(this, "Please enter a valid positive number for duration!", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Please enter a valid positive number for duration!",
+					"Invalid Duration", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		
+
+		// Calculate cost and process payment
 		double cost = currentUser.calculateParkingPrice(duration);
 		PaymentStrategy strategy = currentUser.getPaymentStrategy();
-		if(strategy == null || !strategy.pay(currentUser, cost)) {
-			JOptionPane.showMessageDialog(this, "Payment failed.", "Error", JOptionPane.ERROR_MESSAGE);
+		if (strategy == null || !strategy.pay(currentUser, cost)) {
+			JOptionPane.showMessageDialog(this, "Payment failed.", "Payment Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
-		ParkingSpot selectedSpot = new ParkingSpot(spotId, true);
+		// Mark the spot as occupied
+		selectedSpot.setOccupied(true);
+
+		// Create booking
 		currentBooking = new ParkingBooking(currentUser, selectedSpot, duration);
 
-		JOptionPane.showMessageDialog(this, "Parking Spot " + currentBooking.getSpot().getSpotId() +
-	            " Booked until " + currentBooking.getExpirationTimeString() + "!\nCharged: $" + cost +
-	            "\nRemaining balance: $" + currentUser.getBalance());
+		JOptionPane.showMessageDialog(this,
+				"Parking Spot " + currentBooking.getSpot().getSpotId() +
+						" Booked until " + currentBooking.getExpirationTimeString() +
+						"!\nCharged: $" + cost +
+						"\nRemaining balance: $" + currentUser.getBalance(),
+				"Booking Successful", JOptionPane.INFORMATION_MESSAGE);
 
 		// Start timer to update booking status
 		startBookingTimer();
@@ -368,6 +515,7 @@ public class MainUI extends JFrame {
 		// Update UI
 		updateBookingStatusDisplay();
 	}
+
 
 	// Handle extending booking
 	private void handleExtendBooking() {
@@ -397,6 +545,7 @@ public class MainUI extends JFrame {
 	}
 
 	// Cancel Logic
+	// Update handleCancelBooking to release the spot when booking is canceled
 	private void handleCancelBooking() {
 		if (currentUser == null) {
 			JOptionPane.showMessageDialog(this, "No user logged in!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -414,7 +563,12 @@ public class MainUI extends JFrame {
 				JOptionPane.YES_NO_OPTION);
 
 		if (confirm == JOptionPane.YES_OPTION) {
-			JOptionPane.showMessageDialog(this, "Booking for Spot " + currentBooking.getSpot().getSpotId() + " Canceled!");
+			// Mark the spot as unoccupied
+			currentBooking.getSpot().setOccupied(false);
+
+			JOptionPane.showMessageDialog(this,
+					"Booking for Spot " + currentBooking.getSpot().getSpotId() + " Canceled!",
+					"Booking Canceled", JOptionPane.INFORMATION_MESSAGE);
 
 			// Cancel the timer if it's running
 			if (bookingTimer != null) {

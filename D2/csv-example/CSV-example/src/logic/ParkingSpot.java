@@ -3,11 +3,13 @@ package logic;
 public class ParkingSpot {
 	private String spotId;
 	private boolean isOccupied;
+	private boolean isEnabled;   // New attribute to control bookability
 	private int sensorId;
-	
-	public ParkingSpot(String spotId, boolean isOccupied) {
+
+	public ParkingSpot(String spotId, boolean isOccupied, boolean isEnabled) {
 		this.spotId = spotId;
 		this.isOccupied = isOccupied;
+		this.isEnabled = isEnabled;
 	}
 
 	public String getSpotId() {
@@ -26,6 +28,14 @@ public class ParkingSpot {
 		this.isOccupied = isOccupied;
 	}
 
+	public boolean isEnabled() {    // New getter
+		return isEnabled;
+	}
+
+	public void setEnabled(boolean isEnabled) {   // New setter
+		this.isEnabled = isEnabled;
+	}
+
 	public int getSensorId() {
 		return sensorId;
 	}
@@ -36,8 +46,6 @@ public class ParkingSpot {
 
 	@Override
 	public String toString() {
-		return "ParkingSpot [spotId=" + spotId + ", isOccupied=" + isOccupied + ", sensorId=" + sensorId + "]";
+		return "ParkingSpot [spotId=" + spotId + ", isOccupied=" + isOccupied + ", isEnabled=" + isEnabled + "]";
 	}
-	
-	
 }

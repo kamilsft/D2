@@ -9,13 +9,13 @@ public class Booking {
 	public boolean isValid;
 	public ParkingSpot spot;
 	public User user;
-	
+
 	// the next new booking id will be 1, then 2 and so on
 	private static int bookingCounter = 0;
-	
-	public Booking(ZonedDateTime bookingStartTime, 
-			ZonedDateTime bookingEndTime, String carLicensePlate, 
-			boolean isValid, ParkingSpot spot, User user) {
+
+	public Booking(ZonedDateTime bookingStartTime,
+				   ZonedDateTime bookingEndTime, String carLicensePlate,
+				   boolean isValid, ParkingSpot spot, User user) {
 		this.bookingId = generateBookingId();
 		this.bookingStartTime = bookingStartTime;
 		this.bookingEndTime = bookingEndTime;
@@ -24,7 +24,7 @@ public class Booking {
 		this.spot = spot;
 		this.user = user;
 	}
-	
+
 	public Booking(User user, ParkingSpot spot) {
 		this.user = user;
 		this.spot = spot;
@@ -91,9 +91,9 @@ public class Booking {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 }
