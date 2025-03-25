@@ -146,8 +146,19 @@ public class DatabaseDAO {
     // Method to insert a user into the appropriate table based on their ID
     public void addUserToSpecificTable(User user) throws SQLException {
         int userId = user.getId();
+        
+        // first inserting into the User table
+        String baseUserQuery = "INSERT INTO User (userId) VALUES (?)";
+        try(PreparedStatement stmt = connection.prepareStatement(baseUserQuery)){
+        	stmt.setInt(1, userId);
+        	stmt.executeUpdate();
+        }
+        
         String query;
+        // debugging 
+        System.out.println("Trying to insert user into DB: " + user.getName() + ", ID: " + user.getId());
 
+        
         if (String.valueOf(userId).startsWith("1")) {
             query = "INSERT INTO FacultyMember (userId, name, email, password) VALUES (?, ?, ?, ?)";
         } else if (String.valueOf(userId).startsWith("2")) {
@@ -479,4 +490,6 @@ public class DatabaseDAO {
         }
         throw new SQLException("Sensor with ID " + sensorId + " not found.");
     }
+    
+    
 }
