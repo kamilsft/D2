@@ -6,4 +6,4 @@ public class NonFacultyPricing implements PricingStrategy {
 		return (minutes / 60.0) * 10.0;
 	}
 }
- 
+  

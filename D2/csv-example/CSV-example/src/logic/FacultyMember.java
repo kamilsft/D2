@@ -17,7 +17,7 @@ public class FacultyMember extends User {
 		return new Booking(startTime, endTime, this.getEmail(), true, spot, this);
 	}
 
-	
+	 
 
 	// PAYMENT SERVICE
 //	public void ParkingPayment(double amount) {

@@ -83,7 +83,7 @@ public class ParkingSpot implements ParkingComponent {
 				", Status: " + (enabled ? "Enabled" : "Disabled") +
 				", Occupied: " + (occupied ? "Yes" : "No"));
 	}
-  
+   
 	@Override
 	public String getId() {
 		return spotId;

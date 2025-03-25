@@ -4,4 +4,4 @@ package logic;
 public interface PricingStrategy {
 	public double calculatePrice(int durationMinutes);
 }
- 
+  

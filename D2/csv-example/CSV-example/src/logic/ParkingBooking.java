@@ -2,7 +2,7 @@ package logic;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
- 
+  
 public class ParkingBooking {
     private User user;
     private ParkingSpot spot;

@@ -13,7 +13,7 @@ public class Sensor extends Subject{
     private String currentCarModel = "";
     private String currentCarColor = "";
     private boolean carArrived = false;
-     
+      
     // Constructor
     public Sensor(int sensorId) {
         this.sensorId = sensorId;

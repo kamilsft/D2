@@ -20,7 +20,7 @@ public class ValidState implements BookingState {
     public boolean isExpired() {
         return LocalDateTime.now().isAfter(expirationTime);
     } 
-
+ 
     @Override
     public String getStateName() {
         return "Valid";

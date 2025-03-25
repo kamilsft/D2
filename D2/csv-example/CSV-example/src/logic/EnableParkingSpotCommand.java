@@ -20,4 +20,4 @@ public class EnableParkingSpotCommand implements Command {
     }
 }
 
- 
+  

@@ -5,4 +5,4 @@ public interface BookingState {
     boolean isExpired();
     String getStateName();
 }
- 
+  

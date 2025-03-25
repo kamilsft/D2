@@ -23,6 +23,6 @@ public class Visitor extends User {
 	public boolean validateRegistration() {
 		return false; // visitors are not auto approved
 	}
-
+ 
 	
 }

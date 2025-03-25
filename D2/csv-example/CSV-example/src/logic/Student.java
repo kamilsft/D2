@@ -16,7 +16,7 @@ public class Student extends User{
 		
 		return new Booking(startTime, endTime, this.getEmail(), true, spot, this);
 	}
-	 
+	  
 	// PAYMENT SERVICE
 //	public void parkingPayment(double amount) {
 //		PaymentService.processTransaction(this, amount); // have to call paymetns class

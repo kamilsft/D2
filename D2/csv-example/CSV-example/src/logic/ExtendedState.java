@@ -16,7 +16,7 @@ public class ExtendedState implements BookingState {
         this.extensionMinutes = additionalMinutes;
         this.expirationTime = originalExpirationTime.plusMinutes(additionalMinutes);
     }
-
+ 
     @Override
     public void extendBooking(ParkingBooking booking) {
         if (!isExpired()) {

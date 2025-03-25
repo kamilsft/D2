@@ -15,4 +15,4 @@ public abstract class Manager extends User{
 	public abstract void disableParkingLot(ParkingLot lot);
 	public abstract void monitorParking();
 	public abstract void addParkingLot();
-} 
+}  

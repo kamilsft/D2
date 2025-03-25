@@ -8,4 +8,4 @@ public class StudentPricing implements PricingStrategy {
 		return (minutes / 60.0) * 5.0;
 	}
 }
- 
+  
