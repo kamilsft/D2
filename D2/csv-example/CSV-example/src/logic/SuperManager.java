@@ -7,6 +7,7 @@ public class SuperManager extends Manager {
 //	private String name;
 //	private String email;
 
+	
 	// private constructor
 	private SuperManager() {
 		// calling user constructor
@@ -14,15 +15,11 @@ public class SuperManager extends Manager {
 		this.superMgrID = 0;
 	}
   
-	public static SuperManager getInstance(String name, int userId, String email, String password) {
+	public static SuperManager getInstance() {
 		if(instance == null) {
 			synchronized(SuperManager.class) {
 				if(instance == null) {
 					instance = new SuperManager();
-					instance.name = name;
-					instance.superMgrID = userId;
-					instance.email = email;
-					instance.password = password;
 				}
 			}
 		}

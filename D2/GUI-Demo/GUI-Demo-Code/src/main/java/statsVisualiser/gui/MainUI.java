@@ -479,11 +479,11 @@ public class MainUI extends JFrame {
         String username = txtUsername.getText();
         String email = txtEmail.getText();
         String password = new String(txtPassword.getPassword());
-        int userId = 0;
+        
 
         if (userType != null && !username.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
             if (userType.equalsIgnoreCase("SuperManager")) {
-                currentUser = SuperManager.getInstance(username, userId, email, password);  // Singleton Instance
+                currentUser = SuperManager.getInstance();  // Singleton Instance
                 lblWelcome.setText("Welcome, SuperManager");
                 cardLayout.show(mainPanel, "SuperManagerDashboard");
             } else if (userType.equalsIgnoreCase("Manager")) {
@@ -491,7 +491,7 @@ public class MainUI extends JFrame {
                 lblWelcome.setText("Welcome, Manager");
                 cardLayout.show(mainPanel, "ManagerDashboard");
             } else {
-                currentUser = UserFactory.createUser(userType.toUpperCase(), username, 1001, email, password, 1001, username);
+                currentUser = UserFactory.createUser(userType.toUpperCase(), username, 1001, email, password);
                 String[] paymentOptions = {"Credit Card", "Debit Card", "Mobile App"};
                 String selection = (String) JOptionPane.showInputDialog(this,
                         "Choose your payment method:",

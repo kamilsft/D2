@@ -1,7 +1,7 @@
 package logic;
 
 public class UserFactory {
-	public static User createUser(String type, String name, int id, String email, String password, int uniqueID, String extraInfo) {
+	public static User createUser(String type, String name, int id, String email, String password) {
 		if(type == null) {
 			return null;	
 		}
@@ -16,25 +16,25 @@ public class UserFactory {
 			if(firstDigit != 3) {
 				throw new IllegalArgumentException("Student ID must start with 3");
 			}
-			return new Student(name, id, email, password, uniqueID, extraInfo);
+			return new Student(name, id, email, password);
 			
 		}else if(type.equalsIgnoreCase("FACULTY")) {
 			if(firstDigit != 1) {
 				throw new IllegalArgumentException("Faculty ID must start with 1");
 			}
-			return new FacultyMember(name, id, email, password, uniqueID, extraInfo);
+			return new FacultyMember(name, id, email, password);
 			
 		}else if(type.equalsIgnoreCase("NONFACULTY")) {
 			if(firstDigit != 2) {
 				throw new IllegalArgumentException("Non Faculty ID must start with 2");
 			}
-			return new NonFacultyStaff(name, id, email, password, uniqueID, extraInfo);
+			return new NonFacultyStaff(name, id, email, password);
 			
 		}else if(type.equalsIgnoreCase("VISITOR")) {
 			if(firstDigit != 4) {
 				throw new IllegalArgumentException("Visitor ID must start with 4");
 			}
-			return new Visitor(name, id, email, password, uniqueID, extraInfo);
+			return new Visitor(name, id, email, password);
 			
 		}else if(type.equalsIgnoreCase("MANAGER")){
 			if(firstDigit != 5) {
