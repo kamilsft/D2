@@ -75,11 +75,15 @@ The **Parking Management System** is a Java-based application designed to manage
 
 ### 5. Use the Database in Your Project
 - Ensure the `DatabaseConnection` class in your project points to the `parkingsystem.db` file in the `resources` folder.
+- Do this by going to line 11 in DatabaseConnection.java and replacing the path by the location of the parkingsystem.db database file. Example: String dbPath = "C:/Users/yourname/Downloads/D2/D2/csv-example/CSV-example/src/Resources/parkingsystem.db";
 - Example connection string in the `DatabaseConnection` class:
   ```java
   String url = "jdbc:sqlite:" + DatabaseConnection.class.getClassLoader().getResource("parkingsystem.db").getPath();
   ```
+### Optional: Run DatabaseConnectionTest.java to check if database is ready. 
+- Results in the terminal should look like this:
 
+  
 ## Technologies Used
 - **Java**: Core programming language.
 - **SQLite**: Local database for data persistence.
