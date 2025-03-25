@@ -81,7 +81,8 @@ The **Parking Management System** is a Java-based application designed to manage
   String url = "jdbc:sqlite:" + DatabaseConnection.class.getClassLoader().getResource("parkingsystem.db").getPath();
   ```
 ### Optional: Run DatabaseConnectionTest.java to check if database is ready. 
-- Results in the terminal should look like this:
+- Results in the terminal should look like this: ![image](https://github.com/user-attachments/assets/c5bb8d0e-625b-45d7-922c-b4638a4b3adc)
+
 
   
 ## Technologies Used
