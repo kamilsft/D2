@@ -1,4 +1,4 @@
--- Table for User
+
 CREATE TABLE User (
     userId INT PRIMARY KEY CHECK (
         userId LIKE '1%' OR 
@@ -9,12 +9,12 @@ CREATE TABLE User (
     )
 );
 
--- Table for ParkingLot
+
 CREATE TABLE ParkingLot (
     lotId INT PRIMARY KEY
 );
 
--- Table for ParkingSpot
+
 CREATE TABLE ParkingSpot (
     sensorId INT PRIMARY KEY,
     isOccupied BOOLEAN,
@@ -22,7 +22,7 @@ CREATE TABLE ParkingSpot (
     FOREIGN KEY (lotId) REFERENCES ParkingLot(lotId)
 );
 
--- Table for Booking
+
 CREATE TABLE Booking (
     bookingId INT PRIMARY KEY,
     bookingStartTime TIMESTAMP,
@@ -36,7 +36,7 @@ CREATE TABLE Booking (
     FOREIGN KEY (userId) REFERENCES User(userId)
 );
 
--- Table for FacultyMember
+
 CREATE TABLE FacultyMember (
     userId INT PRIMARY KEY CHECK (userId LIKE '1%'),
     name VARCHAR(100),
@@ -45,7 +45,6 @@ CREATE TABLE FacultyMember (
     FOREIGN KEY (userId) REFERENCES User(userId)
 );
 
--- Table for NonFacultyStaff
 CREATE TABLE NonFacultyStaff (
     userId INT PRIMARY KEY CHECK (userId LIKE '2%'),
     name VARCHAR(100),
@@ -54,7 +53,7 @@ CREATE TABLE NonFacultyStaff (
     FOREIGN KEY (userId) REFERENCES User(userId)
 );
 
--- Table for Manager
+
 CREATE TABLE Manager (
     userId INT PRIMARY KEY CHECK (userId LIKE '5%'),
     name VARCHAR(100),
@@ -63,7 +62,7 @@ CREATE TABLE Manager (
     FOREIGN KEY (userId) REFERENCES User(userId)
 );
 
--- Table for Student
+
 CREATE TABLE Student (
     userId INT PRIMARY KEY CHECK (userId LIKE '3%'),
     name VARCHAR(100),
@@ -72,7 +71,7 @@ CREATE TABLE Student (
     FOREIGN KEY (userId) REFERENCES User(userId)
 );
 
--- Table for Visitor
+
 CREATE TABLE Visitor (
     userId INT PRIMARY KEY CHECK (userId LIKE '4%'),
     name VARCHAR(100),
