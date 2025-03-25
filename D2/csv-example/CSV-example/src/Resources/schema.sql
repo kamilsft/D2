@@ -14,12 +14,24 @@ CREATE TABLE ParkingLot (
     lotId VARCHAR(10) PRIMARY KEY
 );
 
+CREATE TABLE Sensor (
+    sensorId INT PRIMARY KEY,
+    sensorOn BOOLEAN NOT NULL DEFAULT FALSE,
+    sensorActivationTime TIMESTAMP NULL,
+    sensorDeactivationTime TIMESTAMP NULL,
+    currentCarPlate VARCHAR(20) DEFAULT '',
+    currentCarBrand VARCHAR(50) DEFAULT '',
+    currentCarModel VARCHAR(50) DEFAULT '',
+    currentCarColor VARCHAR(30) DEFAULT '',
+    carArrived BOOLEAN NOT NULL DEFAULT FALSE
+);
 
 CREATE TABLE ParkingSpot (
     spotId VARCHAR(3) PRIMARY KEY,
     sensorId INT,
     isOccupied BOOLEAN,
     lotId VARCHAR(10),
+    FOREIGN KEY (sensorId) REFERENCES Sensor(sensorId)
     FOREIGN KEY (lotId) REFERENCES ParkingLot(lotId)
 );
 
@@ -33,7 +45,7 @@ CREATE TABLE Booking (
     sensorId INT,
     userId INT,
     showUp BOOLEAN,
-    FOREIGN KEY (sensorId) REFERENCES ParkingSpot(sensorId),
+    FOREIGN KEY (sensorId) REFERENCES Sensor(sensorId),
     FOREIGN KEY (userId) REFERENCES User(userId)
 );
 

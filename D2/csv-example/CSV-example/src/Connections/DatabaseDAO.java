@@ -5,6 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 import logic.*;
 
+// Class to interact with the database
+//How to use
+/*
+ * make new DatabaseDEO object with a connection as the constructor argument: ===> DatabaseDEO db = new DatabaseDEO(DatabaseConnection.getConnection());
+ * use any of its methods to interact with the database. Example ===> db.addBooking(1, Timestamp.valueOf("2021-04-01 10:00:00"), Timestamp.valueOf("2021-04-01 11:00:00"), "1234", true, 1, 1, true);
+ * or an even easier way  ===> db.addBooking(bookingObject);
+ * 
+ * 
+ */
 public class DatabaseDAO {
     private Connection connection;
 
@@ -376,5 +385,98 @@ public class DatabaseDAO {
             }
         }
         return lots;
+    }
+
+    // Method to insert a sensor into the table using individual parameters
+    public void addSensor(int sensorId, boolean sensorOn, Timestamp sensorActivationTime, Timestamp sensorDeactivationTime, 
+                        String currentCarPlate, String currentCarBrand, String currentCarModel, String currentCarColor, 
+                        boolean carArrived) throws SQLException {
+        String query = "INSERT INTO Sensor (sensorId, sensorOn, sensorActivationTime, sensorDeactivationTime, currentCarPlate, " +
+                    "currentCarBrand, currentCarModel, currentCarColor, carArrived) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, sensorId);
+            stmt.setBoolean(2, sensorOn);
+            stmt.setTimestamp(3, sensorActivationTime);
+            stmt.setTimestamp(4, sensorDeactivationTime);
+            stmt.setString(5, currentCarPlate);
+            stmt.setString(6, currentCarBrand);
+            stmt.setString(7, currentCarModel);
+            stmt.setString(8, currentCarColor);
+            stmt.setBoolean(9, carArrived);
+            stmt.executeUpdate();
+        }
+    }
+
+    // Method to insert a sensor into the table using a Sensor object
+    public void addSensor(Sensor sensor) throws SQLException {
+        addSensor(sensor.getSensorId(), sensor.isSensorOn(), 
+                sensor.getSensorActivationTime() != null ? Timestamp.from(sensor.getSensorActivationTime().toInstant()) : null,
+                sensor.getSensorDeactivationTime() != null ? Timestamp.from(sensor.getSensorDeactivationTime().toInstant()) : null,
+                sensor.getCurrentCarPlate(), sensor.getCurrentCarBrand(), sensor.getCurrentCarModel(), 
+                sensor.getCurrentCarColor(), sensor.isCarArrived());
+    }
+
+    // Method to get a Sensor object by sensorId
+    public Sensor getSensorById(int sensorId) throws SQLException {
+        String query = "SELECT * FROM Sensor WHERE sensorId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, sensorId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Sensor sensor = new Sensor(rs.getInt("sensorId"));
+                    sensor.setSensorOn(rs.getBoolean("sensorOn"));
+                    sensor.activateSensor(rs.getTimestamp("sensorActivationTime") != null ? 
+                                        rs.getTimestamp("sensorActivationTime").toInstant().atZone(java.time.ZoneId.systemDefault()) : null);
+                    sensor.deactivateSensor(rs.getTimestamp("sensorDeactivationTime") != null ? 
+                                            rs.getTimestamp("sensorDeactivationTime").toInstant().atZone(java.time.ZoneId.systemDefault()) : null);
+                    sensor.setCurrentCarPlate(rs.getString("currentCarPlate"));
+                    sensor.setCurrentCarBrand(rs.getString("currentCarBrand"));
+                    sensor.setCurrentCarModel(rs.getString("currentCarModel"));
+                    sensor.setCurrentCarColor(rs.getString("currentCarColor"));
+                    sensor.setCarArrived(rs.getBoolean("carArrived"));
+                    return sensor;
+                }
+            }
+        }
+        return null;
+    }
+
+    // Method to get a Sensor object by spotId
+    public Sensor getSensorBySpotId(int spotId) throws SQLException {
+        String query = "SELECT s.* FROM Sensor s JOIN ParkingSpot ps ON s.sensorId = ps.sensorId WHERE ps.spotId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, spotId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Sensor sensor = new Sensor(rs.getInt("sensorId"));
+                    sensor.setSensorOn(rs.getBoolean("sensorOn"));
+                    sensor.activateSensor(rs.getTimestamp("sensorActivationTime") != null ? 
+                                        rs.getTimestamp("sensorActivationTime").toInstant().atZone(java.time.ZoneId.systemDefault()) : null);
+                    sensor.deactivateSensor(rs.getTimestamp("sensorDeactivationTime") != null ? 
+                                            rs.getTimestamp("sensorDeactivationTime").toInstant().atZone(java.time.ZoneId.systemDefault()) : null);
+                    sensor.setCurrentCarPlate(rs.getString("currentCarPlate"));
+                    sensor.setCurrentCarBrand(rs.getString("currentCarBrand"));
+                    sensor.setCurrentCarModel(rs.getString("currentCarModel"));
+                    sensor.setCurrentCarColor(rs.getString("currentCarColor"));
+                    sensor.setCarArrived(rs.getBoolean("carArrived"));
+                    return sensor;
+                }
+            }
+        }
+        return null;
+    }
+
+    // Method to get the sensorOn condition by sensorId
+    public boolean isSensorOn(int sensorId) throws SQLException {
+        String query = "SELECT sensorOn FROM Sensor WHERE sensorId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, sensorId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getBoolean("sensorOn");
+                }
+            }
+        }
+        throw new SQLException("Sensor with ID " + sensorId + " not found.");
     }
 }
