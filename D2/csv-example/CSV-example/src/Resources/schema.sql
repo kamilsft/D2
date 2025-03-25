@@ -37,7 +37,7 @@ CREATE TABLE ParkingSpot (
 
 
 CREATE TABLE Booking (
-    bookingId INT PRIMARY KEY,
+    bookingId INTEGER PRIMARY KEY AUTOINCREMENT,
     bookingStartTime TIMESTAMP,
     bookingEndTime TIMESTAMP,
     carLicensePlate VARCHAR(50),
