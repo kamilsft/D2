@@ -67,7 +67,7 @@ The **Parking Management System** is a Java-based application designed to manage
 - In SQLite Studio, right-click on the `parkingsystem.db` database in the left panel and select **Tools > Open SQL Editor**.
 - In the SQL editor, click on the **File** menu and select **Open**.
 - Navigate to the `resources` folder and open `schema.sql`.
-- Once the schema is loaded in the SQL editor, click the **Execute All** button (blue play icon) to create the tables and structure defined in `schema.sql`.
+- Once the schema is loaded in the SQL editor, click the **Execute All** button (blue play icon) to create the tables and structure defined in `schema.sql`. If the blue play button doesn't execute all queries in the sql file, try SHIFT+F9 on Windows.
 
 ### 4. Verify the Database
 - Right-click on `parkingsystem.db` in the left panel and select **Refresh** if you don't already see the tables.
@@ -81,7 +81,8 @@ The **Parking Management System** is a Java-based application designed to manage
   String url = "jdbc:sqlite:" + DatabaseConnection.class.getClassLoader().getResource("parkingsystem.db").getPath();
   ```
 ### Optional: Run DatabaseConnectionTest.java to check if database is ready. 
-- Results in the terminal should look like this:
+- Results in the terminal should look like this: ![image](https://github.com/user-attachments/assets/c5bb8d0e-625b-45d7-922c-b4638a4b3adc)
+
 
   
 ## Technologies Used
