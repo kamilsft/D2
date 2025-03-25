@@ -500,5 +500,13 @@ public class DatabaseDAO {
         throw new SQLException("Sensor with ID " + sensorId + " not found.");
     }
     
-    
+     // Method to update the carArrived attribute of a sensor
+    public void setCarArrived(int sensorId, boolean carArrived) throws SQLException {
+        String query = "UPDATE Sensor SET carArrived = ? WHERE sensorId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setBoolean(1, carArrived);
+            stmt.setInt(2, sensorId);
+            stmt.executeUpdate();
+        }
+    }
 }
