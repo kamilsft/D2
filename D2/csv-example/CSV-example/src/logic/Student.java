@@ -4,7 +4,7 @@ import java.time.ZonedDateTime;
 public class Student extends User{
 	
 	
-	public Student(String name, int id, String email, String password, int studentID, String studentName) {
+	public Student(String name, int id, String email, String password) {
 		super(name, id, email, password);
 	}
 

@@ -11,14 +11,15 @@ CREATE TABLE User (
 
 
 CREATE TABLE ParkingLot (
-    lotId INT PRIMARY KEY
+    lotId VARCHAR(10) PRIMARY KEY
 );
 
 
 CREATE TABLE ParkingSpot (
-    sensorId INT PRIMARY KEY,
+    spotId VARCHAR(3) PRIMARY KEY,
+    sensorId INT,
     isOccupied BOOLEAN,
-    lotId INT,
+    lotId VARCHAR(10),
     FOREIGN KEY (lotId) REFERENCES ParkingLot(lotId)
 );
 

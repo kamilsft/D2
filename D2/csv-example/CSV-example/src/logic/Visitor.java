@@ -3,7 +3,7 @@ import java.time.ZonedDateTime;
 
 public class Visitor extends User {
 	
-	public Visitor(String name, int id, String email, String password, int visitorID, String visitorName) {
+	public Visitor(String name, int id, String email, String password) {
 		super(name, id, email, password);
 	}
 

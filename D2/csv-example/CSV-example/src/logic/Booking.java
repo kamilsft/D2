@@ -11,6 +11,7 @@ public class Booking implements Observer{
 	public ParkingSpot spot;
 	public User user;
 	private boolean showUp;
+	private int sensorId;
 	
 	// the next new booking id will be 1, then 2 and so on
 	private static int bookingCounter = 0;
@@ -26,6 +27,20 @@ public class Booking implements Observer{
 		this.spot = spot;
 		this.user = user;
 		this.showUp = false;
+	}
+	//different method signature for sensor initialization
+	public Booking(ZonedDateTime bookingStartTime, 
+		ZonedDateTime bookingEndTime, String carLicensePlate, 
+		boolean isValid, ParkingSpot spot, User user, int sensorId) {
+		this.bookingId = generateBookingId();
+		this.bookingStartTime = bookingStartTime;
+		this.bookingEndTime = bookingEndTime;
+		this.carLicensePlate = carLicensePlate;
+		this.isValid = isValid;
+		this.spot = spot;
+		this.user = user;
+		this.showUp = false;
+		this.sensorId = sensorId;
 	}
 
 	public Booking(User user, ParkingSpot spot) {
@@ -101,6 +116,16 @@ public class Booking implements Observer{
 	public void setShowUp(boolean showUp) {
 		this.showUp = showUp;
 	} 
+
+	// Method to get the sensor ID associated with the booking
+	public int getSensorId() {
+		return this.sensorId;
+	}
+
+	// Method to get the user ID associated with the booking
+	public int getUserId() {
+		return this.user.getId();
+	}
 
 	// Override the update method from Observer interface
     @Override
