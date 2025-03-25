@@ -13,7 +13,7 @@ public class SuperManager extends Manager {
 		super("Admin", 1, "yorkuAdmin@gmail.com", "adminpass");
 		this.superMgrID = 1;
 	}
-
+ 
 	public static SuperManager getInstance() {
 		if(instance == null) {
 			synchronized(SuperManager.class) {

@@ -1,6 +1,6 @@
 package logic;
 
-
+ 
 // done by arshia
 public class CreditCardPaymentStrategy implements PaymentStrategy{
 	@Override

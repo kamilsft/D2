@@ -3,7 +3,7 @@ package logic;
 
 import java.util.ArrayList;
 import java.util.List;
-
+ 
 public class CompositeParkingLot implements ParkingComponent {
     private String id;
     private List<ParkingComponent> components = new ArrayList<>();

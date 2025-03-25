@@ -1,7 +1,7 @@
 package logic;
 
 import java.time.LocalDateTime;
-
+ 
 public class ExtendedState implements BookingState {
     private LocalDateTime expirationTime;
     private int extensionMinutes;

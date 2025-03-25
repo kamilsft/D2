@@ -19,4 +19,4 @@ public class DisableParkingSpotCommand implements Command {
         manager.enableSpot(spotId);
     }
 }
-
+ 

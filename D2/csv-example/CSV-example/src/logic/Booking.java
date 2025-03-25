@@ -97,7 +97,7 @@ public class Booking implements Observer{
 	public boolean isShowUp() {
 		return showUp;
 	}
-
+ 
 	public void setShowUp(boolean showUp) {
 		this.showUp = showUp;
 	} 

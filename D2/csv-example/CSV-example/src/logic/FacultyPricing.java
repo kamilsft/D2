@@ -6,3 +6,4 @@ public class FacultyPricing implements PricingStrategy {
 		return (minutes / 60.0) * 8.0;
 	}
 }
+ 

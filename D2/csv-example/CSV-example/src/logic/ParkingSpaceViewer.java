@@ -5,7 +5,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Map;
 import logic.*;
-
+  
 public class ParkingSpaceViewer extends JFrame {
     private JTable parkingTable;
     private DefaultTableModel tableModel;

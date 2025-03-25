@@ -9,7 +9,7 @@ public class FacultyMember extends User {
 		
 	}
 
-	
+	 
 	public Booking bookParkingLot(ParkingSpot spot, int hours) {
 		ZonedDateTime startTime = ZonedDateTime.now();
 		ZonedDateTime endTime = startTime.plusHours(hours);

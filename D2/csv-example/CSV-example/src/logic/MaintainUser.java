@@ -4,7 +4,7 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
-
+  
 public class MaintainUser {
 	public ArrayList<User> users = new ArrayList<User>();
 	public String path;
