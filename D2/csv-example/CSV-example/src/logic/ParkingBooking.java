@@ -9,7 +9,7 @@ public class ParkingBooking {
     private BookingState state;
     private LocalDateTime bookingTime;
     private int durationMinutes; // Add this field to store the original duration
-
+    
     public ParkingBooking(User user, ParkingSpot spot, int durationMinutes) {
         this.user = user;
         this.spot = spot;
