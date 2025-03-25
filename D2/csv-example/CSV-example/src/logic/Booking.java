@@ -27,7 +27,7 @@ public class Booking implements Observer{
 		this.user = user;
 		this.showUp = false;
 	}
-	
+
 	public Booking(User user, ParkingSpot spot) {
 		this.user = user;
 		this.spot = spot;

@@ -5,6 +5,10 @@ public class User {
 	public int id;
 	public String email;
 	public String password;
+	private double balance = 15.0;
+	
+	private PricingStrategy pricingStrategy;
+	private PaymentStrategy paymentStrategy;
 
 	
 	public User(String name, int id, String email, String password) {
@@ -55,5 +59,34 @@ public class User {
 	public String toString() {
 		return "User [name=" + name + ", id=" + id + ", email=" + email + ", password=" + password + "]";
 	}
+	
+	public double calculateParkingPrice(int durationMinutes) {
+		return pricingStrategy.calculatePrice(durationMinutes);
+	}
+	
+	public PricingStrategy getPricingStrategy() {
+		return pricingStrategy;
+	}
+	
+	public void setPricingStrategy(PricingStrategy pricingStrategy) {
+        this.pricingStrategy = pricingStrategy;
+    }
+	
+	public PaymentStrategy getPaymentStrategy() {
+        return paymentStrategy;
+    }
+	
+	public void setPaymentStrategy(PaymentStrategy paymentStrategy) {
+        this.paymentStrategy = paymentStrategy;
+    }
+	
+	public double getBalance() {
+        return balance;
+    }
+
+    public void deductBalance(double amount) {
+        balance -= amount;
+    }
+
 	
 }
