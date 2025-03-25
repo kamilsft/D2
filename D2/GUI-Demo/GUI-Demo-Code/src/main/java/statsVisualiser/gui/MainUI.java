@@ -479,10 +479,11 @@ public class MainUI extends JFrame {
         String username = txtUsername.getText();
         String email = txtEmail.getText();
         String password = new String(txtPassword.getPassword());
+        int userId = 0;
 
         if (userType != null && !username.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
             if (userType.equalsIgnoreCase("SuperManager")) {
-                currentUser = SuperManager.getInstance();  // Singleton Instance
+                currentUser = SuperManager.getInstance(username, userId, email, password);  // Singleton Instance
                 lblWelcome.setText("Welcome, SuperManager");
                 cardLayout.show(mainPanel, "SuperManagerDashboard");
             } else if (userType.equalsIgnoreCase("Manager")) {
