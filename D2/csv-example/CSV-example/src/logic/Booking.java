@@ -1,7 +1,10 @@
 package logic;
 import java.time.ZonedDateTime;
 
+import Connections.DatabaseConnection;
 import DesignPatternClasses.Observer;
+import Connections.DatabaseDAO;
+import java.sql.SQLException;
 
 public class Booking implements Observer{
 	public int bookingId;
@@ -139,13 +142,19 @@ public class Booking implements Observer{
 
 	// Override the update method from Observer interface
     @Override
-    public void update() {
+	public void update() {
 		ParkingSpot spot = this.getSpot();
 		Sensor sensor = spot.getSensor();
 
 		//if statement to check if the sensor is on
 		if(sensor.isSensorOn()) {
 			sensor.setCarArrived(true);
+			try {
+				DatabaseDAO db = new DatabaseDAO(DatabaseConnection.getConnection());
+				db.setCarArrived(sensor.getSensorId(), true);
+			} catch (SQLException e) {
+				e.printStackTrace(); // Log the exception
+			}
 		}
-    }
+	}
 }
