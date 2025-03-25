@@ -22,20 +22,20 @@ public class DatabaseDAO {
     }
 
     // Method to add a booking
-    public void addBooking(int bookingId, Timestamp startTime, Timestamp endTime, String carLicensePlate, boolean isValid, int sensorId, int userId, boolean showUp) throws SQLException {
-        String query = "INSERT INTO Booking (bookingId, bookingStartTime, bookingEndTime, carLicensePlate, isValid, sensorId, userId, showUp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, bookingId);
-            stmt.setTimestamp(2, startTime);
-            stmt.setTimestamp(3, endTime);
-            stmt.setString(4, carLicensePlate);
-            stmt.setBoolean(5, isValid);
-            stmt.setInt(6, sensorId);
-            stmt.setInt(7, userId);
-            stmt.setBoolean(8, showUp);
-            stmt.executeUpdate();
-        }
-    }
+//    public void addBooking(int bookingId, Timestamp startTime, Timestamp endTime, String carLicensePlate, boolean isValid, int sensorId, int userId, boolean showUp) throws SQLException {
+//        String query = "INSERT INTO Booking (bookingId, bookingStartTime, bookingEndTime, carLicensePlate, isValid, sensorId, userId, showUp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+//        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+//            stmt.setInt(1, bookingId);
+//            stmt.setTimestamp(2, startTime);
+//            stmt.setTimestamp(3, endTime);
+//            stmt.setString(4, carLicensePlate);
+//            stmt.setBoolean(5, isValid);
+//            stmt.setInt(6, sensorId);
+//            stmt.setInt(7, userId);
+//            stmt.setBoolean(8, showUp);
+//            stmt.executeUpdate();
+//        }
+//    }
 
     // Add a User
     public void addUser(User user) throws SQLException {
@@ -69,20 +69,29 @@ public class DatabaseDAO {
 
     // Add a Booking
     public void addBooking(Booking booking) throws SQLException {
-        String query = "INSERT INTO Booking (bookingId, bookingStartTime, bookingEndTime, carLicensePlate, isValid, sensorId, userId, showUp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Booking (bookingStartTime, bookingEndTime, carLicensePlate, isValid, sensorId, userId, showUp) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, booking.getBookingId());
-            stmt.setTimestamp(2, Timestamp.from((booking.getBookingStartTime()).toInstant()));
-            stmt.setTimestamp(3, Timestamp.from((booking.getBookingEndTime()).toInstant()));
-            stmt.setString(4, booking.getCarLicensePlate());
-            stmt.setBoolean(5, booking.isValid());
-            stmt.setInt(6, booking.getSensorId());
-            stmt.setInt(7, booking.getUserId());
-            stmt.setBoolean(8, booking.isShowUp());
+           // stmt.setInt(1, booking.getBookingId());
+        	stmt.setTimestamp(1, Timestamp.from(booking.getBookingStartTime().toInstant()));
+            stmt.setTimestamp(2, Timestamp.from(booking.getBookingEndTime().toInstant()));
+            stmt.setString(3, booking.getCarLicensePlate());
+            stmt.setBoolean(4, booking.isValid());
+            stmt.setInt(5, booking.getSensorId());
+            stmt.setInt(6, booking.getUserId());
+            stmt.setBoolean(7, booking.isShowUp());
             stmt.executeUpdate();
+            
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int generatedId = generatedKeys.getInt(1);
+                    booking.setBookingId(generatedId);  // store it if you want to show it
+                    System.out.println("Booking inserted with ID: " + generatedId);
+                }
+            }
+            
         }
     }
-
+    
     // Add a FacultyMember
     public void addFacultyMember(FacultyMember facultyMember) throws SQLException {
         String query = "INSERT INTO FacultyMember (userId, name, email, password) VALUES (?, ?, ?, ?)";

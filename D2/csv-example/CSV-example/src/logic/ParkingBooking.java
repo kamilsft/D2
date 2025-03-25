@@ -1,9 +1,10 @@
 package logic;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
   
-public class ParkingBooking {
+public class ParkingBooking extends Booking{
     private User user;
     private ParkingSpot spot;
     private BookingState state;
@@ -11,11 +12,15 @@ public class ParkingBooking {
     private int durationMinutes; // Add this field to store the original duration
     
     public ParkingBooking(User user, ParkingSpot spot, int durationMinutes) {
+    	super(ZonedDateTime.now(), ZonedDateTime.now().plusMinutes(durationMinutes),
+    			"ABC123", true, spot, user);
         this.user = user;
         this.spot = spot;
         this.durationMinutes = durationMinutes;
         this.bookingTime = LocalDateTime.now();
         this.state = new ValidState(durationMinutes);
+        this.setSensorId(spot.getSensorId());
+        this.setShowUp(true);
     }
 
     public void setState(BookingState state) {
@@ -55,6 +60,7 @@ public class ParkingBooking {
     public void setDurationMinutes(int durationMinutes) {
         this.durationMinutes = durationMinutes;
     }
+    
 
     public LocalDateTime getExpirationTime() {
         if (state instanceof ValidState) {
@@ -99,4 +105,5 @@ public class ParkingBooking {
 
         return String.format("%d hours, %d minutes", hours, minutes);
     }
+
 }

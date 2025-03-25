@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
@@ -622,6 +623,8 @@ public class MainUI extends JFrame {
                     "Format Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
+        
 
         // Check if spot exists
         if (!manager.spotExists(spotId)) {
@@ -633,6 +636,8 @@ public class MainUI extends JFrame {
 
         // Get the actual spot from the manager
         ParkingSpot selectedSpot = manager.getSpots().get(spotId);
+        Sensor sensor = new Sensor(spotId.hashCode());
+        selectedSpot.setSensor(sensor);
 
         // Check if the spot is enabled
         if (!selectedSpot.isEnabled()) {
@@ -677,6 +682,36 @@ public class MainUI extends JFrame {
 
         // Create booking
         currentBooking = new ParkingBooking(currentUser, selectedSpot, duration);
+        
+        String licensePlate = JOptionPane.showInputDialog(this, "Enter your car license plate:");
+        if (licensePlate == null || licensePlate.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "License plate cannot be empty!", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        currentBooking.setBookingStartTime(ZonedDateTime.now());
+        currentBooking.setBookingEndTime(ZonedDateTime.now().plusMinutes(duration));
+        currentBooking.setCarLicensePlate(licensePlate); 
+        currentBooking.setValid(true);
+        currentBooking.setShowUp(true); 
+        if(selectedSpot.getSensor() != null) {
+        	currentBooking.setSensorId(selectedSpot.getSensor().getSensorId()); 
+        }else {
+        	JOptionPane.showMessageDialog(this, "Selected parking spot has no sensor assigned!", "Sensor Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        	
+       
+        currentBooking.setUserId(currentUser.getId());
+
+        // Save to DB
+        try {
+            dbDAO.addBooking(currentBooking);
+            System.out.println("Booking stored successfully!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Failed to save booking to database", "Error", JOptionPane.ERROR_MESSAGE);
+        }
 
         JOptionPane.showMessageDialog(this,
                 "Parking Spot " + currentBooking.getSpot().getSpotId() +

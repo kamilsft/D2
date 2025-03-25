@@ -1,5 +1,6 @@
 package logic;
 import java.time.ZonedDateTime;
+
 import DesignPatternClasses.Observer;
 
 public class Booking implements Observer{
@@ -12,6 +13,7 @@ public class Booking implements Observer{
 	public User user;
 	private boolean showUp;
 	private int sensorId;
+	public int userId;
 	
 	// the next new booking id will be 1, then 2 and so on
 	private static int bookingCounter = 0;
@@ -53,7 +55,7 @@ public class Booking implements Observer{
 	private synchronized static int generateBookingId() {
 		return bookingCounter++;
 	}
-
+	
 	public int getBookingId() {
 		return bookingId;
 	}
@@ -121,10 +123,18 @@ public class Booking implements Observer{
 	public int getSensorId() {
 		return this.sensorId;
 	}
+	
+	public void setSensorId(int sensorId) {
+		this.sensorId = sensorId;
+	}
 
 	// Method to get the user ID associated with the booking
 	public int getUserId() {
 		return this.user.getId();
+	}
+	
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	// Override the update method from Observer interface
