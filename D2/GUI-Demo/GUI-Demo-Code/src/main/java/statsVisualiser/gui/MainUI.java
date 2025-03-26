@@ -43,6 +43,41 @@ public class MainUI extends JFrame {
         return instance;
     }
 
+    private void startBackgroundTask() {
+        Thread backgroundThread = new Thread(() -> {
+            while (true) {
+                try {
+                    DatabaseDEO db = new DatabaseDEO(DatabaseConnection.getConnection());
+                    // Fetch all bookings from the database
+                    List<Booking> bookings = db.getAllBookings();
+
+                    // Iterate through the bookings
+                    for (Booking booking : bookings) {
+                        if (booking.isValid() && booking.getBookingEndTime().isBefore(ZonedDateTime.now())) {
+                            // Booking is valid and has ended
+                            // Your custom logic here
+                            // -------------------------
+                            // Leave space for your logic
+                            System.out.println("Found expired booking: " + booking.getBookingId());
+                            // -------------------------
+                        }
+                    }
+
+                    // Sleep for a while before checking again
+                    Thread.sleep(5000); // Check every 5 seconds
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break; // Exit the loop if the thread is interrupted
+                }
+            }
+        });
+
+        backgroundThread.setDaemon(true); // Ensure the thread stops when the application exits
+        backgroundThread.start();
+    }
+
     public MainUI() {
         setTitle("Parking Management System");
         setSize(800, 600); // Increased window size

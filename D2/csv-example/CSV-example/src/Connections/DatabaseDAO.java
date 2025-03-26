@@ -55,14 +55,15 @@ public class DatabaseDAO {
         }
     }
 
-    // Updated method to add a ParkingSpot
+    // Method to add a ParkingSpot
     public void addParkingSpot(ParkingSpot parkingSpot) throws SQLException {
-        String query = "INSERT INTO ParkingSpot (spotId, sensorId, isOccupied, lotId) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO ParkingSpot (spotId, sensorId, isOccupied, lotId, spotLocation) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, parkingSpot.getSpotId());
             stmt.setInt(2, parkingSpot.getSensorId());
             stmt.setBoolean(3, parkingSpot.isOccupied());
             stmt.setString(4, parkingSpot.getLotId());
+            stmt.setString(5, parkingSpot.getLocation()); // Added spotLocation
             stmt.executeUpdate();
         }
     }
@@ -342,24 +343,24 @@ public class DatabaseDAO {
     // }
 
     // Method to update the status of a parking spot
-    public void updateParkingSpotStatus(int sensorId, boolean isOccupied) throws SQLException {
-        String query = "UPDATE ParkingSpot SET isOccupied = ? WHERE sensorId = ?";
+    public void updateParkingSpotStatus(int spotId, boolean isOccupied) throws SQLException {
+        String query = "UPDATE ParkingSpot SET isOccupied = ? WHERE spotId = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setBoolean(1, isOccupied);
-            stmt.setInt(2, sensorId);
+            stmt.setInt(2, spotId);
             stmt.executeUpdate();
         }
     }
 
     // Method to get available parking spots in a specific lot
-    public List<Integer> getAvailableParkingSpots(int lotId) throws SQLException {
-        String query = "SELECT sensorId FROM ParkingSpot WHERE lotId = ? AND isOccupied = 0";
-        List<Integer> availableSpots = new ArrayList<>();
+    public List<String> getAvailableParkingSpots(String lotId) throws SQLException {
+        String query = "SELECT spotId FROM ParkingSpot WHERE lotId = ? AND isOccupied = 0";
+        List<String> availableSpots = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, lotId);
+            stmt.setString(1, lotId);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    availableSpots.add(rs.getInt("sensorId"));
+                    availableSpots.add(rs.getString("spotId"));
                 }
             }
         }
@@ -508,5 +509,60 @@ public class DatabaseDAO {
             stmt.setInt(2, sensorId);
             stmt.executeUpdate();
         }
+    }
+
+    // Method to get all bookings from the database
+    public List<Booking> getAllBookings() throws SQLException {
+        String query = "SELECT * FROM Booking";
+        List<Booking> bookings = new ArrayList<>();
+        try (PreparedStatement stmt = connection.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Booking booking = new Booking(
+                    rs.getTimestamp("bookingStartTime").toInstant().atZone(java.time.ZoneId.systemDefault()),
+                    rs.getTimestamp("bookingEndTime").toInstant().atZone(java.time.ZoneId.systemDefault()),
+                    rs.getString("carLicensePlate"),
+                    rs.getBoolean("isValid"),
+                    this.getParkingSpotById(rs.getString("sensorId")), // Assuming a method to fetch ParkingSpot by sensorId
+                    getUserById(rs.getInt("userId")), // Assuming a method to fetch User by userId
+                    rs.getInt("sensorId")
+                );
+                booking.setBookingId(rs.getInt("bookingId"));
+                booking.setShowUp(rs.getBoolean("showUp"));
+                bookings.add(booking);
+            }
+        }
+        return bookings;
+    }
+
+    // Method to invalidate a booking by booking ID
+    public void invalidateBookingById(int bookingId) throws SQLException {
+        String query = "UPDATE Booking SET isValid = 0 WHERE bookingId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, bookingId);
+            stmt.executeUpdate();
+        }
+    }
+
+    // Method to get a ParkingSpot by its spotId
+    public ParkingSpot getParkingSpotById(String spotId) throws SQLException {
+        String query = "SELECT * FROM ParkingSpot WHERE spotId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, spotId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    ParkingSpot parkingSpot = new ParkingSpot(
+                        rs.getString("spotId"),
+                        rs.getString("lotId"),
+                        rs.getBoolean("isOccupied"),
+                        true, // Assuming the spot is enabled by default
+                        rs.getInt("sensorId")
+                    );
+                    parkingSpot.setLocation(rs.getString("spotLocation"));
+                    return parkingSpot;
+                }
+            }
+        }
+        throw new SQLException("ParkingSpot with ID " + spotId + " not found.");
     }
 }

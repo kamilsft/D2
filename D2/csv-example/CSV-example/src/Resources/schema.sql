@@ -31,6 +31,7 @@ CREATE TABLE ParkingSpot (
     sensorId INT,
     isOccupied BOOLEAN,
     lotId VARCHAR(10),
+    spotLocation VARCHAR(30),
     FOREIGN KEY (sensorId) REFERENCES Sensor(sensorId)
     FOREIGN KEY (lotId) REFERENCES ParkingLot(lotId)
 );

@@ -2,11 +2,12 @@ package logic;
 import java.time.ZonedDateTime;
 
 import Connections.DatabaseConnection;
+import DesignPatternClasses.Invoker;
 import DesignPatternClasses.Observer;
 import Connections.DatabaseDAO;
 import java.sql.SQLException;
 
-public class Booking implements Observer{
+public class Booking extends Invoker implements Observer{
 	public int bookingId;
 	public ZonedDateTime bookingStartTime;
 	public ZonedDateTime bookingEndTime;
@@ -46,6 +47,14 @@ public class Booking implements Observer{
 		this.user = user;
 		this.showUp = false;
 		this.sensorId = sensorId;
+		
+		// Create a Sensor and add this Booking as an observer
+        Sensor sensor = spot.getSensor();
+        if (sensor == null) {
+            sensor = new Sensor(this.bookingId); // Create a new Sensor if not already assigned
+            spot.setSensor(sensor);
+        }
+        sensor.addObserver(this); // Add this Booking to the Sensor's observer list
 	}
 
 	public Booking(User user, ParkingSpot spot) {
