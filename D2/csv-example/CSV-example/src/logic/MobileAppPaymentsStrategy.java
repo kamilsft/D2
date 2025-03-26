@@ -11,3 +11,4 @@ public class MobileAppPaymentsStrategy implements PaymentStrategy{
 		return true;
 	}
 }
+  

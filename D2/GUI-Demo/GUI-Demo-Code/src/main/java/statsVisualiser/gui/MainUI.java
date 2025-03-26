@@ -3,7 +3,11 @@ package statsVisualiser.gui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
@@ -12,6 +16,7 @@ import java.util.function.Predicate;
 import javax.swing.*;
 
 import logic.*;
+import Connections.*;
 
 public class MainUI extends JFrame {
     private CardLayout cardLayout;
@@ -25,6 +30,9 @@ public class MainUI extends JFrame {
     private ParkingBooking currentBooking;
     private Timer bookingTimer;
     private static ParkingManager manager; // Changed to static
+    private JTextField txtUserId; 
+    private DatabaseDAO dbDAO;
+
 
     private static MainUI instance;
 
@@ -46,6 +54,16 @@ public class MainUI extends JFrame {
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
         mainPanel.setBackground(new Color(240, 240, 240));
+       
+        // passing the connection to db
+        try {
+        	Connection conn = DatabaseConnection.getConnection();
+        	dbDAO = new DatabaseDAO(conn);
+        } catch (SQLException e) {
+        	e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Failed to connect to database!", "DB Error", JOptionPane.ERROR_MESSAGE);      
+        }
+        
 
         // Initialize the manager
         if (manager == null) {
@@ -63,7 +81,7 @@ public class MainUI extends JFrame {
     }
 
     private JPanel createLoginPanel() {
-        JPanel panel = new JPanel(new GridLayout(5, 2, 15, 15));
+        JPanel panel = new JPanel(new GridLayout(6, 2, 15, 15));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         panel.setBackground(new Color(240, 240, 240));
 
@@ -83,6 +101,14 @@ public class MainUI extends JFrame {
         txtUsername = new JTextField();
         txtUsername.setFont(new Font("Arial", Font.PLAIN, 14));
         panel.add(txtUsername);
+        
+        JLabel lblUserId = new JLabel("ID:");
+        lblUserId.setFont(labelFont);
+        panel.add(lblUserId);
+        txtUserId = new JTextField();
+        txtUserId.setFont(new Font("Arial", Font.PLAIN, 14));
+        panel.add(txtUserId);
+        
 
         JLabel emailLabel = new JLabel("Email:");
         emailLabel.setFont(labelFont);
@@ -479,6 +505,15 @@ public class MainUI extends JFrame {
         String username = txtUsername.getText();
         String email = txtEmail.getText();
         String password = new String(txtPassword.getPassword());
+        
+        int userId;
+        try {
+            userId = Integer.parseInt(txtUserId.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid user ID", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+                
 
         if (userType != null && !username.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
             if (userType.equalsIgnoreCase("SuperManager")) {
@@ -486,11 +521,30 @@ public class MainUI extends JFrame {
                 lblWelcome.setText("Welcome, SuperManager");
                 cardLayout.show(mainPanel, "SuperManagerDashboard");
             } else if (userType.equalsIgnoreCase("Manager")) {
-                currentUser = new GeneralManager(username, 2001, email, password); // Use a concrete class
+                currentUser = new GeneralManager(username, userId, email, password); // Use a concrete class
+                // storing manager to db
+                try {
+                    dbDAO.addUserToSpecificTable(currentUser);
+                    System.out.println("Trying to insert user into DB: " + currentUser.getName() + ", ID: " + currentUser.getId());
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
                 lblWelcome.setText("Welcome, Manager");
                 cardLayout.show(mainPanel, "ManagerDashboard");
             } else {
-                currentUser = UserFactory.createUser(userType.toUpperCase(), username, 1001, email, password, 1001, username);
+                currentUser = UserFactory.createUser(userType.toUpperCase(), username, userId, email, password);
+                
+                // database logic
+                try {
+                	if(dbDAO != null) {
+                		dbDAO.addUserToSpecificTable(currentUser);  
+                		System.out.println("User successfully added to the database: " + currentUser.getName());
+                	}  
+                }catch (SQLException ex) {
+                	JOptionPane.showMessageDialog(this, "Error saving user to database: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
                 String[] paymentOptions = {"Credit Card", "Debit Card", "Mobile App"};
                 String selection = (String) JOptionPane.showInputDialog(this,
                         "Choose your payment method:",
@@ -569,6 +623,8 @@ public class MainUI extends JFrame {
                     "Format Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
+        
 
         // Check if spot exists
         if (!manager.spotExists(spotId)) {
@@ -580,6 +636,8 @@ public class MainUI extends JFrame {
 
         // Get the actual spot from the manager
         ParkingSpot selectedSpot = manager.getSpots().get(spotId);
+        Sensor sensor = new Sensor(spotId.hashCode());
+        selectedSpot.setSensor(sensor);
 
         // Check if the spot is enabled
         if (!selectedSpot.isEnabled()) {
@@ -624,6 +682,36 @@ public class MainUI extends JFrame {
 
         // Create booking
         currentBooking = new ParkingBooking(currentUser, selectedSpot, duration);
+        
+        String licensePlate = JOptionPane.showInputDialog(this, "Enter your car license plate:");
+        if (licensePlate == null || licensePlate.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "License plate cannot be empty!", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        currentBooking.setBookingStartTime(ZonedDateTime.now());
+        currentBooking.setBookingEndTime(ZonedDateTime.now().plusMinutes(duration));
+        currentBooking.setCarLicensePlate(licensePlate); 
+        currentBooking.setValid(true);
+        currentBooking.setShowUp(true); 
+        if(selectedSpot.getSensor() != null) {
+        	currentBooking.setSensorId(selectedSpot.getSensor().getSensorId()); 
+        }else {
+        	JOptionPane.showMessageDialog(this, "Selected parking spot has no sensor assigned!", "Sensor Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        	
+       
+        currentBooking.setUserId(currentUser.getId());
+
+        // Save to DB
+        try {
+            dbDAO.addBooking(currentBooking);
+            System.out.println("Booking stored successfully!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Failed to save booking to database", "Error", JOptionPane.ERROR_MESSAGE);
+        }
 
         JOptionPane.showMessageDialog(this,
                 "Parking Spot " + currentBooking.getSpot().getSpotId() +

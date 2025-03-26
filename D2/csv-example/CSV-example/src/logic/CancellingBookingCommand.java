@@ -3,7 +3,7 @@ package logic;
 public class CancellingBookingCommand implements Command{
 	private BookingSystem bookingSystem;
 	private Booking booking;
-
+  
 
 	public CancellingBookingCommand(BookingSystem bookingSystem, Booking booking) {
 		this.bookingSystem = bookingSystem;

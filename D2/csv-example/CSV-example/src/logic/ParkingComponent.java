@@ -6,4 +6,4 @@ public interface ParkingComponent {
     String getId();
     boolean isEnabled();
     boolean isOccupied();
-}
+}  

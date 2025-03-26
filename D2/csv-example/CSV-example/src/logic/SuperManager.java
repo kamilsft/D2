@@ -7,13 +7,14 @@ public class SuperManager extends Manager {
 //	private String name;
 //	private String email;
 
+	
 	// private constructor
 	private SuperManager() {
 		// calling user constructor
-		super("Admin", 1, "yorkuAdmin@gmail.com", "adminpass");
-		this.superMgrID = 1;
+		super("Admin", 0, "yorkuAdmin@gmail.com", "adminpass");
+		this.superMgrID = 0;
 	}
-
+  
 	public static SuperManager getInstance() {
 		if(instance == null) {
 			synchronized(SuperManager.class) {

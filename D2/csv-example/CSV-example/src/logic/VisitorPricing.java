@@ -8,3 +8,4 @@ public class VisitorPricing implements PricingStrategy {
 		return (minutes / 60.0) * 15.0;
 	}
 }
+  

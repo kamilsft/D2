@@ -11,7 +11,7 @@ public class BookingCommand implements Command {
 		this.user = user;
 		this.spot = spot;
 	}
-
+  
 	@Override
 	public void execute() {
 		bookingResult = bookingSystem.book(user, spot);

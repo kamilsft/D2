@@ -1,6 +1,6 @@
 package logic;
 
-
+ 
 // Receiver class
 public class BookingSystem {
 	private Booking currentBooking;

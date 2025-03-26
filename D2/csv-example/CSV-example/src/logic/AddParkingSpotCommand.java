@@ -17,5 +17,6 @@ public class AddParkingSpotCommand implements Command {
     public void undo() {
         System.out.println("Undo not supported for add.");
     }
-
+ 
 }
+ 

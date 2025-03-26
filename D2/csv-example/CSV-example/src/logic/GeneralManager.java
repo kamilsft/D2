@@ -20,7 +20,7 @@ public class GeneralManager extends Manager {
 		// TODO Auto-generated method stub
 
 	}
-
+  
 	@Override
 	public void disableParkingSpot(ParkingSpot spot) {
 		// TODO Auto-generated method stub

@@ -3,9 +3,12 @@ package logic;
 
 public class ParkingSpot implements ParkingComponent {
 	private String spotId;
+	private int sensorId;
+	private Sensor sensor;
 	private boolean occupied;
 	private boolean enabled;
 	private String location; // New field for location
+	private String lotId;
 
 	public ParkingSpot(String spotId, boolean occupied, boolean enabled) {
 		this.spotId = spotId;
@@ -37,6 +40,25 @@ public class ParkingSpot implements ParkingComponent {
 		this.location = location;
 	}
 
+	// Constructor with location parameter
+	public ParkingSpot(String spotId, boolean occupied, boolean enabled, String location, int sensorId) {
+		this.spotId = spotId;
+		this.occupied = occupied;
+		this.enabled = enabled;
+		this.location = location;
+		this.sensor = new Sensor(sensorId);
+	}
+
+	// Constructor without location parameter
+	public ParkingSpot(String spotId, String lotId, boolean occupied, boolean enabled, int sensorId) {
+		this.spotId = spotId;
+		this.occupied = occupied;
+		this.enabled = enabled;
+		this.sensorId = sensorId;
+		this.sensor = new Sensor(sensorId);
+		this.lotId = lotId;
+	}
+
 	public String getSpotId() {
 		return spotId;
 	}
@@ -65,6 +87,16 @@ public class ParkingSpot implements ParkingComponent {
 		this.location = location;
 	}
 
+	// Method to get the lot ID associated with the parking spot
+	public String getLotId() {
+		return lotId;
+	}
+
+	// Method to set the spot ID for the parking spot
+	public void setSpotId(String spotId) {
+		this.spotId = spotId;
+	}
+
 	@Override
 	public void showDetails() {
 		System.out.println("Parking Spot ID: " + spotId +
@@ -72,10 +104,22 @@ public class ParkingSpot implements ParkingComponent {
 				", Status: " + (enabled ? "Enabled" : "Disabled") +
 				", Occupied: " + (occupied ? "Yes" : "No"));
 	}
-
+   
 	@Override
 	public String getId() {
 		return spotId;
+	}
+ 
+	public Sensor getSensor() {
+		return sensor;
+	}
+
+	public int getSensorId() {
+		return sensor.getSensorId();
+	}
+
+	public void setSensor(Sensor sensor) {
+		this.sensor = sensor;
 	}
 
 	@Override
@@ -85,4 +129,6 @@ public class ParkingSpot implements ParkingComponent {
 				", enabled=" + enabled +
 				", occupied=" + occupied + "]";
 	}
+
+	
 }
