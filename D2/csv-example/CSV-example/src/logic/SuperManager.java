@@ -1,3 +1,4 @@
+
 package logic;
 
 public class SuperManager extends Manager {
@@ -5,14 +6,15 @@ public class SuperManager extends Manager {
 	private int superMgrID;
 //	private String name;
 //	private String email;
+
 	
 	// private constructor
 	private SuperManager() {
 		// calling user constructor
-		super("Admin", 1, "yorkuAdmin@gmail.com", "adminpass");
-		this.superMgrID = 1;
+		super("Admin", 0, "yorkuAdmin@gmail.com", "adminpass");
+		this.superMgrID = 0;
 	}
-	
+  
 	public static SuperManager getInstance() {
 		if(instance == null) {
 			synchronized(SuperManager.class) {
@@ -23,7 +25,7 @@ public class SuperManager extends Manager {
 		}
 		return instance;
 	}
-	
+
 	@Override
 	public void enableParkingSpot(ParkingSpot spot) {
 		System.out.println("Parking spot " + spot.getSpotId() + " enabled.");
@@ -33,24 +35,24 @@ public class SuperManager extends Manager {
 		System.out.println("Parking spot " + spot.getSpotId() + " disabled.");
 	}
 	@Override
-    public void enableParkingLot(ParkingLot lot) {
-        System.out.println("Parking lot " + lot.getId() + " enabled.");
-    }
+	public void enableParkingLot(ParkingLot lot) {
+		System.out.println("Parking lot " + lot.getId() + " enabled.");
+	}
 	@Override
-    public void disableParkingLot(ParkingLot lot) {
-        System.out.println("Parking lot " + lot.getId() + " disabled.");
-    }
+	public void disableParkingLot(ParkingLot lot) {
+		System.out.println("Parking lot " + lot.getId() + " disabled.");
+	}
 	@Override
-    public void monitorParking() {
-        System.out.println("Monitoring parking lots...");
-    }
+	public void monitorParking() {
+		System.out.println("Monitoring parking lots...");
+	}
 	@Override
-    public void addParkingLot() {
-        System.out.println("New parking lot added.");
-    }
+	public void addParkingLot() {
+		System.out.println("New parking lot added.");
+	}
 	public void requestAccountGeneration() {}
-	
-	
+
+
 	public boolean authenticate(int superMgrID) {
 		return this.superMgrID == superMgrID;
 	}
@@ -93,7 +95,7 @@ public class SuperManager extends Manager {
 	public void disableManager(User user) {
 		System.out.println("Manager " + user.getName() + " disabled by Super Manager");
 	}
-	
-	
-	
+
+
+
 }

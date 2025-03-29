@@ -1,10 +1,10 @@
 package logic;
 
-
+ 
 // Receiver class
 public class BookingSystem {
 	private Booking currentBooking;
-	
+
 	public Booking book(User user, ParkingSpot spot) {
 		currentBooking = new Booking(user, spot);
 		System.out.println("Booking spot: " + spot.getSpotId());
@@ -20,7 +20,7 @@ public class BookingSystem {
 			System.out.println("You have no active bookings to cancel");
 		}
 	}
-	
+
 	public Booking getCurrentBooking() {
 		return currentBooking;
 	}
