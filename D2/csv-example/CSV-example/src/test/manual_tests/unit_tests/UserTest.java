@@ -73,4 +73,13 @@ public class UserTest {
         user.setPaymentStrategy(strategy);
         assertTrue(user.getPaymentStrategy().pay(user, 10));
     }
+    
+  //Arshia added this test
+    @Test
+    public void testGetAndSetPricingStrategy() {
+        User user = new User("Alex", 11, "alex@york.ca", "pass");
+        PricingStrategy strategy = new StudentPricing();
+        user.setPricingStrategy(strategy);
+        assertEquals(strategy, user.getPricingStrategy());
+    }
 }
