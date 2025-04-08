@@ -1,10 +1,12 @@
 package logic;
 import java.time.ZonedDateTime;
+import java.util.Stack;
 
 import Connections.DatabaseConnection;
 import DesignPatternClasses.Observer;
 import Connections.DatabaseDAO;
 import java.sql.SQLException;
+import DesignPatternClasses.Command; // Adjust the package path if necessary
 
 public class Booking implements Observer{
 	public int bookingId;
@@ -16,6 +18,9 @@ public class Booking implements Observer{
 	public User user;
 	private boolean showUp;
 	private int sensorId;
+	private EnableSensorCommand enableSensorCommand;
+	private DisableSensorCommand disableSensorCommand;
+	private Stack<Command> commandStack = new Stack<>();
 	public int userId;
 	
 	// the next new booking id will be 1, then 2 and so on
@@ -46,6 +51,8 @@ public class Booking implements Observer{
 		this.user = user;
 		this.showUp = false;
 		this.sensorId = sensorId;
+		this.enableSensorCommand = new EnableSensorCommand(spot.getSensor());
+		this.disableSensorCommand = new DisableSensorCommand(spot.getSensor());
 	}
 
 	public Booking(User user, ParkingSpot spot) {
@@ -96,6 +103,39 @@ public class Booking implements Observer{
 	}
 
 	public void setValid(boolean isValid) {
+		//parking time has expired so use command to turn off the sensor
+		if(!isValid) { //checking if the last command on the stack is either null or enableSensorCommand
+			if(!commandStack.isEmpty() && commandStack.peek() != null) {
+				Command lastCommand = commandStack.peek();
+				if(lastCommand instanceof EnableSensorCommand) {
+					disableSensorCommand.execute();
+					commandStack.pop(); // Remove the last command from the stack
+
+					try {
+						DatabaseDAO db = new DatabaseDAO(DatabaseConnection.getConnection());
+						db.setCarArrived(sensorId, false);
+					} catch (SQLException e) {
+						e.printStackTrace(); // Log the exception
+					}
+				}
+			}
+			
+		}else { //if the last command on the stack is either null or disableSensorCommand
+			if(!commandStack.isEmpty() && commandStack.peek() != null) {
+				Command lastCommand = commandStack.peek();
+				if(lastCommand instanceof DisableSensorCommand) {
+					enableSensorCommand.execute();
+					commandStack.pop(); // Remove the last command from the stack
+					
+					try {
+						DatabaseDAO db = new DatabaseDAO(DatabaseConnection.getConnection());
+						db.setCarArrived(sensorId, true);
+					} catch (SQLException e) {
+						e.printStackTrace(); // Log the exception
+					}
+				}
+			}
+		}
 		this.isValid = isValid;
 	}
 
