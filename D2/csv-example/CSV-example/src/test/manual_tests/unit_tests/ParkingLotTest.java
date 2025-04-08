@@ -18,6 +18,18 @@ public class ParkingLotTest {
         // Create a new ParkingLot before each test
         parkingLot = new ParkingLot("Lot1");
     }
+    
+    @Test
+    public void testConstructorCreatesSpots() {
+        assertFalse(parkingLot.getSpots().isEmpty());
+    }
+
+    @Test
+    public void testSpotNamingConvention() {
+        assertTrue(parkingLot.getSpots().containsKey("A1"));
+        assertTrue(parkingLot.getSpots().containsKey("B9"));
+    }
+
 
     @Test
     public void testParkingLotCreation() {

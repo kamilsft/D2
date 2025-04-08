@@ -22,6 +22,7 @@ public class Booking implements Observer{
 	private DisableSensorCommand disableSensorCommand;
 	private Stack<Command> commandStack = new Stack<>();
 	public int userId;
+	public String email;
 	
 	// the next new booking id will be 1, then 2 and so on
 	private static int bookingCounter = 0;
@@ -37,6 +38,7 @@ public class Booking implements Observer{
 		this.spot = spot;
 		this.user = user;
 		this.showUp = false;
+		this.email = user.getEmail();
 	}
 	//different method signature for sensor initialization
 	public Booking(ZonedDateTime bookingStartTime, 
@@ -178,6 +180,10 @@ public class Booking implements Observer{
 	
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+	
+	public String getEmail() {
+		return email;
 	}
 
 	// Override the update method from Observer interface
