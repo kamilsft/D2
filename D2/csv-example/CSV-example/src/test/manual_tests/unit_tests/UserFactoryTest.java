@@ -66,5 +66,32 @@ public class UserFactoryTest {
     public void testUnknownTypeReturnsNull() {
         assertNull(UserFactory.createUser("ALIEN", "X", 1, "x@my.yorku.ca", "1"));
     }
+    
+    @Test
+    public void testUserFactoryConstructor() {
+        UserFactory factory = new UserFactory(); // reference it
+        assertNotNull(factory);
+    }
+    
+    @Test
+    public void testInvalidNonFacultyIdThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            UserFactory.createUser("NONFACULTY", "Bob", 9, "b@y.ca", "pass");
+        });
+    }
+
+    @Test
+    public void testInvalidVisitorIdThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            UserFactory.createUser("VISITOR", "visitor", 1, "visitor@my.yorku.ca", "pass");
+        });
+    }
+
+    @Test
+    public void testInvalidManagerIdThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            UserFactory.createUser("MANAGER", "manager", 3, "manager@yorku.ca", "pass");
+        });
+    }
 }
 

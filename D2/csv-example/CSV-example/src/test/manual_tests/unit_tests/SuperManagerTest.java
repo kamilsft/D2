@@ -70,4 +70,43 @@ public class SuperManagerTest {
     public void testAddParkingLotPrint() {
         superMgr.addParkingLot();
     }
+    
+    @Test
+    public void testToString_NotNull() {
+        SuperManager sm = SuperManager.getInstance();
+        assertNotNull(sm.toString());
+    }
+    
+    @Test
+    public void testEnableDisableParkingLot() {
+        SuperManager sm = SuperManager.getInstance();
+        ParkingLot lot = new ParkingLot("LotTest");
+
+        sm.disableParkingLot(lot);
+        for (ParkingSpot spot : lot.getSpots().values()) {
+            assertFalse(spot.isEnabled());
+        }
+
+        sm.enableParkingLot(lot);
+        for (ParkingSpot spot : lot.getSpots().values()) {
+            assertTrue(spot.isEnabled());
+        }
+    }
+    
+    @Test
+    public void testSetNameAndEmail() {
+        SuperManager sm = SuperManager.getInstance();
+        sm.setName("BossMan");
+        sm.setEmail("boss@y.ca");
+
+        assertEquals("BossMan", sm.getName());
+        assertEquals("boss@y.ca", sm.getEmail());
+    }
+    
+    @Test
+    public void testSingletonGetInstance() {
+        SuperManager sm1 = SuperManager.getInstance();
+        SuperManager sm2 = SuperManager.getInstance();
+        assertSame(sm1, sm2); 
+    }
 }
