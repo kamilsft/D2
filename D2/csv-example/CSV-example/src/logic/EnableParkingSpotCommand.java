@@ -1,5 +1,7 @@
 package logic;
 
+import DesignPatternClasses.Command;
+
 public class EnableParkingSpotCommand implements Command {
     private ParkingManager manager;
     private String spotId;

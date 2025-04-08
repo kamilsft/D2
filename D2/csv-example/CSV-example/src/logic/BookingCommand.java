@@ -1,5 +1,7 @@
 package logic;
 
+import DesignPatternClasses.Command;
+
 public class BookingCommand implements Command {
 	private BookingSystem bookingSystem;
 	private User user;

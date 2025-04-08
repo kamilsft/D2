@@ -1,6 +1,8 @@
 package logic;
 
-public class CancellingBookingCommand implements Command{
+import DesignPatternClasses.Command;
+
+public class CancellingBookingCommand implements Command {
 	private BookingSystem bookingSystem;
 	private Booking booking;
   
