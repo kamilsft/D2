@@ -132,4 +132,9 @@ public class Sensor extends Subject{
             observer.update();
         }
     }
+
+    @Override
+    public List<Observer> getObservers() {
+        return observers;
+    }
 }

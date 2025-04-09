@@ -23,5 +23,10 @@ public class Subject {
         }
     }
 
+    // Method to get the list of observers (if needed)
+    public List<Observer> getObservers() {
+        return observers;
+    }
+
     
 }
