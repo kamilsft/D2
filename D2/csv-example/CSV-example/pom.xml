@@ -37,6 +37,14 @@
       <artifactId>sqlite-jdbc</artifactId>
       <version>3.49.1.0</version>
     </dependency>
+
+    <!-- Add dependencies here -->
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter</artifactId>
+        <version>5.10.0</version>
+        <scope>test</scope>
+    </dependency>
   </dependencies>
 
 </project>
