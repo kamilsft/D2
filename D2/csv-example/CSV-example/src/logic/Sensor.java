@@ -1,7 +1,10 @@
 package logic;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import DesignPatternClasses.Subject;
+import DesignPatternClasses.Observer; 
 
 public class Sensor extends Subject{
     private int sensorId;
@@ -13,6 +16,7 @@ public class Sensor extends Subject{
     private String currentCarModel = "";
     private String currentCarColor = "";
     private boolean carArrived = false;
+    private List<Observer> observers = new ArrayList<>();
       
     // Constructor
     public Sensor(int sensorId) {
@@ -110,5 +114,22 @@ public class Sensor extends Subject{
 
     public void setCarArrived(boolean carArrived) {
         this.carArrived = carArrived;
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update();
+        }
     }
 }

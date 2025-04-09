@@ -15,6 +15,7 @@ public class Booking implements Observer{
 	private String carLicensePlate;
 	public boolean isValid;
 	public ParkingSpot spot;
+	private Sensor sensor;
 	public User user;
 	private boolean showUp;
 	private int sensorId;
@@ -55,6 +56,9 @@ public class Booking implements Observer{
 		this.sensorId = sensorId;
 		this.enableSensorCommand = new EnableSensorCommand(spot.getSensor());
 		this.disableSensorCommand = new DisableSensorCommand(spot.getSensor());
+		this.sensor = spot.getSensor();
+		//adding this booking object as the observer to the sensor
+		this.sensor.addObserver(this);
 	}
 
 	public Booking(User user, ParkingSpot spot) {

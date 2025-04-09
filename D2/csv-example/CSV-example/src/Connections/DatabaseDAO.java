@@ -44,6 +44,21 @@ public class DatabaseDAO {
             stmt.setInt(1, user.getId());
             stmt.executeUpdate();
         }
+
+        // Call the appropriate method to add the user to the specific table
+        if (String.valueOf(user.getId()).startsWith("1")) {
+            addFacultyMember((FacultyMember) user);
+        } else if (String.valueOf(user.getId()).startsWith("2")) {
+            addNonFacultyStaff((NonFacultyStaff) user);
+        } else if (String.valueOf(user.getId()).startsWith("3")) {
+            addStudent((Student) user);
+        } else if (String.valueOf(user.getId()).startsWith("4")) {
+            addVisitor((Visitor) user);
+        } else if (String.valueOf(user.getId()).startsWith("5")) {
+            addManager((Manager) user);
+        } else {
+            throw new IllegalArgumentException("Invalid user ID: " + user.getId());
+        }
     }
 
     // Add a ParkingLot
