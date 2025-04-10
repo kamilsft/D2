@@ -160,7 +160,7 @@ public class DatabaseDAOTests {
 
     @Test
     void testAddManager() throws SQLException {
-        Manager manager = new Manager("Eve", 5001, "eve@example.com", "password123");
+        Manager manager = new GeneralManager("Eve", 5001, "eve@example.com", "password123");
         databaseDAO.addUser(manager);
 
         User retrievedUser = databaseDAO.getUserById(5001);
