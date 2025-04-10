@@ -28,6 +28,9 @@ public class Booking implements Observer{
 	// the next new booking id will be 1, then 2 and so on
 	private static int bookingCounter = 0;
 	
+	// added a default constructor 
+	public Booking() {};
+	
 	public Booking(ZonedDateTime bookingStartTime, 
 		ZonedDateTime bookingEndTime, String carLicensePlate, 
 		boolean isValid, ParkingSpot spot, User user) {
