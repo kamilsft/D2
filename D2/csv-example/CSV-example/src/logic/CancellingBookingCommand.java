@@ -18,6 +18,13 @@ public class CancellingBookingCommand implements Command {
 
 	@Override
 	public void execute() {
+		
+		// adding a null check before using the bookingSystem
+		if(bookingSystem == null) {
+			System.out.println("Booking system is unavailalbe");
+			return;
+		}
+		
 		if(booking != null) {
 			bookingSystem.cancel(booking);
 		}else {

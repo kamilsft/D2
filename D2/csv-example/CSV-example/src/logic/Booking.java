@@ -15,6 +15,7 @@ public class Booking implements Observer{
 	private String carLicensePlate;
 	public boolean isValid;
 	public ParkingSpot spot;
+	private Sensor sensor;
 	public User user;
 	private boolean showUp;
 	private int sensorId;
@@ -22,9 +23,13 @@ public class Booking implements Observer{
 	private DisableSensorCommand disableSensorCommand;
 	private Stack<Command> commandStack = new Stack<>();
 	public int userId;
+	public String email;
 	
 	// the next new booking id will be 1, then 2 and so on
 	private static int bookingCounter = 0;
+	
+	// added a default constructor 
+	public Booking() {};
 	
 	public Booking(ZonedDateTime bookingStartTime, 
 		ZonedDateTime bookingEndTime, String carLicensePlate, 
@@ -37,6 +42,7 @@ public class Booking implements Observer{
 		this.spot = spot;
 		this.user = user;
 		this.showUp = false;
+		this.email = user.getEmail();
 	}
 	//different method signature for sensor initialization
 	public Booking(ZonedDateTime bookingStartTime, 
@@ -53,6 +59,9 @@ public class Booking implements Observer{
 		this.sensorId = sensorId;
 		this.enableSensorCommand = new EnableSensorCommand(spot.getSensor());
 		this.disableSensorCommand = new DisableSensorCommand(spot.getSensor());
+		this.sensor = spot.getSensor();
+		//adding this booking object as the observer to the sensor
+		this.sensor.addObserver(this);
 	}
 
 	public Booking(User user, ParkingSpot spot) {
@@ -178,6 +187,10 @@ public class Booking implements Observer{
 	
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+	
+	public String getEmail() {
+		return email;
 	}
 
 	// Override the update method from Observer interface
