@@ -5,7 +5,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import main.logic.*;
-
+ 
 // Class to interact with the database
 //How to use
 /*

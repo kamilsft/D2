@@ -1,6 +1,6 @@
 // Composite class in Composite Pattern
 package main.logic;
-
+ 
 import java.util.ArrayList;
 import java.util.List;
   

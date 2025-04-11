@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class DatabaseConnection {
     public static Connection getConnection() throws SQLException {
         // Use the correct path to locate the database file
-        String dbPath = "C:/Users/kamil/Downloads/D2/D2/csv-example/CSV-example/src/Resources/parkingsystem.db";
+        String dbPath = "C:\\Users\\yadon\\git\\D2\\D2\\csv-example\\CSV-example\\src\\main\\Resources\\parkingsystem6.db";
         File dbFile = new File(dbPath);
 
         System.out.println("Checking database file at: " + dbFile.getAbsolutePath());

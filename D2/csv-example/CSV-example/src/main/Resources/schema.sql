@@ -7,7 +7,7 @@ CREATE TABLE User (
         userId LIKE '5%'
     )
 );
-
+ 
 
 CREATE TABLE ParkingLot (
     lotId VARCHAR(10) PRIMARY KEY

@@ -1,5 +1,5 @@
 package main.logic;
-
+ 
 import java.time.LocalDateTime;
  
 public class ExtendedState implements BookingState {
