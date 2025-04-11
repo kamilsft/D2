@@ -1,4 +1,4 @@
-package DesignPatternClasses;
+package main.DesignPatternClasses;
  
 public interface Command {
 	void execute();

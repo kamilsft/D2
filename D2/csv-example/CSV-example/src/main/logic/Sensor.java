@@ -1,10 +1,10 @@
-package logic;
+package main.logic;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import DesignPatternClasses.Subject;
-import DesignPatternClasses.Observer; 
+import main.DesignPatternClasses.Subject;
+import main.DesignPatternClasses.Observer; 
 
 public class Sensor extends Subject{
     private int sensorId;

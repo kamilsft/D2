@@ -1,7 +1,7 @@
 package test.unit_tests;
 
-import logic.ParkingLot;
-import logic.ParkingSpot;
+import main.logic.ParkingLot;
+import main.logic.ParkingSpot;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

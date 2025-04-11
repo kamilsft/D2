@@ -1,5 +1,5 @@
 
-package logic;
+package main.logic;
 
 public class SuperManager extends Manager {
 	private static volatile SuperManager instance;

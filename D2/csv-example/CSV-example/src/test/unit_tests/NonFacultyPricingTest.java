@@ -3,8 +3,8 @@ package test.unit_tests;
 //Arshia
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
-import logic.NonFacultyPricing;
-import logic.PricingStrategy;
+import main.logic.NonFacultyPricing;
+import main.logic.PricingStrategy;
 
 
 public class NonFacultyPricingTest {

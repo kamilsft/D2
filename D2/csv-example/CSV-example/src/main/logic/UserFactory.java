@@ -1,4 +1,4 @@
-package logic;
+package main.logic;
 
 public class UserFactory {
 	public static User createUser(String type, String name, int id, String email, String password) {

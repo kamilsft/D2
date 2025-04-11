@@ -1,8 +1,8 @@
 package test.integration_tests;
 
-import Connections.DatabaseConnection;
-import Connections.DatabaseDAO;
-import logic.*;
+import main.Connections.DatabaseConnection;
+import main.Connections.DatabaseDAO;
+import main.logic.*;
 import org.junit.jupiter.api.*;
 
 import java.sql.Connection;

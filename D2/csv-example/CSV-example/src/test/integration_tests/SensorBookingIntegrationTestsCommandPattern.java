@@ -1,7 +1,7 @@
 package test.integration_tests;
 
-import logic.*;
-import DesignPatternClasses.Command;
+import main.logic.*;
+import main.DesignPatternClasses.Command;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

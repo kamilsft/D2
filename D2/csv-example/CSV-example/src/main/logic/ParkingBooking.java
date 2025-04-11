@@ -1,4 +1,4 @@
-package logic;
+package main.logic;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;

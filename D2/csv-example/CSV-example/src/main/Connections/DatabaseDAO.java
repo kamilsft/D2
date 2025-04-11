@@ -1,9 +1,10 @@
-package Connections;
+package main.Connections;
+
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import logic.*;
+import main.logic.*;
 
 // Class to interact with the database
 //How to use

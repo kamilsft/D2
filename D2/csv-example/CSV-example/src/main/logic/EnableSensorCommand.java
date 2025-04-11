@@ -1,6 +1,6 @@
-package logic;
+package main.logic;
 
-import DesignPatternClasses.Command;
+import main.DesignPatternClasses.Command;
 
 public class EnableSensorCommand implements Command {
     private Sensor sensor;

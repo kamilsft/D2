@@ -1,4 +1,4 @@
-package logic;
+package main.logic;
 
 
 // Done by Arshia Hassanpour, encountered pushing problems

@@ -1,5 +1,5 @@
 // Composite class in Composite Pattern
-package logic;
+package main.logic;
 
 import java.util.ArrayList;
 import java.util.List;

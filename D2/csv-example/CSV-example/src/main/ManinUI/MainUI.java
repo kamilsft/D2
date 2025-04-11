@@ -1,4 +1,4 @@
-package ManinUI;
+package main.ManinUI;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,9 +13,9 @@ import java.util.function.Predicate;
 
 import javax.swing.*;
 
-import DesignPatternClasses.*;
-import logic.*;
-import Connections.*;
+import main.DesignPatternClasses.*;
+import main.logic.*;
+import main.Connections.*;
 
 
 public class MainUI extends JFrame {

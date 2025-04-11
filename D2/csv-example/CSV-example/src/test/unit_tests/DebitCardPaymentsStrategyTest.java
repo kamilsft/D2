@@ -2,9 +2,9 @@ package test.unit_tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-import logic.DebitCardPaymentsStrategy;
-import logic.PaymentStrategy;
-import logic.User;
+import main.logic.DebitCardPaymentsStrategy;
+import main.logic.PaymentStrategy;
+import main.logic.User;
 
 // Arshia
 public class DebitCardPaymentsStrategyTest {

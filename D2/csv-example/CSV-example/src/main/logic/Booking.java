@@ -1,12 +1,12 @@
-package logic;
+package main.logic;
 import java.time.ZonedDateTime;
 import java.util.Stack;
 
-import Connections.DatabaseConnection;
-import DesignPatternClasses.Observer;
-import Connections.DatabaseDAO;
+import main.Connections.DatabaseConnection;
+import main.DesignPatternClasses.Observer;
+import main.Connections.DatabaseDAO;
 import java.sql.SQLException;
-import DesignPatternClasses.Command; // Adjust the package path if necessary
+import main.DesignPatternClasses.Command; // Adjust the package path if necessary
 
 public class Booking implements Observer{
 	public int bookingId;

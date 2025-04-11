@@ -1,8 +1,8 @@
 package test.unit_tests;
 
-import DesignPatternClasses.Command;
-import logic.EnableParkingSpotCommand;
-import logic.ParkingManager;
+import main.DesignPatternClasses.Command;
+import main.logic.EnableParkingSpotCommand;
+import main.logic.ParkingManager;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

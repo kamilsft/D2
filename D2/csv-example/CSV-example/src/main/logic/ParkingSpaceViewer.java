@@ -1,10 +1,10 @@
-package logic;
+package main.logic;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Map;
-import logic.*;
+//import main.logic.*;
    
 public class ParkingSpaceViewer extends JFrame {
     private JTable parkingTable;

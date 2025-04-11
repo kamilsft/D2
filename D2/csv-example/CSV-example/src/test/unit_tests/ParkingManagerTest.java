@@ -1,8 +1,8 @@
 package test.unit_tests;
 
-import logic.CompositeParkingLot;
-import logic.ParkingManager;
-import logic.ParkingSpot;
+import main.logic.CompositeParkingLot;
+import main.logic.ParkingManager;
+import main.logic.ParkingSpot;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

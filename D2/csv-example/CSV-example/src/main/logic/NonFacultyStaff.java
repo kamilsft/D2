@@ -1,4 +1,4 @@
-package logic;
+package main.logic;
 import java.time.ZonedDateTime;
 
 public class NonFacultyStaff extends User {

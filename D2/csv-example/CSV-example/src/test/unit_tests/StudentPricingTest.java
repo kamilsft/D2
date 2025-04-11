@@ -3,8 +3,8 @@ package test.unit_tests;
 //Arshia
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-import logic.StudentPricing;
-import logic.PricingStrategy;
+import main.logic.StudentPricing;
+import main.logic.PricingStrategy;
 
 public class StudentPricingTest {
 	

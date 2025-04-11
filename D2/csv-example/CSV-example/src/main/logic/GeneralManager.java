@@ -1,4 +1,4 @@
-package logic;
+package main.logic;
 
 public class GeneralManager extends Manager {
 	public GeneralManager(String name, int id, String email, String password) {

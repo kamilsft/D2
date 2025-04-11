@@ -1,9 +1,9 @@
 package test.unit_tests;
 
-import logic.PricingStrategy;
+import main.logic.PricingStrategy;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-import logic.VisitorPricing;
+import main.logic.VisitorPricing;
 
 // Arshia
 

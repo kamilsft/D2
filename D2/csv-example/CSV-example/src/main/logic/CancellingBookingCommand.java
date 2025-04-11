@@ -1,6 +1,6 @@
-package logic;
+package main.logic;
 
-import DesignPatternClasses.Command;
+import main.DesignPatternClasses.Command;
 
 public class CancellingBookingCommand implements Command {
 	private BookingSystem bookingSystem;

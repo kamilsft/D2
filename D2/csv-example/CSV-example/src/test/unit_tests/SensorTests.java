@@ -1,6 +1,6 @@
 package test.unit_tests;
 
-import logic.Sensor;
+import main.logic.Sensor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

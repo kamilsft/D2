@@ -1,4 +1,4 @@
-package logic;
+package main.logic;
 
 // Interface for Composite Pattern
 public interface ParkingComponent {

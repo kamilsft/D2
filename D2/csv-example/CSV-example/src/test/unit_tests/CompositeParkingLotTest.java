@@ -1,8 +1,8 @@
 package test.unit_tests;
 
-import logic.CompositeParkingLot;
-import logic.ParkingComponent;
-import logic.ParkingSpot;
+import main.logic.CompositeParkingLot;
+import main.logic.ParkingComponent;
+import main.logic.ParkingSpot;
 import org.junit.Before;
 import org.junit.Test;
 import java.io.ByteArrayOutputStream;

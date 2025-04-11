@@ -1,6 +1,6 @@
 package test.integration_tests;
 
-import logic.*;
+import  main.logic.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

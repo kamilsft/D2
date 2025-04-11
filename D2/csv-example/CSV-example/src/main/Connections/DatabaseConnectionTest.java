@@ -1,4 +1,5 @@
-package Connections;
+package main.Connections;
+
 
 import java.sql.Connection;
 import java.sql.ResultSet;

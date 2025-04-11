@@ -1,6 +1,6 @@
 package test.unit_tests;
 
-import logic.ParkingSpot;
+import main.logic.ParkingSpot;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

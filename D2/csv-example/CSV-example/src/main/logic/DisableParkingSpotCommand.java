@@ -1,6 +1,6 @@
-package logic;
+package main.logic;
 
-import DesignPatternClasses.Command;
+import main.DesignPatternClasses.Command;
 
 public class DisableParkingSpotCommand implements Command {
     private ParkingManager manager;

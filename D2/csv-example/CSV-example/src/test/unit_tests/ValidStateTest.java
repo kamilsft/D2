@@ -2,7 +2,7 @@ package test.unit_tests;
 
 
 
-import logic.*;
+import main.logic.*;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

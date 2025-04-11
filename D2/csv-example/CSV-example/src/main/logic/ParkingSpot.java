@@ -1,5 +1,5 @@
 //Leaf class in Composite Pattern
-package logic;
+package main.logic;
 
 public class ParkingSpot implements ParkingComponent {
 	private String spotId;
