@@ -1,0 +1,252 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > EnableParkingSpotCommandTest</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">test.manual_tests.unit_tests</a>
+</div>
+
+<h1>Coverage Summary for Class: EnableParkingSpotCommandTest (test.manual_tests.unit_tests)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EnableParkingSpotCommandTest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93.9%
+  </span>
+  <span class="absValue">
+    (46/49)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package test.manual_tests.unit_tests;
+&nbsp;
+&nbsp;import DesignPatternClasses.Command;
+&nbsp;import logic.EnableParkingSpotCommand;
+&nbsp;import logic.ParkingManager;
+&nbsp;import org.junit.Before;
+&nbsp;import org.junit.Test;
+&nbsp;import static org.junit.Assert.*;
+&nbsp;
+<b class="fc">&nbsp;public class EnableParkingSpotCommandTest {</b>
+&nbsp;
+&nbsp;    private ParkingManager parkingManager;
+&nbsp;    private EnableParkingSpotCommand command;
+<b class="fc">&nbsp;    private String testSpotId = &quot;A1&quot;;</b>
+&nbsp;
+&nbsp;    @Before
+&nbsp;    public void setUp() {
+<b class="fc">&nbsp;        parkingManager = new ParkingManager();</b>
+<b class="fc">&nbsp;        command = new EnableParkingSpotCommand(parkingManager, testSpotId);</b>
+&nbsp;
+&nbsp;        // Disable the spot first for testing
+<b class="fc">&nbsp;        parkingManager.disableSpot(testSpotId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testCommandImplementation() {
+&nbsp;        // Verify it implements Command interface
+<b class="fc">&nbsp;        assertTrue(command instanceof Command);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testExecute() {
+&nbsp;        // Verify spot is disabled before command execution
+<b class="fc">&nbsp;        assertFalse(parkingManager.getSpots().get(testSpotId).isEnabled());</b>
+&nbsp;
+&nbsp;        // Execute command
+<b class="fc">&nbsp;        command.execute();</b>
+&nbsp;
+&nbsp;        // Verify spot is now enabled
+<b class="fc">&nbsp;        assertTrue(parkingManager.getSpots().get(testSpotId).isEnabled());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testUndo() {
+&nbsp;        // Enable the spot
+<b class="fc">&nbsp;        command.execute();</b>
+<b class="fc">&nbsp;        assertTrue(parkingManager.getSpots().get(testSpotId).isEnabled());</b>
+&nbsp;
+&nbsp;        // Undo the command
+<b class="fc">&nbsp;        command.undo();</b>
+&nbsp;
+&nbsp;        // Verify spot is disabled again
+<b class="fc">&nbsp;        assertFalse(parkingManager.getSpots().get(testSpotId).isEnabled());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testMultipleExecuteUndo() {
+&nbsp;        // Execute and undo multiple times
+<b class="fc">&nbsp;        command.execute();</b>
+<b class="fc">&nbsp;        assertTrue(parkingManager.getSpots().get(testSpotId).isEnabled());</b>
+&nbsp;
+<b class="fc">&nbsp;        command.undo();</b>
+<b class="fc">&nbsp;        assertFalse(parkingManager.getSpots().get(testSpotId).isEnabled());</b>
+&nbsp;
+<b class="fc">&nbsp;        command.execute();</b>
+<b class="fc">&nbsp;        assertTrue(parkingManager.getSpots().get(testSpotId).isEnabled());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testWithNonExistentSpot() {
+&nbsp;        // Create command with non-existent spot
+<b class="fc">&nbsp;        EnableParkingSpotCommand invalidCommand = new EnableParkingSpotCommand(parkingManager, &quot;Z9&quot;);</b>
+&nbsp;
+&nbsp;        // Execute should not throw exception but return false from manager
+<b class="fc">&nbsp;        invalidCommand.execute();</b>
+<b class="fc">&nbsp;        assertFalse(parkingManager.spotExists(&quot;Z9&quot;));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testExecuteOnAlreadyEnabledSpot() {
+&nbsp;        // Enable the spot
+<b class="fc">&nbsp;        command.execute();</b>
+<b class="fc">&nbsp;        assertTrue(parkingManager.getSpots().get(testSpotId).isEnabled());</b>
+&nbsp;
+&nbsp;        // Execute again - should work but not change state
+<b class="fc">&nbsp;        command.execute();</b>
+<b class="fc">&nbsp;        assertTrue(parkingManager.getSpots().get(testSpotId).isEnabled());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testUndoOnAlreadyDisabledSpot() {
+&nbsp;        // Spot is already disabled in setup
+<b class="fc">&nbsp;        assertFalse(parkingManager.getSpots().get(testSpotId).isEnabled());</b>
+&nbsp;
+&nbsp;        // Undo should still try to disable
+<b class="fc">&nbsp;        command.undo();</b>
+<b class="fc">&nbsp;        assertFalse(parkingManager.getSpots().get(testSpotId).isEnabled());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testWithMultipleSpots() {
+&nbsp;        // Create additional command for another spot
+<b class="fc">&nbsp;        String secondSpotId = &quot;B2&quot;;</b>
+<b class="fc">&nbsp;        EnableParkingSpotCommand secondCommand = new EnableParkingSpotCommand(parkingManager, secondSpotId);</b>
+&nbsp;
+&nbsp;        // Disable both spots
+<b class="fc">&nbsp;        parkingManager.disableSpot(testSpotId);</b>
+<b class="fc">&nbsp;        parkingManager.disableSpot(secondSpotId);</b>
+&nbsp;
+&nbsp;        // Execute first command
+<b class="fc">&nbsp;        command.execute();</b>
+<b class="fc">&nbsp;        assertTrue(parkingManager.getSpots().get(testSpotId).isEnabled());</b>
+<b class="fc">&nbsp;        assertFalse(parkingManager.getSpots().get(secondSpotId).isEnabled());</b>
+&nbsp;
+&nbsp;        // Execute second command
+<b class="fc">&nbsp;        secondCommand.execute();</b>
+<b class="fc">&nbsp;        assertTrue(parkingManager.getSpots().get(testSpotId).isEnabled());</b>
+<b class="fc">&nbsp;        assertTrue(parkingManager.getSpots().get(secondSpotId).isEnabled());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testConstructorWithNullManager() {
+&nbsp;        // This test checks constructor behavior with null parameters
+&nbsp;        // In a robust implementation, this might throw an exception
+&nbsp;        try {
+<b class="fc">&nbsp;            EnableParkingSpotCommand nullManagerCommand = new EnableParkingSpotCommand(null, testSpotId);</b>
+&nbsp;            // If no exception, at least verify it doesn&#39;t crash when executing
+<b class="fc">&nbsp;            nullManagerCommand.execute();</b>
+&nbsp;            // This is a minimal check - ideally the command would validate parameters
+<b class="fc">&nbsp;        } catch (NullPointerException e) {</b>
+&nbsp;            // This is also acceptable if the implementation validates parameters
+<b class="fc">&nbsp;            assertTrue(true);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testConstructorWithNullSpotId() {
+&nbsp;        // This test checks constructor behavior with null parameters
+&nbsp;        try {
+<b class="fc">&nbsp;            EnableParkingSpotCommand nullSpotCommand = new EnableParkingSpotCommand(parkingManager, null);</b>
+&nbsp;            // If no exception, at least verify it doesn&#39;t crash when executing
+<b class="fc">&nbsp;            nullSpotCommand.execute();</b>
+&nbsp;            // This is a minimal check - ideally the command would validate parameters
+<b class="nc">&nbsp;        } catch (NullPointerException e) {</b>
+&nbsp;            // This is also acceptable if the implementation validates parameters
+<b class="nc">&nbsp;            assertTrue(true);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-08 03:13</div>
+</div>
+</body>
+</html>

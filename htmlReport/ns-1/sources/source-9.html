@@ -1,0 +1,232 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ParkingSpotTest</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">test.manual_tests.unit_tests</a>
+</div>
+
+<h1>Coverage Summary for Class: ParkingSpotTest (test.manual_tests.unit_tests)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ParkingSpotTest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (13/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (59/59)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package test.manual_tests.unit_tests;
+&nbsp;
+&nbsp;import logic.ParkingSpot;
+&nbsp;import org.junit.jupiter.api.Test;
+&nbsp;import static org.junit.jupiter.api.Assertions.*;
+&nbsp;
+<b class="fc">&nbsp;public class ParkingSpotTest {</b>
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testConstructorWithBasicParameters() {
+<b class="fc">&nbsp;        ParkingSpot spot = new ParkingSpot(&quot;A1&quot;, false, true);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(&quot;A1&quot;, spot.getSpotId());</b>
+<b class="fc">&nbsp;        assertFalse(spot.isOccupied());</b>
+<b class="fc">&nbsp;        assertTrue(spot.isEnabled());</b>
+<b class="fc">&nbsp;        assertEquals(&quot;North Lot&quot;, spot.getLocation());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testConstructorWithLocationParameter() {
+<b class="fc">&nbsp;        ParkingSpot spot = new ParkingSpot(&quot;B2&quot;, true, false, &quot;Custom Location&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(&quot;B2&quot;, spot.getSpotId());</b>
+<b class="fc">&nbsp;        assertTrue(spot.isOccupied());</b>
+<b class="fc">&nbsp;        assertFalse(spot.isEnabled());</b>
+<b class="fc">&nbsp;        assertEquals(&quot;Custom Location&quot;, spot.getLocation());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testConstructorWithSensorParameter() {
+<b class="fc">&nbsp;        ParkingSpot spot = new ParkingSpot(&quot;C3&quot;, true, false, &quot;South Section&quot;, 123);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(&quot;C3&quot;, spot.getSpotId());</b>
+<b class="fc">&nbsp;        assertTrue(spot.isOccupied());</b>
+<b class="fc">&nbsp;        assertFalse(spot.isEnabled());</b>
+<b class="fc">&nbsp;        assertEquals(&quot;South Section&quot;, spot.getLocation());</b>
+<b class="fc">&nbsp;        assertNotNull(spot.getSensor());</b>
+<b class="fc">&nbsp;        assertEquals(123, spot.getSensorId());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testConstructorWithLotIdParameter() {
+<b class="fc">&nbsp;        ParkingSpot spot = new ParkingSpot(&quot;D4&quot;, &quot;Lot2&quot;, true, false, 456);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(&quot;D4&quot;, spot.getSpotId());</b>
+<b class="fc">&nbsp;        assertEquals(&quot;Lot2&quot;, spot.getLotId());</b>
+<b class="fc">&nbsp;        assertTrue(spot.isOccupied());</b>
+<b class="fc">&nbsp;        assertFalse(spot.isEnabled());</b>
+<b class="fc">&nbsp;        assertNotNull(spot.getSensor());</b>
+<b class="fc">&nbsp;        assertEquals(456, spot.getSensorId());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testGetAndSetSpotId() {
+<b class="fc">&nbsp;        ParkingSpot spot = new ParkingSpot(&quot;A1&quot;, false, true);</b>
+<b class="fc">&nbsp;        assertEquals(&quot;A1&quot;, spot.getSpotId());</b>
+&nbsp;
+<b class="fc">&nbsp;        spot.setSpotId(&quot;A2&quot;);</b>
+<b class="fc">&nbsp;        assertEquals(&quot;A2&quot;, spot.getSpotId());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testGetAndSetOccupied() {
+<b class="fc">&nbsp;        ParkingSpot spot = new ParkingSpot(&quot;A1&quot;, false, true);</b>
+<b class="fc">&nbsp;        assertFalse(spot.isOccupied());</b>
+&nbsp;
+<b class="fc">&nbsp;        spot.setOccupied(true);</b>
+<b class="fc">&nbsp;        assertTrue(spot.isOccupied());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testGetAndSetEnabled() {
+<b class="fc">&nbsp;        ParkingSpot spot = new ParkingSpot(&quot;A1&quot;, false, true);</b>
+<b class="fc">&nbsp;        assertTrue(spot.isEnabled());</b>
+&nbsp;
+<b class="fc">&nbsp;        spot.setEnabled(false);</b>
+<b class="fc">&nbsp;        assertFalse(spot.isEnabled());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testGetAndSetLocation() {
+<b class="fc">&nbsp;        ParkingSpot spot = new ParkingSpot(&quot;A1&quot;, false, true);</b>
+<b class="fc">&nbsp;        assertEquals(&quot;North Lot&quot;, spot.getLocation());</b>
+&nbsp;
+<b class="fc">&nbsp;        spot.setLocation(&quot;New Location&quot;);</b>
+<b class="fc">&nbsp;        assertEquals(&quot;New Location&quot;, spot.getLocation());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testShowDetails() {
+&nbsp;        // This test verifies that showDetails runs without exceptions
+&nbsp;        // We can&#39;t easily test console output directly
+<b class="fc">&nbsp;        ParkingSpot spot = new ParkingSpot(&quot;A1&quot;, false, true);</b>
+<b class="fc">&nbsp;        spot.showDetails(); // Should not throw an exception</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testLocationAssignmentBasedOnId() {
+&nbsp;        // Test default location assignment based on spot ID
+<b class="fc">&nbsp;        ParkingSpot spotA = new ParkingSpot(&quot;A5&quot;, false, true);</b>
+<b class="fc">&nbsp;        assertEquals(&quot;North Lot&quot;, spotA.getLocation());</b>
+&nbsp;
+<b class="fc">&nbsp;        ParkingSpot spotB = new ParkingSpot(&quot;B5&quot;, false, true);</b>
+<b class="fc">&nbsp;        assertEquals(&quot;Central Lot&quot;, spotB.getLocation());</b>
+&nbsp;
+<b class="fc">&nbsp;        ParkingSpot spotC = new ParkingSpot(&quot;C5&quot;, false, true);</b>
+<b class="fc">&nbsp;        assertEquals(&quot;South Lot&quot;, spotC.getLocation());</b>
+&nbsp;
+<b class="fc">&nbsp;        ParkingSpot spotOther = new ParkingSpot(&quot;X5&quot;, false, true);</b>
+<b class="fc">&nbsp;        assertEquals(&quot;General Lot&quot;, spotOther.getLocation());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testGetId() {
+<b class="fc">&nbsp;        ParkingSpot spot = new ParkingSpot(&quot;A1&quot;, false, true);</b>
+<b class="fc">&nbsp;        assertEquals(&quot;A1&quot;, spot.getId());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testToString() {
+<b class="fc">&nbsp;        ParkingSpot spot = new ParkingSpot(&quot;A1&quot;, false, true);</b>
+<b class="fc">&nbsp;        String toString = spot.toString();</b>
+&nbsp;
+<b class="fc">&nbsp;        assertTrue(toString.contains(&quot;id=A1&quot;));</b>
+<b class="fc">&nbsp;        assertTrue(toString.contains(&quot;location=North Lot&quot;));</b>
+<b class="fc">&nbsp;        assertTrue(toString.contains(&quot;enabled=true&quot;));</b>
+<b class="fc">&nbsp;        assertTrue(toString.contains(&quot;occupied=false&quot;));</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-08 03:13</div>
+</div>
+</body>
+</html>

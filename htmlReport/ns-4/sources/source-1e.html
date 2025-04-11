@@ -1,0 +1,204 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > SuperManager</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">logic</a>
+</div>
+
+<h1>Coverage Summary for Class: SuperManager (logic)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SuperManager</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (19/19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (25/25)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;
+&nbsp;package logic;
+&nbsp;
+&nbsp;public class SuperManager extends Manager {
+&nbsp;	private static volatile SuperManager instance;
+&nbsp;	private int superMgrID;
+&nbsp;//	private String name;
+&nbsp;//	private String email;
+&nbsp;
+&nbsp;	
+&nbsp;	// private constructor
+&nbsp;	private SuperManager() {
+&nbsp;		// calling user constructor
+<b class="fc">&nbsp;		super(&quot;Admin&quot;, 0, &quot;yorkuAdmin@gmail.com&quot;, &quot;adminpass&quot;);</b>
+<b class="fc">&nbsp;		this.superMgrID = 0;</b>
+&nbsp;	}
+&nbsp;  
+&nbsp;	public static SuperManager getInstance() {
+<b class="fc">&nbsp;		if(instance == null) {</b>
+<b class="fc">&nbsp;			synchronized(SuperManager.class) {</b>
+<b class="fc">&nbsp;				if(instance == null) {</b>
+<b class="fc">&nbsp;					instance = new SuperManager();</b>
+&nbsp;				}
+<b class="fc">&nbsp;			}</b>
+&nbsp;		}
+<b class="fc">&nbsp;		return instance;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void enableParkingSpot(ParkingSpot spot) {
+<b class="fc">&nbsp;		System.out.println(&quot;Parking spot &quot; + spot.getSpotId() + &quot; enabled.&quot;);</b>
+&nbsp;	}
+&nbsp;	@Override
+&nbsp;	public void disableParkingSpot(ParkingSpot spot) {
+<b class="fc">&nbsp;		System.out.println(&quot;Parking spot &quot; + spot.getSpotId() + &quot; disabled.&quot;);</b>
+&nbsp;	}
+&nbsp;	@Override
+&nbsp;	public void enableParkingLot(ParkingLot lot) {
+<b class="fc">&nbsp;		System.out.println(&quot;Parking lot &quot; + lot.getId() + &quot; enabled.&quot;);</b>
+&nbsp;	}
+&nbsp;	@Override
+&nbsp;	public void disableParkingLot(ParkingLot lot) {
+<b class="fc">&nbsp;		System.out.println(&quot;Parking lot &quot; + lot.getId() + &quot; disabled.&quot;);</b>
+&nbsp;	}
+&nbsp;	@Override
+&nbsp;	public void monitorParking() {
+<b class="fc">&nbsp;		System.out.println(&quot;Monitoring parking lots...&quot;);</b>
+&nbsp;	}
+&nbsp;	@Override
+&nbsp;	public void addParkingLot() {
+<b class="fc">&nbsp;		System.out.println(&quot;New parking lot added.&quot;);</b>
+&nbsp;	}
+<b class="fc">&nbsp;	public void requestAccountGeneration() {}</b>
+&nbsp;
+&nbsp;
+&nbsp;	public boolean authenticate(int superMgrID) {
+<b class="fc">&nbsp;		return this.superMgrID == superMgrID;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getSuperMgrID() {
+<b class="fc">&nbsp;		return superMgrID;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setSuperMgrID(int superMgrID) {
+<b class="fc">&nbsp;		this.superMgrID = superMgrID;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public String getName() {
+<b class="fc">&nbsp;		return name;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setName(String name) {
+<b class="fc">&nbsp;		this.name = name;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public String getEmail() {
+<b class="fc">&nbsp;		return email;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setEmail(String email) {
+<b class="fc">&nbsp;		this.email = email;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public String toString() {
+<b class="fc">&nbsp;		return &quot;SuperManager [superMgrID=&quot; + superMgrID + &quot;, name=&quot; + name + &quot;, email=&quot; + email + &quot;]&quot;;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void enableManager(User user) {
+<b class="fc">&nbsp;		System.out.println(&quot;Manager &quot; + user.getName() + &quot; enabled by Super Manager&quot;);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void disableManager(User user) {
+<b class="fc">&nbsp;		System.out.println(&quot;Manager &quot; + user.getName() + &quot; disabled by Super Manager&quot;);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-10 21:16</div>
+</div>
+</body>
+</html>

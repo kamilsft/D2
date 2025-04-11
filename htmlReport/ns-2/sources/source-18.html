@@ -1,0 +1,237 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ParkingSpot</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">logic</a>
+</div>
+
+<h1>Coverage Summary for Class: ParkingSpot (logic)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ParkingSpot</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    89.5%
+  </span>
+  <span class="absValue">
+    (17/19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (40/48)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;//Leaf class in Composite Pattern
+&nbsp;package logic;
+&nbsp;
+&nbsp;public class ParkingSpot implements ParkingComponent {
+&nbsp;	private String spotId;
+&nbsp;	private int sensorId;
+&nbsp;	private Sensor sensor;
+&nbsp;	private boolean occupied;
+&nbsp;	private boolean enabled;
+&nbsp;	private String location; // New field for location
+&nbsp;	private String lotId;
+&nbsp;
+<b class="fc">&nbsp;	public ParkingSpot(String spotId, boolean occupied, boolean enabled) {</b>
+<b class="fc">&nbsp;		this.spotId = spotId;</b>
+<b class="fc">&nbsp;		this.occupied = occupied;</b>
+<b class="fc">&nbsp;		this.enabled = enabled;</b>
+&nbsp;
+&nbsp;		// Determine location based on ID prefix
+<b class="fc">&nbsp;		char section = spotId.charAt(0);</b>
+<b class="fc">&nbsp;		switch(section) {</b>
+&nbsp;			case &#39;A&#39;:
+<b class="nc">&nbsp;				this.location = &quot;North Lot&quot;;</b>
+<b class="nc">&nbsp;				break;</b>
+&nbsp;			case &#39;B&#39;:
+<b class="nc">&nbsp;				this.location = &quot;Central Lot&quot;;</b>
+<b class="nc">&nbsp;				break;</b>
+&nbsp;			case &#39;C&#39;:
+<b class="nc">&nbsp;				this.location = &quot;South Lot&quot;;</b>
+<b class="nc">&nbsp;				break;</b>
+&nbsp;			default:
+<b class="fc">&nbsp;				this.location = &quot;General Lot&quot;;</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	// Constructor with location parameter
+<b class="fc">&nbsp;	public ParkingSpot(String spotId, boolean occupied, boolean enabled, String location) {</b>
+<b class="fc">&nbsp;		this.spotId = spotId;</b>
+<b class="fc">&nbsp;		this.occupied = occupied;</b>
+<b class="fc">&nbsp;		this.enabled = enabled;</b>
+<b class="fc">&nbsp;		this.location = location;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	// Constructor with location parameter
+<b class="fc">&nbsp;	public ParkingSpot(String spotId, boolean occupied, boolean enabled, String location, int sensorId) {</b>
+<b class="fc">&nbsp;		this.spotId = spotId;</b>
+<b class="fc">&nbsp;		this.occupied = occupied;</b>
+<b class="fc">&nbsp;		this.enabled = enabled;</b>
+<b class="fc">&nbsp;		this.location = location;</b>
+<b class="fc">&nbsp;		this.sensor = new Sensor(sensorId);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	// Constructor without location parameter
+<b class="fc">&nbsp;	public ParkingSpot(String spotId, String lotId, boolean occupied, boolean enabled, int sensorId) {</b>
+<b class="fc">&nbsp;		this.spotId = spotId;</b>
+<b class="fc">&nbsp;		this.occupied = occupied;</b>
+<b class="fc">&nbsp;		this.enabled = enabled;</b>
+<b class="fc">&nbsp;		this.sensorId = sensorId;</b>
+<b class="fc">&nbsp;		this.sensor = new Sensor(sensorId);</b>
+<b class="fc">&nbsp;		this.lotId = lotId;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public String getSpotId() {
+<b class="fc">&nbsp;		return spotId;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public boolean isOccupied() {
+<b class="fc">&nbsp;		return occupied;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setOccupied(boolean occupied) {
+<b class="nc">&nbsp;		this.occupied = occupied;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public boolean isEnabled() {
+<b class="nc">&nbsp;		return enabled;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setEnabled(boolean enabled) {
+<b class="fc">&nbsp;		this.enabled = enabled;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public String getLocation() {
+<b class="fc">&nbsp;		return location;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setLocation(String location) {
+<b class="fc">&nbsp;		this.location = location;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	// Method to get the lot ID associated with the parking spot
+&nbsp;	public String getLotId() {
+<b class="fc">&nbsp;		return lotId;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	// Method to set the spot ID for the parking spot
+&nbsp;	public void setSpotId(String spotId) {
+<b class="fc">&nbsp;		this.spotId = spotId;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public void showDetails() {
+<b class="fc">&nbsp;		System.out.println(&quot;Parking Spot ID: &quot; + spotId +</b>
+&nbsp;				&quot;, Location: &quot; + location +
+<b class="fc">&nbsp;				&quot;, Status: &quot; + (enabled ? &quot;Enabled&quot; : &quot;Disabled&quot;) +</b>
+<b class="fc">&nbsp;				&quot;, Occupied: &quot; + (occupied ? &quot;Yes&quot; : &quot;No&quot;));</b>
+&nbsp;	}
+&nbsp;   
+&nbsp;	@Override
+&nbsp;	public String getId() {
+<b class="fc">&nbsp;		return spotId;</b>
+&nbsp;	}
+&nbsp; 
+&nbsp;	public Sensor getSensor() {
+<b class="fc">&nbsp;		return sensor;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public int getSensorId() {
+<b class="fc">&nbsp;		return sensor.getSensorId();</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setSensor(Sensor sensor) {
+<b class="fc">&nbsp;		this.sensor = sensor;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public String toString() {
+<b class="fc">&nbsp;		return &quot;ParkingSpot [id=&quot; + spotId +</b>
+&nbsp;				&quot;, location=&quot; + location +
+&nbsp;				&quot;, enabled=&quot; + enabled +
+&nbsp;				&quot;, occupied=&quot; + occupied + &quot;]&quot;;
+&nbsp;	}
+&nbsp;
+&nbsp;	
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-10 17:09</div>
+</div>
+</body>
+</html>

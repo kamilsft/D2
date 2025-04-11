@@ -1,0 +1,316 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Booking</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">logic</a>
+</div>
+
+<h1>Coverage Summary for Class: Booking (logic)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Booking</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.7%
+  </span>
+  <span class="absValue">
+    (24/28)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    48.2%
+  </span>
+  <span class="absValue">
+    (40/83)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package logic;
+&nbsp;import java.time.ZonedDateTime;
+&nbsp;import java.util.Stack;
+&nbsp;
+&nbsp;import Connections.DatabaseConnection;
+&nbsp;import DesignPatternClasses.Observer;
+&nbsp;import Connections.DatabaseDAO;
+&nbsp;import java.sql.SQLException;
+&nbsp;import DesignPatternClasses.Command; // Adjust the package path if necessary
+&nbsp;
+&nbsp;public class Booking implements Observer{
+&nbsp;	public int bookingId;
+&nbsp;	public ZonedDateTime bookingStartTime;
+&nbsp;	public ZonedDateTime bookingEndTime;
+&nbsp;	private String carLicensePlate;
+&nbsp;	public boolean isValid;
+&nbsp;	public ParkingSpot spot;
+&nbsp;	private Sensor sensor;
+&nbsp;	public User user;
+&nbsp;	private boolean showUp;
+&nbsp;	private int sensorId;
+&nbsp;	private EnableSensorCommand enableSensorCommand;
+&nbsp;	private DisableSensorCommand disableSensorCommand;
+<b class="fc">&nbsp;	private Stack&lt;Command&gt; commandStack = new Stack&lt;&gt;();</b>
+&nbsp;	public int userId;
+&nbsp;	public String email;
+&nbsp;	
+&nbsp;	// the next new booking id will be 1, then 2 and so on
+<b class="fc">&nbsp;	private static int bookingCounter = 0;</b>
+&nbsp;	
+&nbsp;	// added a default constructor 
+<b class="fc">&nbsp;	public Booking() {};</b>
+&nbsp;	
+&nbsp;	public Booking(ZonedDateTime bookingStartTime, 
+&nbsp;		ZonedDateTime bookingEndTime, String carLicensePlate, 
+<b class="fc">&nbsp;		boolean isValid, ParkingSpot spot, User user) {</b>
+<b class="fc">&nbsp;		this.bookingId = generateBookingId();</b>
+<b class="fc">&nbsp;		this.bookingStartTime = bookingStartTime;</b>
+<b class="fc">&nbsp;		this.bookingEndTime = bookingEndTime;</b>
+<b class="fc">&nbsp;		this.carLicensePlate = carLicensePlate;</b>
+<b class="fc">&nbsp;		this.isValid = isValid;</b>
+<b class="fc">&nbsp;		this.spot = spot;</b>
+<b class="fc">&nbsp;		this.user = user;</b>
+<b class="fc">&nbsp;		this.showUp = false;</b>
+<b class="fc">&nbsp;		this.email = user.getEmail();</b>
+&nbsp;	}
+&nbsp;	//different method signature for sensor initialization
+&nbsp;	public Booking(ZonedDateTime bookingStartTime,
+&nbsp;				   ZonedDateTime bookingEndTime, String carLicensePlate,
+<b class="nc">&nbsp;				   boolean isValid, ParkingSpot spot, User user, int sensorId) {</b>
+<b class="nc">&nbsp;		this.bookingId = generateBookingId();</b>
+<b class="nc">&nbsp;		this.bookingStartTime = bookingStartTime;</b>
+<b class="nc">&nbsp;		this.bookingEndTime = bookingEndTime;</b>
+<b class="nc">&nbsp;		this.carLicensePlate = carLicensePlate;</b>
+<b class="nc">&nbsp;		this.isValid = isValid;</b>
+<b class="nc">&nbsp;		this.spot = spot;</b>
+<b class="nc">&nbsp;		this.user = user;</b>
+<b class="nc">&nbsp;		this.showUp = false;</b>
+<b class="nc">&nbsp;		this.sensorId = sensorId;</b>
+<b class="nc">&nbsp;		this.enableSensorCommand = new EnableSensorCommand(spot.getSensor());</b>
+<b class="nc">&nbsp;		this.disableSensorCommand = new DisableSensorCommand(spot.getSensor());</b>
+<b class="nc">&nbsp;		this.sensor = spot.getSensor();</b>
+&nbsp;		//adding this booking object as the observer to the sensor
+<b class="nc">&nbsp;		this.sensor.addObserver(this);</b>
+&nbsp;	}
+&nbsp;
+<b class="fc">&nbsp;	public Booking(User user, ParkingSpot spot) {</b>
+<b class="fc">&nbsp;		this.user = user;</b>
+<b class="fc">&nbsp;		this.spot = spot;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	// each user at the same time can book
+&nbsp;	// generating unique ID&#39;s for each new booking 
+&nbsp;	private synchronized static int generateBookingId() {
+<b class="fc">&nbsp;		return bookingCounter++;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	public int getBookingId() {
+<b class="fc">&nbsp;		return bookingId;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setBookingId(int bookingId) {
+<b class="fc">&nbsp;		this.bookingId = bookingId;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public ZonedDateTime getBookingStartTime() {
+<b class="fc">&nbsp;		return bookingStartTime;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setBookingStartTime(ZonedDateTime bookingStartTime) {
+<b class="fc">&nbsp;		this.bookingStartTime = bookingStartTime;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public ZonedDateTime getBookingEndTime() {
+<b class="fc">&nbsp;		return bookingEndTime;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setBookingEndTime(ZonedDateTime bookingEndTime) {
+<b class="fc">&nbsp;		this.bookingEndTime = bookingEndTime;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public String getCarLicensePlate() {
+<b class="fc">&nbsp;		return carLicensePlate;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setCarLicensePlate(String carLicensePlate) {
+<b class="fc">&nbsp;		this.carLicensePlate = carLicensePlate;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public boolean isValid() {
+<b class="fc">&nbsp;		return isValid;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setValid(boolean isValid) {
+&nbsp;		//parking time has expired so use command to turn off the sensor
+<b class="fc">&nbsp;		if(!isValid) { //checking if the last command on the stack is either null or enableSensorCommand</b>
+<b class="fc">&nbsp;			if(!commandStack.isEmpty() &amp;&amp; commandStack.peek() != null) {</b>
+<b class="nc">&nbsp;				Command lastCommand = commandStack.peek();</b>
+<b class="nc">&nbsp;				if(lastCommand instanceof EnableSensorCommand) {</b>
+<b class="nc">&nbsp;					disableSensorCommand.execute();</b>
+<b class="nc">&nbsp;					commandStack.pop(); // Remove the last command from the stack</b>
+&nbsp;
+&nbsp;					try {
+<b class="nc">&nbsp;						DatabaseDAO db = new DatabaseDAO(DatabaseConnection.getConnection());</b>
+<b class="nc">&nbsp;						db.setCarArrived(sensorId, false);</b>
+<b class="nc">&nbsp;					} catch (SQLException e) {</b>
+<b class="nc">&nbsp;						e.printStackTrace(); // Log the exception</b>
+<b class="nc">&nbsp;					}</b>
+&nbsp;				}
+<b class="nc">&nbsp;			}</b>
+&nbsp;			
+&nbsp;		}else { //if the last command on the stack is either null or disableSensorCommand
+<b class="nc">&nbsp;			if(!commandStack.isEmpty() &amp;&amp; commandStack.peek() != null) {</b>
+<b class="nc">&nbsp;				Command lastCommand = commandStack.peek();</b>
+<b class="nc">&nbsp;				if(lastCommand instanceof DisableSensorCommand) {</b>
+<b class="nc">&nbsp;					enableSensorCommand.execute();</b>
+<b class="nc">&nbsp;					commandStack.pop(); // Remove the last command from the stack</b>
+&nbsp;					
+&nbsp;					try {
+<b class="nc">&nbsp;						DatabaseDAO db = new DatabaseDAO(DatabaseConnection.getConnection());</b>
+<b class="nc">&nbsp;						db.setCarArrived(sensorId, true);</b>
+<b class="nc">&nbsp;					} catch (SQLException e) {</b>
+<b class="nc">&nbsp;						e.printStackTrace(); // Log the exception</b>
+<b class="nc">&nbsp;					}</b>
+&nbsp;				}
+&nbsp;			}
+&nbsp;		}
+<b class="fc">&nbsp;		this.isValid = isValid;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public ParkingSpot getSpot() {
+<b class="fc">&nbsp;		return spot;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setSpot(ParkingSpot spot) {
+<b class="fc">&nbsp;		this.spot = spot;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public User getUser() {
+<b class="fc">&nbsp;		return user;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setUser(User user) {
+<b class="nc">&nbsp;		this.user = user;</b>
+&nbsp;	}
+&nbsp;	public boolean isShowUp() {
+<b class="fc">&nbsp;		return showUp;</b>
+&nbsp;	}
+&nbsp;  
+&nbsp;	public void setShowUp(boolean showUp) {
+<b class="fc">&nbsp;		this.showUp = showUp;</b>
+&nbsp;	} 
+&nbsp;
+&nbsp;	// Method to get the sensor ID associated with the booking
+&nbsp;	public int getSensorId() {
+<b class="nc">&nbsp;		return this.sensorId;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	public void setSensorId(int sensorId) {
+<b class="fc">&nbsp;		this.sensorId = sensorId;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	// Method to get the user ID associated with the booking
+&nbsp;	public int getUserId() {
+<b class="nc">&nbsp;		return this.user.getId();</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	public void setUserId(int userId) {
+<b class="fc">&nbsp;		this.userId = userId;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	public String getEmail() {
+<b class="fc">&nbsp;		return email;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	// Override the update method from Observer interface
+&nbsp;    @Override
+&nbsp;	public void update() {
+<b class="fc">&nbsp;		ParkingSpot spot = this.getSpot();</b>
+<b class="fc">&nbsp;		Sensor sensor = spot.getSensor();</b>
+&nbsp;
+&nbsp;		//if statement to check if the sensor is on
+<b class="fc">&nbsp;		if(sensor.isSensorOn()) {</b>
+<b class="nc">&nbsp;			sensor.setCarArrived(true);</b>
+&nbsp;			try {
+<b class="nc">&nbsp;				DatabaseDAO db = new DatabaseDAO(DatabaseConnection.getConnection());</b>
+<b class="nc">&nbsp;				db.setCarArrived(sensor.getSensorId(), true);</b>
+<b class="nc">&nbsp;			} catch (SQLException e) {</b>
+<b class="nc">&nbsp;				e.printStackTrace(); // Log the exception</b>
+<b class="nc">&nbsp;			}</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-10 21:16</div>
+</div>
+</body>
+</html>
