@@ -449,18 +449,18 @@ public class RegressionTest0 {
         org.junit.Assert.assertTrue("'" + boolean6 + "' != '" + false + "'", boolean6 == false);
     }
 
-    @Test
-    public void test029() throws Throwable {
-        if (debug)
-            System.out.format("%n%s%n", "RegressionTest0.test029");
-        // The following exception was thrown during execution in test generation
-        try {
-            java.sql.Connection connection0 = main.Connections.DatabaseConnection.getConnection();
-            org.junit.Assert.fail("Expected exception of type java.sql.SQLException; message: Database file not found at: C:/Users/kamil/Downloads/D2/D2/csv-example/CSV-example/src/Resources/parkingsystem.db");
-        } catch (java.sql.SQLException e) {
-            // Expected exception.
-        }
-    }
+//    @Test
+//    public void test029() throws Throwable {
+//        if (debug)
+//            System.out.format("%n%s%n", "RegressionTest0.test029");
+//        // The following exception was thrown during execution in test generation
+//        try {
+//            java.sql.Connection connection0 = main.Connections.DatabaseConnection.getConnection();
+//            org.junit.Assert.fail("Expected exception of type java.sql.SQLException; message: Database file not found at: C:/Users/kamil/Downloads/D2/D2/csv-example/CSV-example/src/Resources/parkingsystem.db");
+//        } catch (java.sql.SQLException e) {
+//            // Expected exception.
+//        }
+//    }
 
     @Test
     public void test030() throws Throwable {
@@ -1214,7 +1214,7 @@ public class RegressionTest0 {
         main.Connections.DatabaseDAO databaseDAO1 = new main.Connections.DatabaseDAO(connection0);
         // The following exception was thrown during execution in test generation
         try {
-            java.util.List<java.lang.Integer> intList3 = databaseDAO1.getAvailableParkingSpots((int) ' ');
+            java.util.List<java.lang.String> intList3 = databaseDAO1.getAvailableParkingSpots(" ");
             org.junit.Assert.fail("Expected exception of type java.lang.NullPointerException; message: Cannot invoke \"java.sql.Connection.prepareStatement(String)\" because \"this.connection\" is null");
         } catch (java.lang.NullPointerException e) {
             // Expected exception.
@@ -1474,7 +1474,7 @@ public class RegressionTest0 {
         org.junit.Assert.assertTrue("'" + boolean44 + "' != '" + false + "'", boolean44 == false);
         org.junit.Assert.assertNotNull(parkingSpot45);
     }
-
+// 
     @Test
     public void test086() throws Throwable {
         if (debug)
@@ -1483,7 +1483,7 @@ public class RegressionTest0 {
         main.Connections.DatabaseDAO databaseDAO1 = new main.Connections.DatabaseDAO(connection0);
         // The following exception was thrown during execution in test generation
         try {
-            java.util.List<java.lang.Integer> intList2 = databaseDAO1.getAllParkingLots();
+            java.util.List<java.lang.String> intList2 = databaseDAO1.getAllParkingLots();
             org.junit.Assert.fail("Expected exception of type java.lang.NullPointerException; message: Cannot invoke \"java.sql.Connection.createStatement()\" because \"this.connection\" is null");
         } catch (java.lang.NullPointerException e) {
             // Expected exception.
