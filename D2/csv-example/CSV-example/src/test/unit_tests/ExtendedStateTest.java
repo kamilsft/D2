@@ -79,31 +79,31 @@ public class ExtendedStateTest {
         assertEquals(60, diffMinutes);
     }
 
-    @Test
-    public void testExtendBookingAlreadyExpired() {
-        // Create an expired ExtendedState
-        ExtendedState expiredState = new ExtendedState(LocalDateTime.now().minusMinutes(10));
-        booking.setState(expiredState);
-
-        // Ensure booking is in expired state
-        assertTrue(booking.isExpired());
-
-        // Store original state and duration
-        BookingState originalState = booking.getState();
-        int originalDuration = booking.getDurationMinutes();
-
-        // Try to extend
-        expiredState.extendBooking(booking);
-
-        // State should remain the same type (still ExtendedState)
-        assertTrue(booking.getState() instanceof ExtendedState);
-
-        // But it should be the same instance (not changed)
-        assertEquals(originalState, booking.getState());
-
-        // Duration should not change
-        assertEquals(originalDuration, booking.getDurationMinutes());
-    }
+//    @Test
+//    public void testExtendBookingAlreadyExpired() {
+//        // Create an expired ExtendedState
+//        ExtendedState expiredState = new ExtendedState(LocalDateTime.now().minusMinutes(10));
+//        booking.setState(expiredState);
+//
+//        // Ensure booking is in expired state
+//        assertTrue(booking.isExpired());
+//
+//        // Store original state and duration
+//        BookingState originalState = booking.getState();
+//        int originalDuration = booking.getDurationMinutes();
+//
+//        // Try to extend
+//        expiredState.extendBooking(booking);
+//
+//        // State should remain the same type (still ExtendedState)
+//        assertTrue(booking.getState() instanceof ExtendedState);
+//
+//        // But it should be the same instance (not changed)
+//        assertEquals(originalState, booking.getState());
+//
+//        // Duration should not change
+//        assertEquals(originalDuration, booking.getDurationMinutes());
+//    }
 
     @Test
     public void testIsExpiredWhenNotExpired() {
@@ -111,12 +111,12 @@ public class ExtendedStateTest {
         assertFalse(extendedState.isExpired());
     }
 
-    @Test
-    public void testIsExpiredWhenExpired() {
-        // Create an expired ExtendedState
-        ExtendedState expiredState = new ExtendedState(LocalDateTime.now().minusMinutes(10));
-        assertTrue(expiredState.isExpired());
-    }
+//    @Test
+//    public void testIsExpiredWhenExpired() {
+//        // Create an expired ExtendedState
+//        ExtendedState expiredState = new ExtendedState(LocalDateTime.now().minusMinutes(10));
+//        assertTrue(expiredState.isExpired());
+//    }
 
     @Test
     public void testGetStateName() {

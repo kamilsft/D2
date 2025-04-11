@@ -19,6 +19,7 @@ public class SensorBookingIntegrationTestsObserverPattern {
         spot.setSensor(sensor);
         User user = new User("Test User", 1001, "test@example.com", "password");
         booking = new Booking(ZonedDateTime.now(), ZonedDateTime.now().plusHours(1), "ABC123", true, spot, user);
+        sensor.addObserver(booking);
     }
 
     @Test

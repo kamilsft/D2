@@ -85,29 +85,28 @@ public class DatabaseDAO {
 
     // Add a Booking
     public void addBooking(Booking booking) throws SQLException {
-        String query = "INSERT INTO Booking (bookingStartTime, bookingEndTime, carLicensePlate, isValid, sensorId, userId, showUp) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-           // stmt.setInt(1, booking.getBookingId());
-        	stmt.setTimestamp(1, Timestamp.from(booking.getBookingStartTime().toInstant()));
+        String query = "INSERT INTO Booking (bookingStartTime, bookingEndTime, carLicensePlate, isValid, sensorId, userId, showUp, spotId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setTimestamp(1, Timestamp.from(booking.getBookingStartTime().toInstant()));
             stmt.setTimestamp(2, Timestamp.from(booking.getBookingEndTime().toInstant()));
             stmt.setString(3, booking.getCarLicensePlate());
             stmt.setBoolean(4, booking.isValid());
             stmt.setInt(5, booking.getSensorId());
-            stmt.setInt(6, booking.getUserId());
+            stmt.setInt(6, booking.getUser().getId());
             stmt.setBoolean(7, booking.isShowUp());
+            stmt.setString(8, booking.getSpot().getSpotId());
             stmt.executeUpdate();
-            
+
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     int generatedId = generatedKeys.getInt(1);
-                    booking.setBookingId(generatedId);  // store it if you want to show it
+                    booking.setBookingId(generatedId);
                     System.out.println("Booking inserted with ID: " + generatedId);
                 }
             }
-            
         }
     }
-    
+
     // Add a FacultyMember
     public void addFacultyMember(FacultyMember facultyMember) throws SQLException {
         String query = "INSERT INTO FacultyMember (userId, name, email, password) VALUES (?, ?, ?, ?)";
@@ -205,6 +204,33 @@ public class DatabaseDAO {
             stmt.setString(4, user.getPassword());
             stmt.executeUpdate();
         }
+    }
+
+    // Get booking by bookingId
+    public Booking getBookingById(int bookingId) throws SQLException {
+        String query = "SELECT * FROM Booking WHERE bookingId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, bookingId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    User user = getUserById(rs.getInt("userId"));
+                    ParkingSpot spot = getParkingSpotById(rs.getString("spotId"));
+                    Sensor sensor = getSensorById(rs.getInt("sensorId"));
+                    spot.setSensor(sensor);
+
+                    return new Booking(
+                        rs.getTimestamp("bookingStartTime").toInstant().atZone(java.time.ZoneId.systemDefault()),
+                        rs.getTimestamp("bookingEndTime").toInstant().atZone(java.time.ZoneId.systemDefault()),
+                        rs.getString("carLicensePlate"),
+                        rs.getBoolean("isValid"),
+                        spot,
+                        user,
+                        rs.getInt("sensorId")
+                    );
+                }
+            }
+        }
+        return null;
     }
 
     // Method to fetch a FacultyMember by userId
@@ -524,5 +550,25 @@ public class DatabaseDAO {
             stmt.setInt(2, sensorId);
             stmt.executeUpdate();
         }
+    }
+
+    // Add a method to get ParkingSpot by spotId
+    public ParkingSpot getParkingSpotById(String spotId) throws SQLException {
+        String query = "SELECT * FROM ParkingSpot WHERE spotId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, spotId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new ParkingSpot(
+                        rs.getString("spotId"),
+                        rs.getBoolean("isOccupied"),
+                        rs.getBoolean("isEnabled"),
+                        rs.getString("lotId"),
+                        rs.getInt("sensorId")
+                    );
+                }
+            }
+        }
+        return null;
     }
 }

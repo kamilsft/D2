@@ -1,4 +1,3 @@
-
 CREATE TABLE User (
     userId INT PRIMARY KEY CHECK (
         userId LIKE '1%' OR 
@@ -34,7 +33,7 @@ CREATE TABLE ParkingSpot (
     FOREIGN KEY (sensorId) REFERENCES Sensor(sensorId)
     FOREIGN KEY (lotId) REFERENCES ParkingLot(lotId)
 );
-
+ 
 
 CREATE TABLE Booking (
     bookingId INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -44,9 +43,11 @@ CREATE TABLE Booking (
     isValid BOOLEAN,
     sensorId INT,
     userId INT,
+    spotId VARCHAR(3),
     showUp BOOLEAN,
     FOREIGN KEY (sensorId) REFERENCES Sensor(sensorId),
-    FOREIGN KEY (userId) REFERENCES User(userId)
+    FOREIGN KEY (userId) REFERENCES User(userId),
+    FOREIGN KEY (spotId) REFERENCES ParkingSpot(spotId)
 );
 
 

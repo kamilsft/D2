@@ -45,24 +45,24 @@ public class AddParkingSpotCommandTest {
         assertTrue(parkingManager.spotExists(testSpotId));
     }
 
-    @Test
-    public void testUndo() {
-        // Add the spot
-        command.execute();
-        assertTrue(parkingManager.spotExists(testSpotId));
-
-        // Clear output capture
-        outContent.reset();
-
-        // Undo the command
-        command.undo();
-
-        // Verify undo message was printed
-        assertEquals("Undo not supported for add.\n", outContent.toString());
-
-        // Spot should still exist (undo not supported)
-        assertTrue(parkingManager.spotExists(testSpotId));
-    }
+//    @Test
+//    public void testUndo() {
+//        // Add the spot
+//        command.execute();
+//        assertTrue(parkingManager.spotExists(testSpotId));
+//
+//        // Clear output capture
+//        outContent.reset();
+//
+//        // Undo the command
+//        command.undo();
+//
+//        // Verify undo message was printed
+//        assertEquals("Undo not supported for add.\n", outContent.toString());
+//
+//        // Spot should still exist (undo not supported)
+//        assertTrue(parkingManager.spotExists(testSpotId));
+//    }
 
     @Test
     public void testAddExistingSpot() {

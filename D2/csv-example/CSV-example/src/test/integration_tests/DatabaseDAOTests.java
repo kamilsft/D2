@@ -2,13 +2,30 @@ package test.integration_tests;
 
 import main.Connections.DatabaseConnection;
 import main.Connections.DatabaseDAO;
-import main.logic.*;
-import org.junit.jupiter.api.*;
+import main.logic.Booking;
+import main.logic.FacultyMember;
+import main.logic.GeneralManager;
+import main.logic.Manager;
+import main.logic.NonFacultyStaff;
+import main.logic.ParkingLot;
+import main.logic.ParkingSpot;
+import main.logic.Sensor;
+import main.logic.Student;
+import main.logic.Visitor;
+import main.logic.User;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.ZonedDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -167,5 +184,77 @@ public class DatabaseDAOTests {
         assertNotNull(retrievedUser);
         assertTrue(retrievedUser instanceof Manager);
         assertEquals("Eve", retrievedUser.getName());
+    }
+
+    @Test
+    void testUpdateParkingSpotStatus() throws SQLException {
+        ParkingSpot spot = new ParkingSpot("A1", false, true, "North Lot", 1);
+        databaseDAO.addParkingSpot(spot);
+
+        databaseDAO.updateParkingSpotStatus(1, true);
+        Sensor sensor = databaseDAO.getSensorById(1);
+        assertTrue(sensor.isCarArrived(), "Parking spot status should be updated to occupied.");
+    }
+
+    @Test
+    void testGetAvailableParkingSpots() throws SQLException {
+        ParkingLot lot = new ParkingLot("North Lot");
+        databaseDAO.addParkingLot(lot);
+
+        ParkingSpot spot1 = new ParkingSpot("A1", false, true, "North Lot", 1);
+        ParkingSpot spot2 = new ParkingSpot("A2", false, true, "North Lot", 2);
+        databaseDAO.addParkingSpot(spot1);
+        databaseDAO.addParkingSpot(spot2);
+
+        databaseDAO.updateParkingSpotStatus(1, true); // Mark one spot as occupied
+
+        List<Integer> availableSpots = databaseDAO.getAvailableParkingSpots(1);
+        assertEquals(1, availableSpots.size(), "Only one spot should be available.");
+        assertEquals(2, availableSpots.get(0), "Spot A2 should be available.");
+    }
+
+    @Test
+    void testInvalidateBooking() throws SQLException {
+        Booking booking = new Booking(ZonedDateTime.now(), ZonedDateTime.now().plusHours(1), "XYZ789", true, null, null, 1);
+        databaseDAO.addBooking(booking);
+
+        databaseDAO.invalidateBooking(booking.getBookingId());
+        Booking invalidatedBooking = databaseDAO.getBookingById(booking.getBookingId());
+        assertFalse(invalidatedBooking.isValid(), "Booking should be invalidated.");
+    }
+
+    @Test
+    void testValidateBooking() throws SQLException {
+        Booking booking = new Booking(ZonedDateTime.now(), ZonedDateTime.now().plusHours(1), "XYZ789", false, null, null, 1);
+        databaseDAO.addBooking(booking);
+
+        databaseDAO.validateBooking(booking.getBookingId(), true);
+        Booking validatedBooking = databaseDAO.getBookingById(booking.getBookingId());
+        assertTrue(validatedBooking.isValid(), "Booking should be validated.");
+    }
+
+    @Test
+    void testDeleteBooking() throws SQLException {
+        Booking booking = new Booking(ZonedDateTime.now(), ZonedDateTime.now().plusHours(1), "XYZ789", true, null, null, 1);
+        databaseDAO.addBooking(booking);
+
+        databaseDAO.deleteBooking(booking.getBookingId());
+        SQLException exception = assertThrows(SQLException.class, () -> {
+            databaseDAO.getBookingById(booking.getBookingId());
+        });
+        assertTrue(exception.getMessage().contains("not found"), "Booking should be deleted.");
+    }
+
+    @Test
+    void testGetAllParkingLots() throws SQLException {
+        ParkingLot lot1 = new ParkingLot("North Lot");
+        ParkingLot lot2 = new ParkingLot("South Lot");
+        databaseDAO.addParkingLot(lot1);
+        databaseDAO.addParkingLot(lot2);
+
+        List<Integer> parkingLots = databaseDAO.getAllParkingLots();
+        assertEquals(2, parkingLots.size(), "There should be two parking lots.");
+        assertTrue(parkingLots.contains("North Lot"), "North Lot should be in the list.");
+        assertTrue(parkingLots.contains("South Lot"), "South Lot should be in the list.");
     }
 }

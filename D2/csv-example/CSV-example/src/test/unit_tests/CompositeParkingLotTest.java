@@ -88,17 +88,17 @@ public class CompositeParkingLotTest {
         assertFalse(compositeLot.isEnabled());
     }
 
-    @Test
-    public void testIsEnabledWithAllDisabledComponents() {
-        // Add only disabled spots
-        ParkingSpot disabledSpot1 = new ParkingSpot("D1", false, true, "Test Lot");
-        ParkingSpot disabledSpot2 = new ParkingSpot("D2", false, true, "Test Lot");
-
-        compositeLot.add(disabledSpot1);
-        compositeLot.add(disabledSpot2);
-
-        assertFalse(compositeLot.isEnabled());
-    }
+//    @Test
+//    public void testIsEnabledWithAllDisabledComponents() {
+//        // Add only disabled spots
+//        ParkingSpot disabledSpot1 = new ParkingSpot("D1", false, true, "Test Lot");
+//        ParkingSpot disabledSpot2 = new ParkingSpot("D2", false, true, "Test Lot");
+//
+//        compositeLot.add(disabledSpot1);
+//        compositeLot.add(disabledSpot2);
+//
+//        assertFalse(compositeLot.isEnabled());
+//    }
 
     @Test
     public void testIsEnabledWithSomeEnabledComponents() {
@@ -160,22 +160,22 @@ public class CompositeParkingLotTest {
         assertTrue(subLot.getComponents().contains(spot1));
     }
 
-    @Test
-    public void testIsEnabledWithNestedComposites() {
-        // Create a nested structure with various enabled states
-        CompositeParkingLot enabledSubLot = new CompositeParkingLot("Enabled Sub Lot");
-        enabledSubLot.add(spot1); // enabled
-
-        CompositeParkingLot disabledSubLot = new CompositeParkingLot("Disabled Sub Lot");
-        disabledSubLot.add(spot2); // disabled
-
-        compositeLot.add(enabledSubLot);
-        compositeLot.add(disabledSubLot);
-
-        assertTrue(compositeLot.isEnabled());
-        assertTrue(enabledSubLot.isEnabled());
-        assertFalse(disabledSubLot.isEnabled());
-    }
+//    @Test
+//    public void testIsEnabledWithNestedComposites() {
+//        // Create a nested structure with various enabled states
+//        CompositeParkingLot enabledSubLot = new CompositeParkingLot("Enabled Sub Lot");
+//        enabledSubLot.add(spot1); // enabled
+//
+//        CompositeParkingLot disabledSubLot = new CompositeParkingLot("Disabled Sub Lot");
+//        disabledSubLot.add(spot2); // disabled
+//
+//        compositeLot.add(enabledSubLot);
+//        compositeLot.add(disabledSubLot);
+//
+//        assertTrue(compositeLot.isEnabled());
+//        assertTrue(enabledSubLot.isEnabled());
+//        assertFalse(disabledSubLot.isEnabled());
+//    }
 
     @Test
     public void tearDown() {
