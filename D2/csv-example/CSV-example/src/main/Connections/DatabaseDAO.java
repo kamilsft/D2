@@ -4,6 +4,7 @@ package main.Connections;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.ZonedDateTime;
 import main.logic.*;
  
 // Class to interact with the database
@@ -46,19 +47,24 @@ public class DatabaseDAO {
             stmt.executeUpdate();
         }
 
-        // Call the appropriate method to add the user to the specific table
-        if (String.valueOf(user.getId()).startsWith("1")) {
-            addFacultyMember((FacultyMember) user);
-        } else if (String.valueOf(user.getId()).startsWith("2")) {
-            addNonFacultyStaff((NonFacultyStaff) user);
-        } else if (String.valueOf(user.getId()).startsWith("3")) {
-            addStudent((Student) user);
-        } else if (String.valueOf(user.getId()).startsWith("4")) {
-            addVisitor((Visitor) user);
-        } else if (String.valueOf(user.getId()).startsWith("5")) {
-            addManager((Manager) user);
+        // Extract attributes and create specific user types
+        int userId = user.getId();
+        String name = user.getName();
+        String email = user.getEmail();
+        String password = user.getPassword();
+
+        if (String.valueOf(userId).startsWith("1")) {
+            addFacultyMember(new FacultyMember(name, userId, email, password));
+        } else if (String.valueOf(userId).startsWith("2")) {
+            addNonFacultyStaff(new NonFacultyStaff(name, userId, email, password));
+        } else if (String.valueOf(userId).startsWith("3")) {
+            addStudent(new Student(name, userId, email, password));
+        } else if (String.valueOf(userId).startsWith("4")) {
+            addVisitor(new Visitor(name, userId, email, password));
+        } else if (String.valueOf(userId).startsWith("5")) {
+            addManager(new GeneralManager(name, userId, email, password));
         } else {
-            throw new IllegalArgumentException("Invalid user ID: " + user.getId());
+            throw new IllegalArgumentException("Invalid user ID: " + userId);
         }
     }
 
@@ -77,7 +83,7 @@ public class DatabaseDAO {
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, parkingSpot.getSpotId());
             stmt.setInt(2, parkingSpot.getSensorId());
-            stmt.setBoolean(3, parkingSpot.isOccupied());
+            stmt.setInt(3, parkingSpot.isOccupied() ? 1 : 0); // Use 1 for true, 0 for false
             stmt.setString(4, parkingSpot.getLotId());
             stmt.executeUpdate();
         }
@@ -218,11 +224,14 @@ public class DatabaseDAO {
                     Sensor sensor = getSensorById(rs.getInt("sensorId"));
                     spot.setSensor(sensor);
 
+                    ZonedDateTime bookingEndTime = rs.getTimestamp("bookingEndTime").toInstant().atZone(java.time.ZoneId.systemDefault());
+                    boolean isValid = bookingEndTime.isAfter(ZonedDateTime.now());
+
                     return new Booking(
                         rs.getTimestamp("bookingStartTime").toInstant().atZone(java.time.ZoneId.systemDefault()),
-                        rs.getTimestamp("bookingEndTime").toInstant().atZone(java.time.ZoneId.systemDefault()),
+                        bookingEndTime,
                         rs.getString("carLicensePlate"),
-                        rs.getBoolean("isValid"),
+                        isValid,
                         spot,
                         user,
                         rs.getInt("sensorId")
@@ -387,21 +396,21 @@ public class DatabaseDAO {
     public void updateParkingSpotStatus(int sensorId, boolean isOccupied) throws SQLException {
         String query = "UPDATE ParkingSpot SET isOccupied = ? WHERE sensorId = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setBoolean(1, isOccupied);
+            stmt.setInt(1, isOccupied ? 1 : 0); // Use 1 for true, 0 for false
             stmt.setInt(2, sensorId);
             stmt.executeUpdate();
         }
     }
 
     // Method to get available parking spots in a specific lot
-    public List<Integer> getAvailableParkingSpots(int lotId) throws SQLException {
-        String query = "SELECT sensorId FROM ParkingSpot WHERE lotId = ? AND isOccupied = 0";
-        List<Integer> availableSpots = new ArrayList<>();
+    public List<String> getAvailableParkingSpots(String lotId) throws SQLException {
+        String query = "SELECT spotId FROM ParkingSpot WHERE lotId = ? AND isOccupied = 0";
+        List<String> availableSpots = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, lotId);
+            stmt.setString(1, lotId);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    availableSpots.add(rs.getInt("sensorId"));
+                    availableSpots.add(rs.getString("spotId"));
                 }
             }
         }
@@ -437,13 +446,13 @@ public class DatabaseDAO {
     }
 
     // Method to get all parking lots
-    public List<Integer> getAllParkingLots() throws SQLException {
+    public List<String> getAllParkingLots() throws SQLException {
         String query = "SELECT lotId FROM ParkingLot";
-        List<Integer> lots = new ArrayList<>();
+        List<String> lots = new ArrayList<>();
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
-                lots.add(rs.getInt("lotId"));
+                lots.add(rs.getString("lotId"));
             }
         }
         return lots;
@@ -457,25 +466,34 @@ public class DatabaseDAO {
                     "currentCarBrand, currentCarModel, currentCarColor, carArrived) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, sensorId);
-            stmt.setBoolean(2, sensorOn);
+            stmt.setInt(2, sensorOn ? 1 : 0); // Use 1 for true, 0 for false
             stmt.setTimestamp(3, sensorActivationTime);
             stmt.setTimestamp(4, sensorDeactivationTime);
             stmt.setString(5, currentCarPlate);
             stmt.setString(6, currentCarBrand);
             stmt.setString(7, currentCarModel);
             stmt.setString(8, currentCarColor);
-            stmt.setBoolean(9, carArrived);
+            stmt.setInt(9, carArrived ? 1 : 0); // Use 1 for true, 0 for false
             stmt.executeUpdate();
         }
     }
 
     // Method to insert a sensor into the table using a Sensor object
     public void addSensor(Sensor sensor) throws SQLException {
-        addSensor(sensor.getSensorId(), sensor.isSensorOn(), 
-                sensor.getSensorActivationTime() != null ? Timestamp.from(sensor.getSensorActivationTime().toInstant()) : null,
-                sensor.getSensorDeactivationTime() != null ? Timestamp.from(sensor.getSensorDeactivationTime().toInstant()) : null,
-                sensor.getCurrentCarPlate(), sensor.getCurrentCarBrand(), sensor.getCurrentCarModel(), 
-                sensor.getCurrentCarColor(), sensor.isCarArrived());
+        String query = "INSERT INTO Sensor (sensorId, sensorOn, sensorActivationTime, sensorDeactivationTime, currentCarPlate, " +
+                       "currentCarBrand, currentCarModel, currentCarColor, carArrived) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, sensor.getSensorId());
+            stmt.setInt(2, sensor.isSensorOn() ? 1 : 0); // Use 1 for true, 0 for false
+            stmt.setTimestamp(3, sensor.getSensorActivationTime() != null ? Timestamp.from(sensor.getSensorActivationTime().toInstant()) : null);
+            stmt.setTimestamp(4, sensor.getSensorDeactivationTime() != null ? Timestamp.from(sensor.getSensorDeactivationTime().toInstant()) : null);
+            stmt.setString(5, sensor.getCurrentCarPlate());
+            stmt.setString(6, sensor.getCurrentCarBrand());
+            stmt.setString(7, sensor.getCurrentCarModel());
+            stmt.setString(8, sensor.getCurrentCarColor());
+            stmt.setInt(9, sensor.isCarArrived() ? 1 : 0); // Use 1 for true, 0 for false
+            stmt.executeUpdate();
+        }
     }
 
     // Method to get a Sensor object by sensorId
@@ -535,7 +553,7 @@ public class DatabaseDAO {
             stmt.setInt(1, sensorId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getBoolean("sensorOn");
+                    return rs.getInt("sensorOn") == 1; // Convert 1 to true, 0 to false
                 }
             }
         }
@@ -546,7 +564,7 @@ public class DatabaseDAO {
     public void setCarArrived(int sensorId, boolean carArrived) throws SQLException {
         String query = "UPDATE Sensor SET carArrived = ? WHERE sensorId = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setBoolean(1, carArrived);
+            stmt.setInt(1, carArrived ? 1 : 0); // Use 1 for true, 0 for false
             stmt.setInt(2, sensorId);
             stmt.executeUpdate();
         }
