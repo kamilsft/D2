@@ -1,0 +1,630 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > DatabaseDAO</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">Connections</a>
+</div>
+
+<h1>Coverage Summary for Class: DatabaseDAO (Connections)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DatabaseDAO</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    79.3%
+  </span>
+  <span class="absValue">
+    (23/29)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    16.7%
+  </span>
+  <span class="absValue">
+    (52/312)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package Connections;
+&nbsp;
+&nbsp;import java.sql.*;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import logic.*;
+&nbsp;
+&nbsp;// Class to interact with the database
+&nbsp;//How to use
+&nbsp;/*
+&nbsp; * make new DatabaseDEO object with a connection as the constructor argument: ===&gt; DatabaseDEO db = new DatabaseDEO(DatabaseConnection.getConnection());
+&nbsp; * use any of its methods to interact with the database. Example ===&gt; db.addBooking(1, Timestamp.valueOf(&quot;2021-04-01 10:00:00&quot;), Timestamp.valueOf(&quot;2021-04-01 11:00:00&quot;), &quot;1234&quot;, true, 1, 1, true);
+&nbsp; * or an even easier way  ===&gt; db.addBooking(bookingObject);
+&nbsp; * 
+&nbsp; * 
+&nbsp; */
+&nbsp;public class DatabaseDAO {
+&nbsp;    private Connection connection;
+&nbsp;
+<b class="fc">&nbsp;    public DatabaseDAO(Connection connection) {</b>
+<b class="fc">&nbsp;        this.connection = connection;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Method to add a booking
+&nbsp;//    public void addBooking(int bookingId, Timestamp startTime, Timestamp endTime, String carLicensePlate, boolean isValid, int sensorId, int userId, boolean showUp) throws SQLException {
+&nbsp;//        String query = &quot;INSERT INTO Booking (bookingId, bookingStartTime, bookingEndTime, carLicensePlate, isValid, sensorId, userId, showUp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)&quot;;
+&nbsp;//        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+&nbsp;//            stmt.setInt(1, bookingId);
+&nbsp;//            stmt.setTimestamp(2, startTime);
+&nbsp;//            stmt.setTimestamp(3, endTime);
+&nbsp;//            stmt.setString(4, carLicensePlate);
+&nbsp;//            stmt.setBoolean(5, isValid);
+&nbsp;//            stmt.setInt(6, sensorId);
+&nbsp;//            stmt.setInt(7, userId);
+&nbsp;//            stmt.setBoolean(8, showUp);
+&nbsp;//            stmt.executeUpdate();
+&nbsp;//        }
+&nbsp;//    }
+&nbsp;
+&nbsp;    // Add a User
+&nbsp;    public void addUser(User user) throws SQLException {
+<b class="fc">&nbsp;        String query = &quot;INSERT INTO User (userId) VALUES (?)&quot;;</b>
+<b class="fc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setInt(1, user.getId());</b>
+<b class="nc">&nbsp;            stmt.executeUpdate();</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        // Call the appropriate method to add the user to the specific table
+<b class="nc">&nbsp;        if (String.valueOf(user.getId()).startsWith(&quot;1&quot;)) {</b>
+<b class="nc">&nbsp;            addFacultyMember((FacultyMember) user);</b>
+<b class="nc">&nbsp;        } else if (String.valueOf(user.getId()).startsWith(&quot;2&quot;)) {</b>
+<b class="nc">&nbsp;            addNonFacultyStaff((NonFacultyStaff) user);</b>
+<b class="nc">&nbsp;        } else if (String.valueOf(user.getId()).startsWith(&quot;3&quot;)) {</b>
+<b class="nc">&nbsp;            addStudent((Student) user);</b>
+<b class="nc">&nbsp;        } else if (String.valueOf(user.getId()).startsWith(&quot;4&quot;)) {</b>
+<b class="nc">&nbsp;            addVisitor((Visitor) user);</b>
+<b class="nc">&nbsp;        } else if (String.valueOf(user.getId()).startsWith(&quot;5&quot;)) {</b>
+<b class="nc">&nbsp;            addManager((Manager) user);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid user ID: &quot; + user.getId());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    // Add a ParkingLot
+&nbsp;    public void addParkingLot(ParkingLot parkingLot) throws SQLException {
+<b class="fc">&nbsp;        String query = &quot;INSERT INTO ParkingLot (lotId) VALUES (?)&quot;;</b>
+<b class="fc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setString(1, parkingLot.getId());</b>
+<b class="nc">&nbsp;            stmt.executeUpdate();</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Updated method to add a ParkingSpot
+&nbsp;    public void addParkingSpot(ParkingSpot parkingSpot) throws SQLException {
+<b class="nc">&nbsp;        String query = &quot;INSERT INTO ParkingSpot (spotId, sensorId, isOccupied, lotId) VALUES (?, ?, ?, ?)&quot;;</b>
+<b class="nc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setString(1, parkingSpot.getSpotId());</b>
+<b class="nc">&nbsp;            stmt.setInt(2, parkingSpot.getSensorId());</b>
+<b class="nc">&nbsp;            stmt.setBoolean(3, parkingSpot.isOccupied());</b>
+<b class="nc">&nbsp;            stmt.setString(4, parkingSpot.getLotId());</b>
+<b class="nc">&nbsp;            stmt.executeUpdate();</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Add a Booking
+&nbsp;    public void addBooking(Booking booking) throws SQLException {
+<b class="fc">&nbsp;        String query = &quot;INSERT INTO Booking (bookingStartTime, bookingEndTime, carLicensePlate, isValid, sensorId, userId, showUp) VALUES (?, ?, ?, ?, ?, ?, ?)&quot;;</b>
+<b class="fc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+&nbsp;           // stmt.setInt(1, booking.getBookingId());
+<b class="nc">&nbsp;        	stmt.setTimestamp(1, Timestamp.from(booking.getBookingStartTime().toInstant()));</b>
+<b class="nc">&nbsp;            stmt.setTimestamp(2, Timestamp.from(booking.getBookingEndTime().toInstant()));</b>
+<b class="nc">&nbsp;            stmt.setString(3, booking.getCarLicensePlate());</b>
+<b class="nc">&nbsp;            stmt.setBoolean(4, booking.isValid());</b>
+<b class="nc">&nbsp;            stmt.setInt(5, booking.getSensorId());</b>
+<b class="nc">&nbsp;            stmt.setInt(6, booking.getUserId());</b>
+<b class="nc">&nbsp;            stmt.setBoolean(7, booking.isShowUp());</b>
+<b class="nc">&nbsp;            stmt.executeUpdate();</b>
+&nbsp;            
+<b class="nc">&nbsp;            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {</b>
+<b class="nc">&nbsp;                if (generatedKeys.next()) {</b>
+<b class="nc">&nbsp;                    int generatedId = generatedKeys.getInt(1);</b>
+<b class="nc">&nbsp;                    booking.setBookingId(generatedId);  // store it if you want to show it</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Booking inserted with ID: &quot; + generatedId);</b>
+&nbsp;                }
+<b class="nc">&nbsp;            }</b>
+&nbsp;            
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    // Add a FacultyMember
+&nbsp;    public void addFacultyMember(FacultyMember facultyMember) throws SQLException {
+<b class="fc">&nbsp;        String query = &quot;INSERT INTO FacultyMember (userId, name, email, password) VALUES (?, ?, ?, ?)&quot;;</b>
+<b class="fc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setInt(1, facultyMember.getId());</b>
+<b class="nc">&nbsp;            stmt.setString(2, facultyMember.getName());</b>
+<b class="nc">&nbsp;            stmt.setString(3, facultyMember.getEmail());</b>
+<b class="nc">&nbsp;            stmt.setString(4, facultyMember.getPassword());</b>
+<b class="nc">&nbsp;            stmt.executeUpdate();</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Add a NonFacultyStaff
+&nbsp;    public void addNonFacultyStaff(NonFacultyStaff nonFacultyStaff) throws SQLException {
+<b class="fc">&nbsp;        String query = &quot;INSERT INTO NonFacultyStaff (userId, name, email, password) VALUES (?, ?, ?, ?)&quot;;</b>
+<b class="fc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setInt(1, nonFacultyStaff.getId());</b>
+<b class="nc">&nbsp;            stmt.setString(2, nonFacultyStaff.getName());</b>
+<b class="nc">&nbsp;            stmt.setString(3, nonFacultyStaff.getEmail());</b>
+<b class="nc">&nbsp;            stmt.setString(4, nonFacultyStaff.getPassword());</b>
+<b class="nc">&nbsp;            stmt.executeUpdate();</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Add a Manager
+&nbsp;    public void addManager(Manager manager) throws SQLException {
+<b class="nc">&nbsp;        String query = &quot;INSERT INTO Manager (userId, name, email, password) VALUES (?, ?, ?, ?)&quot;;</b>
+<b class="nc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setInt(1, manager.getId());</b>
+<b class="nc">&nbsp;            stmt.setString(2, manager.getName());</b>
+<b class="nc">&nbsp;            stmt.setString(3, manager.getEmail());</b>
+<b class="nc">&nbsp;            stmt.setString(4, manager.getPassword());</b>
+<b class="nc">&nbsp;            stmt.executeUpdate();</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Add a Student
+&nbsp;    public void addStudent(Student student) throws SQLException {
+<b class="fc">&nbsp;        String query = &quot;INSERT INTO Student (userId, name, email, password) VALUES (?, ?, ?, ?)&quot;;</b>
+<b class="fc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setInt(1, student.getId());</b>
+<b class="nc">&nbsp;            stmt.setString(2, student.getName());</b>
+<b class="nc">&nbsp;            stmt.setString(3, student.getEmail());</b>
+<b class="nc">&nbsp;            stmt.setString(4, student.getPassword());</b>
+<b class="nc">&nbsp;            stmt.executeUpdate();</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Add a Visitor
+&nbsp;    public void addVisitor(Visitor visitor) throws SQLException {
+<b class="fc">&nbsp;        String query = &quot;INSERT INTO Visitor (userId, name, email, password) VALUES (?, ?, ?, ?)&quot;;</b>
+<b class="fc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setInt(1, visitor.getId());</b>
+<b class="nc">&nbsp;            stmt.setString(2, visitor.getName());</b>
+<b class="nc">&nbsp;            stmt.setString(3, visitor.getEmail());</b>
+<b class="nc">&nbsp;            stmt.setString(4, visitor.getPassword());</b>
+<b class="nc">&nbsp;            stmt.executeUpdate();</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Method to insert a user into the appropriate table based on their ID
+&nbsp;    public void addUserToSpecificTable(User user) throws SQLException {
+<b class="fc">&nbsp;        int userId = user.getId();</b>
+&nbsp;        
+&nbsp;        // first inserting into the User table
+<b class="fc">&nbsp;        String baseUserQuery = &quot;INSERT INTO User (userId) VALUES (?)&quot;;</b>
+<b class="fc">&nbsp;        try(PreparedStatement stmt = connection.prepareStatement(baseUserQuery)){</b>
+<b class="nc">&nbsp;        	stmt.setInt(1, userId);</b>
+<b class="nc">&nbsp;        	stmt.executeUpdate();</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;        
+&nbsp;        String query;
+&nbsp;        // debugging 
+<b class="nc">&nbsp;        System.out.println(&quot;Trying to insert user into DB: &quot; + user.getName() + &quot;, ID: &quot; + user.getId());</b>
+&nbsp;
+&nbsp;        
+<b class="nc">&nbsp;        if (String.valueOf(userId).startsWith(&quot;1&quot;)) {</b>
+<b class="nc">&nbsp;            query = &quot;INSERT INTO FacultyMember (userId, name, email, password) VALUES (?, ?, ?, ?)&quot;;</b>
+<b class="nc">&nbsp;        } else if (String.valueOf(userId).startsWith(&quot;2&quot;)) {</b>
+<b class="nc">&nbsp;            query = &quot;INSERT INTO NonFacultyStaff (userId, name, email, password) VALUES (?, ?, ?, ?)&quot;;</b>
+<b class="nc">&nbsp;        } else if (String.valueOf(userId).startsWith(&quot;3&quot;)) {</b>
+<b class="nc">&nbsp;            query = &quot;INSERT INTO Student (userId, name, email, password) VALUES (?, ?, ?, ?)&quot;;</b>
+<b class="nc">&nbsp;        } else if (String.valueOf(userId).startsWith(&quot;4&quot;)) {</b>
+<b class="nc">&nbsp;            query = &quot;INSERT INTO Visitor (userId, name, email, password) VALUES (?, ?, ?, ?)&quot;;</b>
+<b class="nc">&nbsp;        } else if (String.valueOf(userId).startsWith(&quot;5&quot;)) {</b>
+<b class="nc">&nbsp;            query = &quot;INSERT INTO Manager (userId, name, email, password) VALUES (?, ?, ?, ?)&quot;;</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid user ID: &quot; + userId);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setInt(1, user.getId());</b>
+<b class="nc">&nbsp;            stmt.setString(2, user.getName());</b>
+<b class="nc">&nbsp;            stmt.setString(3, user.getEmail());</b>
+<b class="nc">&nbsp;            stmt.setString(4, user.getPassword());</b>
+<b class="nc">&nbsp;            stmt.executeUpdate();</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Method to fetch a FacultyMember by userId
+&nbsp;    public FacultyMember getFacultyMember(int userId) throws SQLException {
+<b class="fc">&nbsp;        String query = &quot;SELECT * FROM FacultyMember WHERE userId = ?&quot;;</b>
+<b class="fc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setInt(1, userId);</b>
+<b class="nc">&nbsp;            try (ResultSet rs = stmt.executeQuery()) {</b>
+<b class="nc">&nbsp;                if (rs.next()) {</b>
+<b class="nc">&nbsp;                    return new FacultyMember(</b>
+<b class="nc">&nbsp;                        rs.getString(&quot;name&quot;),</b>
+<b class="nc">&nbsp;                        rs.getInt(&quot;userId&quot;),</b>
+<b class="nc">&nbsp;                        rs.getString(&quot;email&quot;),</b>
+<b class="nc">&nbsp;                        rs.getString(&quot;password&quot;)</b>
+&nbsp;                    );
+&nbsp;                }
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Method to fetch a NonFacultyStaff by userId
+&nbsp;    public NonFacultyStaff getNonFacultyStaff(int userId) throws SQLException {
+<b class="fc">&nbsp;        String query = &quot;SELECT * FROM NonFacultyStaff WHERE userId = ?&quot;;</b>
+<b class="fc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setInt(1, userId);</b>
+<b class="nc">&nbsp;            try (ResultSet rs = stmt.executeQuery()) {</b>
+<b class="nc">&nbsp;                if (rs.next()) {</b>
+<b class="nc">&nbsp;                    return new NonFacultyStaff(</b>
+<b class="nc">&nbsp;                        rs.getString(&quot;name&quot;),</b>
+<b class="nc">&nbsp;                        rs.getInt(&quot;userId&quot;),</b>
+<b class="nc">&nbsp;                        rs.getString(&quot;email&quot;),</b>
+<b class="nc">&nbsp;                        rs.getString(&quot;password&quot;)</b>
+&nbsp;                    );
+&nbsp;                }
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Method to fetch a Manager by userId
+&nbsp;    public Manager getManager(int userId) throws SQLException {
+<b class="fc">&nbsp;        if (userId == 0) {</b>
+&nbsp;            // Return a SuperManager if the userId is 0
+<b class="nc">&nbsp;            String query = &quot;SELECT * FROM Manager WHERE userId = ?&quot;;</b>
+<b class="nc">&nbsp;            try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;                stmt.setInt(1, userId);</b>
+<b class="nc">&nbsp;                try (ResultSet rs = stmt.executeQuery()) {</b>
+<b class="nc">&nbsp;                    if (rs.next()) {</b>
+<b class="nc">&nbsp;                        return SuperManager.getInstance();</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        } else if (String.valueOf(userId).startsWith(&quot;5&quot;)) {</b>
+&nbsp;            // Return a GeneralManager if the userId starts with 5
+<b class="nc">&nbsp;            String query = &quot;SELECT * FROM Manager WHERE userId = ?&quot;;</b>
+<b class="nc">&nbsp;            try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;                stmt.setInt(1, userId);</b>
+<b class="nc">&nbsp;                try (ResultSet rs = stmt.executeQuery()) {</b>
+<b class="nc">&nbsp;                    if (rs.next()) {</b>
+<b class="nc">&nbsp;                        return new GeneralManager(</b>
+<b class="nc">&nbsp;                            rs.getString(&quot;name&quot;),</b>
+<b class="nc">&nbsp;                            rs.getInt(&quot;userId&quot;),</b>
+<b class="nc">&nbsp;                            rs.getString(&quot;email&quot;),</b>
+<b class="nc">&nbsp;                            rs.getString(&quot;password&quot;)</b>
+&nbsp;                        );
+&nbsp;                    }
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+<b class="fc">&nbsp;        throw new IllegalArgumentException(&quot;Invalid Manager ID: &quot; + userId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Method to fetch a Student by userId
+&nbsp;    public Student getStudent(int userId) throws SQLException {
+<b class="nc">&nbsp;        String query = &quot;SELECT * FROM Student WHERE userId = ?&quot;;</b>
+<b class="nc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setInt(1, userId);</b>
+<b class="nc">&nbsp;            try (ResultSet rs = stmt.executeQuery()) {</b>
+<b class="nc">&nbsp;                if (rs.next()) {</b>
+<b class="nc">&nbsp;                    return new Student(</b>
+<b class="nc">&nbsp;                        rs.getString(&quot;name&quot;),</b>
+<b class="nc">&nbsp;                        rs.getInt(&quot;userId&quot;),</b>
+<b class="nc">&nbsp;                        rs.getString(&quot;email&quot;),</b>
+<b class="nc">&nbsp;                        rs.getString(&quot;password&quot;)</b>
+&nbsp;                    );
+&nbsp;                }
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Method to fetch a Visitor by userId
+&nbsp;    public Visitor getVisitor(int userId) throws SQLException {
+<b class="fc">&nbsp;        String query = &quot;SELECT * FROM Visitor WHERE userId = ?&quot;;</b>
+<b class="fc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setInt(1, userId);</b>
+<b class="nc">&nbsp;            try (ResultSet rs = stmt.executeQuery()) {</b>
+<b class="nc">&nbsp;                if (rs.next()) {</b>
+<b class="nc">&nbsp;                    return new Visitor(</b>
+<b class="nc">&nbsp;                        rs.getString(&quot;name&quot;),</b>
+<b class="nc">&nbsp;                        rs.getInt(&quot;userId&quot;),</b>
+<b class="nc">&nbsp;                        rs.getString(&quot;email&quot;),</b>
+<b class="nc">&nbsp;                        rs.getString(&quot;password&quot;)</b>
+&nbsp;                    );
+&nbsp;                }
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Method to fetch a generic User object by userId
+&nbsp;    public User getUserById(int userId) throws SQLException {
+<b class="fc">&nbsp;        if (String.valueOf(userId).startsWith(&quot;1&quot;)) {</b>
+<b class="fc">&nbsp;            return getFacultyMember(userId);</b>
+<b class="nc">&nbsp;        } else if (String.valueOf(userId).startsWith(&quot;2&quot;)) {</b>
+<b class="nc">&nbsp;            return getNonFacultyStaff(userId);</b>
+<b class="nc">&nbsp;        } else if (String.valueOf(userId).startsWith(&quot;3&quot;)) {</b>
+<b class="nc">&nbsp;            return getStudent(userId);</b>
+<b class="nc">&nbsp;        } else if (String.valueOf(userId).startsWith(&quot;4&quot;)) {</b>
+<b class="nc">&nbsp;            return getVisitor(userId);</b>
+<b class="nc">&nbsp;        } else if (String.valueOf(userId).startsWith(&quot;5&quot;)) {</b>
+<b class="nc">&nbsp;            return getManager(userId);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid user ID: &quot; + userId);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    // // Method to get all bookings for a specific user will be implemented later if needed
+&nbsp;    // public List&lt;Booking&gt; getBookingsByUserId(int userId) throws SQLException {
+&nbsp;    //     String query = &quot;SELECT * FROM Booking WHERE userId = ?&quot;;
+&nbsp;    //     List&lt;Booking&gt; bookings = new ArrayList&lt;&gt;();
+&nbsp;    //     try (PreparedStatement stmt = connection.prepareStatement(query)) {
+&nbsp;    //         stmt.setInt(1, userId);
+&nbsp;    //         try (ResultSet rs = stmt.executeQuery()) {
+&nbsp;    //             while (rs.next()) {
+&nbsp;    //                 bookings.add(new Booking(
+&nbsp;    //                     rs.getInt(&quot;bookingId&quot;),
+&nbsp;    //                     rs.getTimestamp(&quot;bookingStartTime&quot;),
+&nbsp;    //                     rs.getTimestamp(&quot;bookingEndTime&quot;),
+&nbsp;    //                     rs.getString(&quot;carLicensePlate&quot;),
+&nbsp;    //                     rs.getBoolean(&quot;isValid&quot;),
+&nbsp;    //                     rs.getInt(&quot;sensorId&quot;),
+&nbsp;    //                     rs.getInt(&quot;userId&quot;),
+&nbsp;    //                     rs.getBoolean(&quot;showUp&quot;)
+&nbsp;    //                 ));
+&nbsp;    //             }
+&nbsp;    //         }
+&nbsp;    //     }
+&nbsp;    //     return bookings;
+&nbsp;    // }
+&nbsp;
+&nbsp;    // Method to update the status of a parking spot
+&nbsp;    public void updateParkingSpotStatus(int sensorId, boolean isOccupied) throws SQLException {
+<b class="fc">&nbsp;        String query = &quot;UPDATE ParkingSpot SET isOccupied = ? WHERE sensorId = ?&quot;;</b>
+<b class="fc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setBoolean(1, isOccupied);</b>
+<b class="nc">&nbsp;            stmt.setInt(2, sensorId);</b>
+<b class="nc">&nbsp;            stmt.executeUpdate();</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Method to get available parking spots in a specific lot
+&nbsp;    public List&lt;Integer&gt; getAvailableParkingSpots(int lotId) throws SQLException {
+<b class="fc">&nbsp;        String query = &quot;SELECT sensorId FROM ParkingSpot WHERE lotId = ? AND isOccupied = 0&quot;;</b>
+<b class="fc">&nbsp;        List&lt;Integer&gt; availableSpots = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setInt(1, lotId);</b>
+<b class="nc">&nbsp;            try (ResultSet rs = stmt.executeQuery()) {</b>
+<b class="nc">&nbsp;                while (rs.next()) {</b>
+<b class="nc">&nbsp;                    availableSpots.add(rs.getInt(&quot;sensorId&quot;));</b>
+&nbsp;                }
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return availableSpots;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Method to delete a booking
+&nbsp;    public void deleteBooking(int bookingId) throws SQLException {
+<b class="fc">&nbsp;        String query = &quot;DELETE FROM Booking WHERE bookingId = ?&quot;;</b>
+<b class="fc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setInt(1, bookingId);</b>
+<b class="nc">&nbsp;            stmt.executeUpdate();</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Method to validate a booking
+&nbsp;    public void validateBooking(int bookingId, boolean isValid) throws SQLException {
+<b class="nc">&nbsp;        String query = &quot;UPDATE Booking SET isValid = ? WHERE bookingId = ?&quot;;</b>
+<b class="nc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setBoolean(1, isValid);</b>
+<b class="nc">&nbsp;            stmt.setInt(2, bookingId);</b>
+<b class="nc">&nbsp;            stmt.executeUpdate();</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Method to invalidate a booking by booking ID
+&nbsp;    public void invalidateBooking(int bookingId) throws SQLException {
+<b class="nc">&nbsp;        String query = &quot;UPDATE Booking SET isValid = 0 WHERE bookingId = ?&quot;;</b>
+<b class="nc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setInt(1, bookingId);</b>
+<b class="nc">&nbsp;            stmt.executeUpdate();</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Method to get all parking lots
+&nbsp;    public List&lt;Integer&gt; getAllParkingLots() throws SQLException {
+<b class="fc">&nbsp;        String query = &quot;SELECT lotId FROM ParkingLot&quot;;</b>
+<b class="fc">&nbsp;        List&lt;Integer&gt; lots = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        try (Statement stmt = connection.createStatement();</b>
+<b class="nc">&nbsp;             ResultSet rs = stmt.executeQuery(query)) {</b>
+<b class="nc">&nbsp;            while (rs.next()) {</b>
+<b class="nc">&nbsp;                lots.add(rs.getInt(&quot;lotId&quot;));</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return lots;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Method to insert a sensor into the table using individual parameters
+&nbsp;    public void addSensor(int sensorId, boolean sensorOn, Timestamp sensorActivationTime, Timestamp sensorDeactivationTime, 
+&nbsp;                        String currentCarPlate, String currentCarBrand, String currentCarModel, String currentCarColor, 
+&nbsp;                        boolean carArrived) throws SQLException {
+<b class="fc">&nbsp;        String query = &quot;INSERT INTO Sensor (sensorId, sensorOn, sensorActivationTime, sensorDeactivationTime, currentCarPlate, &quot; +</b>
+&nbsp;                    &quot;currentCarBrand, currentCarModel, currentCarColor, carArrived) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)&quot;;
+<b class="fc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setInt(1, sensorId);</b>
+<b class="nc">&nbsp;            stmt.setBoolean(2, sensorOn);</b>
+<b class="nc">&nbsp;            stmt.setTimestamp(3, sensorActivationTime);</b>
+<b class="nc">&nbsp;            stmt.setTimestamp(4, sensorDeactivationTime);</b>
+<b class="nc">&nbsp;            stmt.setString(5, currentCarPlate);</b>
+<b class="nc">&nbsp;            stmt.setString(6, currentCarBrand);</b>
+<b class="nc">&nbsp;            stmt.setString(7, currentCarModel);</b>
+<b class="nc">&nbsp;            stmt.setString(8, currentCarColor);</b>
+<b class="nc">&nbsp;            stmt.setBoolean(9, carArrived);</b>
+<b class="nc">&nbsp;            stmt.executeUpdate();</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Method to insert a sensor into the table using a Sensor object
+&nbsp;    public void addSensor(Sensor sensor) throws SQLException {
+<b class="fc">&nbsp;        addSensor(sensor.getSensorId(), sensor.isSensorOn(), </b>
+<b class="fc">&nbsp;                sensor.getSensorActivationTime() != null ? Timestamp.from(sensor.getSensorActivationTime().toInstant()) : null,</b>
+<b class="fc">&nbsp;                sensor.getSensorDeactivationTime() != null ? Timestamp.from(sensor.getSensorDeactivationTime().toInstant()) : null,</b>
+<b class="fc">&nbsp;                sensor.getCurrentCarPlate(), sensor.getCurrentCarBrand(), sensor.getCurrentCarModel(), </b>
+<b class="fc">&nbsp;                sensor.getCurrentCarColor(), sensor.isCarArrived());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Method to get a Sensor object by sensorId
+&nbsp;    public Sensor getSensorById(int sensorId) throws SQLException {
+<b class="fc">&nbsp;        String query = &quot;SELECT * FROM Sensor WHERE sensorId = ?&quot;;</b>
+<b class="fc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setInt(1, sensorId);</b>
+<b class="nc">&nbsp;            try (ResultSet rs = stmt.executeQuery()) {</b>
+<b class="nc">&nbsp;                if (rs.next()) {</b>
+<b class="nc">&nbsp;                    Sensor sensor = new Sensor(rs.getInt(&quot;sensorId&quot;));</b>
+<b class="nc">&nbsp;                    sensor.setSensorOn(rs.getBoolean(&quot;sensorOn&quot;));</b>
+<b class="nc">&nbsp;                    sensor.activateSensor(rs.getTimestamp(&quot;sensorActivationTime&quot;) != null ? </b>
+<b class="nc">&nbsp;                                        rs.getTimestamp(&quot;sensorActivationTime&quot;).toInstant().atZone(java.time.ZoneId.systemDefault()) : null);</b>
+<b class="nc">&nbsp;                    sensor.deactivateSensor(rs.getTimestamp(&quot;sensorDeactivationTime&quot;) != null ? </b>
+<b class="nc">&nbsp;                                            rs.getTimestamp(&quot;sensorDeactivationTime&quot;).toInstant().atZone(java.time.ZoneId.systemDefault()) : null);</b>
+<b class="nc">&nbsp;                    sensor.setCurrentCarPlate(rs.getString(&quot;currentCarPlate&quot;));</b>
+<b class="nc">&nbsp;                    sensor.setCurrentCarBrand(rs.getString(&quot;currentCarBrand&quot;));</b>
+<b class="nc">&nbsp;                    sensor.setCurrentCarModel(rs.getString(&quot;currentCarModel&quot;));</b>
+<b class="nc">&nbsp;                    sensor.setCurrentCarColor(rs.getString(&quot;currentCarColor&quot;));</b>
+<b class="nc">&nbsp;                    sensor.setCarArrived(rs.getBoolean(&quot;carArrived&quot;));</b>
+<b class="nc">&nbsp;                    return sensor;</b>
+&nbsp;                }
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Method to get a Sensor object by spotId
+&nbsp;    public Sensor getSensorBySpotId(int spotId) throws SQLException {
+<b class="fc">&nbsp;        String query = &quot;SELECT s.* FROM Sensor s JOIN ParkingSpot ps ON s.sensorId = ps.sensorId WHERE ps.spotId = ?&quot;;</b>
+<b class="fc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setInt(1, spotId);</b>
+<b class="nc">&nbsp;            try (ResultSet rs = stmt.executeQuery()) {</b>
+<b class="nc">&nbsp;                if (rs.next()) {</b>
+<b class="nc">&nbsp;                    Sensor sensor = new Sensor(rs.getInt(&quot;sensorId&quot;));</b>
+<b class="nc">&nbsp;                    sensor.setSensorOn(rs.getBoolean(&quot;sensorOn&quot;));</b>
+<b class="nc">&nbsp;                    sensor.activateSensor(rs.getTimestamp(&quot;sensorActivationTime&quot;) != null ? </b>
+<b class="nc">&nbsp;                                        rs.getTimestamp(&quot;sensorActivationTime&quot;).toInstant().atZone(java.time.ZoneId.systemDefault()) : null);</b>
+<b class="nc">&nbsp;                    sensor.deactivateSensor(rs.getTimestamp(&quot;sensorDeactivationTime&quot;) != null ? </b>
+<b class="nc">&nbsp;                                            rs.getTimestamp(&quot;sensorDeactivationTime&quot;).toInstant().atZone(java.time.ZoneId.systemDefault()) : null);</b>
+<b class="nc">&nbsp;                    sensor.setCurrentCarPlate(rs.getString(&quot;currentCarPlate&quot;));</b>
+<b class="nc">&nbsp;                    sensor.setCurrentCarBrand(rs.getString(&quot;currentCarBrand&quot;));</b>
+<b class="nc">&nbsp;                    sensor.setCurrentCarModel(rs.getString(&quot;currentCarModel&quot;));</b>
+<b class="nc">&nbsp;                    sensor.setCurrentCarColor(rs.getString(&quot;currentCarColor&quot;));</b>
+<b class="nc">&nbsp;                    sensor.setCarArrived(rs.getBoolean(&quot;carArrived&quot;));</b>
+<b class="nc">&nbsp;                    return sensor;</b>
+&nbsp;                }
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Method to get the sensorOn condition by sensorId
+&nbsp;    public boolean isSensorOn(int sensorId) throws SQLException {
+<b class="fc">&nbsp;        String query = &quot;SELECT sensorOn FROM Sensor WHERE sensorId = ?&quot;;</b>
+<b class="fc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setInt(1, sensorId);</b>
+<b class="nc">&nbsp;            try (ResultSet rs = stmt.executeQuery()) {</b>
+<b class="nc">&nbsp;                if (rs.next()) {</b>
+<b class="nc">&nbsp;                    return rs.getBoolean(&quot;sensorOn&quot;);</b>
+&nbsp;                }
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        throw new SQLException(&quot;Sensor with ID &quot; + sensorId + &quot; not found.&quot;);</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;     // Method to update the carArrived attribute of a sensor
+&nbsp;    public void setCarArrived(int sensorId, boolean carArrived) throws SQLException {
+<b class="nc">&nbsp;        String query = &quot;UPDATE Sensor SET carArrived = ? WHERE sensorId = ?&quot;;</b>
+<b class="nc">&nbsp;        try (PreparedStatement stmt = connection.prepareStatement(query)) {</b>
+<b class="nc">&nbsp;            stmt.setBoolean(1, carArrived);</b>
+<b class="nc">&nbsp;            stmt.setInt(2, sensorId);</b>
+<b class="nc">&nbsp;            stmt.executeUpdate();</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-10 21:16</div>
+</div>
+</body>
+</html>

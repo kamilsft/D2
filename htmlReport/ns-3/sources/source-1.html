@@ -1,0 +1,1081 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > MainUI</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">ManinUI</a>
+</div>
+
+<h1>Coverage Summary for Class: MainUI (ManinUI)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MainUI</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/24)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/421)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">MainUI$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">MainUI$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">MainUI$3</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">MainUI$4</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">MainUI$5</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">MainUI$6</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">MainUI$7</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/38)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/439)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package ManinUI;
+&nbsp;
+&nbsp;import java.awt.*;
+&nbsp;import java.awt.event.ActionEvent;
+&nbsp;import java.awt.event.ActionListener;
+&nbsp;import java.sql.Connection;
+&nbsp;import java.sql.SQLException;
+&nbsp;import java.time.ZonedDateTime;
+&nbsp;import java.util.Timer;
+&nbsp;import java.util.TimerTask;
+&nbsp;import java.util.function.Consumer;
+&nbsp;import java.util.function.Predicate;
+&nbsp;
+&nbsp;import javax.swing.*;
+&nbsp;
+&nbsp;import DesignPatternClasses.*;
+&nbsp;import logic.*;
+&nbsp;import Connections.*;
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;public class MainUI extends JFrame {</b>
+&nbsp;    private CardLayout cardLayout;
+&nbsp;    private JPanel mainPanel;
+&nbsp;    private JComboBox&lt;String&gt; userTypeBox;
+&nbsp;    private JTextField txtUsername, txtEmail;
+&nbsp;    private JPasswordField txtPassword;
+&nbsp;    private JButton btnLogin, btnBookSpot, btnCancelBooking, btnLogout, btnExtendBooking, btnViewParkingSpaces;
+&nbsp;    private JLabel lblWelcome, lblBookingStatus, lblExpirationTime, lblRemainingTime;
+&nbsp;    private User currentUser;
+&nbsp;    private ParkingBooking currentBooking;
+&nbsp;    private Timer bookingTimer;
+&nbsp;    private static ParkingManager manager; // Changed to static
+&nbsp;    private JTextField txtUserId;
+&nbsp;    private DatabaseDAO dbDAO;
+&nbsp;
+&nbsp;
+&nbsp;    private static MainUI instance;
+&nbsp;
+&nbsp;    public static MainUI getInstance() {
+<b class="nc">&nbsp;        if (instance == null)</b>
+<b class="nc">&nbsp;            instance = new MainUI();</b>
+&nbsp;
+<b class="nc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    public MainUI() {</b>
+<b class="nc">&nbsp;        setTitle(&quot;Parking Management System&quot;);</b>
+<b class="nc">&nbsp;        setSize(800, 600); // Increased window size</b>
+<b class="nc">&nbsp;        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</b>
+<b class="nc">&nbsp;        setLocationRelativeTo(null);</b>
+<b class="nc">&nbsp;        getContentPane().setBackground(new Color(240, 240, 240)); // Light gray background</b>
+&nbsp;
+&nbsp;        // CardLayout to switch between screens
+<b class="nc">&nbsp;        cardLayout = new CardLayout();</b>
+<b class="nc">&nbsp;        mainPanel = new JPanel(cardLayout);</b>
+<b class="nc">&nbsp;        mainPanel.setBackground(new Color(240, 240, 240));</b>
+&nbsp;
+&nbsp;        // passing the connection to db
+&nbsp;        try {
+<b class="nc">&nbsp;            Connection conn = DatabaseConnection.getConnection();</b>
+<b class="nc">&nbsp;            dbDAO = new DatabaseDAO(conn);</b>
+<b class="nc">&nbsp;        } catch (SQLException e) {</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(null, &quot;Failed to connect to database!&quot;, &quot;DB Error&quot;, JOptionPane.ERROR_MESSAGE);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;
+&nbsp;        // Initialize the manager
+<b class="nc">&nbsp;        if (manager == null) {</b>
+<b class="nc">&nbsp;            manager = new ParkingManager();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Add screens
+<b class="nc">&nbsp;        mainPanel.add(createLoginPanel(), &quot;Login&quot;);</b>
+<b class="nc">&nbsp;        mainPanel.add(createDashboardPanel(), &quot;Dashboard&quot;);</b>
+<b class="nc">&nbsp;        mainPanel.add(createManagerDashboardPanel(), &quot;ManagerDashboard&quot;);</b>
+<b class="nc">&nbsp;        mainPanel.add(createSuperManagerDashboardPanel(), &quot;SuperManagerDashboard&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        add(mainPanel);</b>
+<b class="nc">&nbsp;        setVisible(true);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private JPanel createLoginPanel() {
+<b class="nc">&nbsp;        JPanel panel = new JPanel(new GridLayout(6, 2, 15, 15));</b>
+<b class="nc">&nbsp;        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));</b>
+<b class="nc">&nbsp;        panel.setBackground(new Color(240, 240, 240));</b>
+&nbsp;
+&nbsp;        // Styled labels
+<b class="nc">&nbsp;        Font labelFont = new Font(&quot;Arial&quot;, Font.BOLD, 14);</b>
+<b class="nc">&nbsp;        JLabel userTypeLabel = new JLabel(&quot;Select User Type:&quot;);</b>
+<b class="nc">&nbsp;        userTypeLabel.setFont(labelFont);</b>
+<b class="nc">&nbsp;        panel.add(userTypeLabel);</b>
+&nbsp;
+<b class="nc">&nbsp;        userTypeBox = new JComboBox&lt;&gt;(new String[]{&quot;Student&quot;, &quot;Faculty&quot;, &quot;NonFaculty&quot;, &quot;Visitor&quot;, &quot;Manager&quot;, &quot;SuperManager&quot;});</b>
+<b class="nc">&nbsp;        userTypeBox.setFont(new Font(&quot;Arial&quot;, Font.PLAIN, 14));</b>
+<b class="nc">&nbsp;        panel.add(userTypeBox);</b>
+&nbsp;
+<b class="nc">&nbsp;        JLabel usernameLabel = new JLabel(&quot;Username:&quot;);</b>
+<b class="nc">&nbsp;        usernameLabel.setFont(labelFont);</b>
+<b class="nc">&nbsp;        panel.add(usernameLabel);</b>
+<b class="nc">&nbsp;        txtUsername = new JTextField();</b>
+<b class="nc">&nbsp;        txtUsername.setFont(new Font(&quot;Arial&quot;, Font.PLAIN, 14));</b>
+<b class="nc">&nbsp;        panel.add(txtUsername);</b>
+&nbsp;
+<b class="nc">&nbsp;        JLabel lblUserId = new JLabel(&quot;ID:&quot;);</b>
+<b class="nc">&nbsp;        lblUserId.setFont(labelFont);</b>
+<b class="nc">&nbsp;        panel.add(lblUserId);</b>
+<b class="nc">&nbsp;        txtUserId = new JTextField();</b>
+<b class="nc">&nbsp;        txtUserId.setFont(new Font(&quot;Arial&quot;, Font.PLAIN, 14));</b>
+<b class="nc">&nbsp;        panel.add(txtUserId);</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        JLabel emailLabel = new JLabel(&quot;Email:&quot;);</b>
+<b class="nc">&nbsp;        emailLabel.setFont(labelFont);</b>
+<b class="nc">&nbsp;        panel.add(emailLabel);</b>
+<b class="nc">&nbsp;        txtEmail = new JTextField();</b>
+<b class="nc">&nbsp;        txtEmail.setFont(new Font(&quot;Arial&quot;, Font.PLAIN, 14));</b>
+<b class="nc">&nbsp;        panel.add(txtEmail);</b>
+&nbsp;
+<b class="nc">&nbsp;        JLabel passwordLabel = new JLabel(&quot;Password:&quot;);</b>
+<b class="nc">&nbsp;        passwordLabel.setFont(labelFont);</b>
+<b class="nc">&nbsp;        panel.add(passwordLabel);</b>
+<b class="nc">&nbsp;        txtPassword = new JPasswordField();</b>
+<b class="nc">&nbsp;        txtPassword.setFont(new Font(&quot;Arial&quot;, Font.PLAIN, 14));</b>
+<b class="nc">&nbsp;        panel.add(txtPassword);</b>
+&nbsp;
+<b class="nc">&nbsp;        btnLogin = new JButton(&quot;Login&quot;);</b>
+<b class="nc">&nbsp;        btnLogin.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 14));</b>
+<b class="nc">&nbsp;        btnLogin.setBackground(new Color(70, 130, 180)); // Steel blue</b>
+<b class="nc">&nbsp;        btnLogin.setForeground(Color.WHITE);</b>
+<b class="nc">&nbsp;        panel.add(new JLabel());</b>
+<b class="nc">&nbsp;        panel.add(btnLogin);</b>
+&nbsp;
+<b class="nc">&nbsp;        btnLogin.addActionListener(new ActionListener() {</b>
+&nbsp;            @Override
+&nbsp;            public void actionPerformed(ActionEvent e) {
+<b class="nc">&nbsp;                handleLogin();</b>
+&nbsp;            }
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        return panel;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private JPanel createDashboardPanel() {
+<b class="nc">&nbsp;        JPanel panel = new JPanel(new GridLayout(7, 1, 15, 15));</b>
+<b class="nc">&nbsp;        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));</b>
+<b class="nc">&nbsp;        panel.setBackground(new Color(240, 240, 240));</b>
+&nbsp;
+&nbsp;        // Welcome label with larger font
+<b class="nc">&nbsp;        lblWelcome = new JLabel(&quot;Welcome, User&quot;, SwingConstants.CENTER);</b>
+<b class="nc">&nbsp;        lblWelcome.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 18));</b>
+<b class="nc">&nbsp;        panel.add(lblWelcome);</b>
+&nbsp;
+&nbsp;        // Status labels with slightly larger font
+<b class="nc">&nbsp;        Font statusFont = new Font(&quot;Arial&quot;, Font.PLAIN, 14);</b>
+<b class="nc">&nbsp;        lblBookingStatus = new JLabel(&quot;No active booking&quot;, SwingConstants.CENTER);</b>
+<b class="nc">&nbsp;        lblBookingStatus.setFont(statusFont);</b>
+<b class="nc">&nbsp;        panel.add(lblBookingStatus);</b>
+&nbsp;
+<b class="nc">&nbsp;        lblExpirationTime = new JLabel(&quot;&quot;, SwingConstants.CENTER);</b>
+<b class="nc">&nbsp;        lblExpirationTime.setFont(statusFont);</b>
+<b class="nc">&nbsp;        panel.add(lblExpirationTime);</b>
+&nbsp;
+<b class="nc">&nbsp;        lblRemainingTime = new JLabel(&quot;&quot;, SwingConstants.CENTER);</b>
+<b class="nc">&nbsp;        lblRemainingTime.setFont(statusFont);</b>
+<b class="nc">&nbsp;        panel.add(lblRemainingTime);</b>
+&nbsp;
+&nbsp;        // Style buttons consistently
+<b class="nc">&nbsp;        Font buttonFont = new Font(&quot;Arial&quot;, Font.BOLD, 14);</b>
+<b class="nc">&nbsp;        Color buttonColor = new Color(70, 130, 180);</b>
+&nbsp;
+<b class="nc">&nbsp;        btnBookSpot = new JButton(&quot;Book Parking Spot&quot;);</b>
+<b class="nc">&nbsp;        btnBookSpot.setFont(buttonFont);</b>
+<b class="nc">&nbsp;        btnBookSpot.setBackground(buttonColor);</b>
+<b class="nc">&nbsp;        btnBookSpot.setForeground(Color.WHITE);</b>
+<b class="nc">&nbsp;        panel.add(btnBookSpot);</b>
+&nbsp;
+<b class="nc">&nbsp;        btnExtendBooking = new JButton(&quot;Extend Booking&quot;);</b>
+<b class="nc">&nbsp;        btnExtendBooking.setFont(buttonFont);</b>
+<b class="nc">&nbsp;        btnExtendBooking.setBackground(buttonColor);</b>
+<b class="nc">&nbsp;        btnExtendBooking.setForeground(Color.WHITE);</b>
+<b class="nc">&nbsp;        panel.add(btnExtendBooking);</b>
+&nbsp;
+<b class="nc">&nbsp;        btnCancelBooking = new JButton(&quot;Cancel Booking&quot;);</b>
+<b class="nc">&nbsp;        btnCancelBooking.setFont(buttonFont);</b>
+<b class="nc">&nbsp;        btnCancelBooking.setBackground(buttonColor);</b>
+<b class="nc">&nbsp;        btnCancelBooking.setForeground(Color.WHITE);</b>
+<b class="nc">&nbsp;        panel.add(btnCancelBooking);</b>
+&nbsp;
+<b class="nc">&nbsp;        btnViewParkingSpaces = new JButton(&quot;View Parking Spaces&quot;);</b>
+<b class="nc">&nbsp;        btnViewParkingSpaces.setFont(buttonFont);</b>
+<b class="nc">&nbsp;        btnViewParkingSpaces.setBackground(buttonColor);</b>
+<b class="nc">&nbsp;        btnViewParkingSpaces.setForeground(Color.WHITE);</b>
+<b class="nc">&nbsp;        panel.add(btnViewParkingSpaces);</b>
+&nbsp;
+<b class="nc">&nbsp;        btnLogout = new JButton(&quot;Logout&quot;);</b>
+<b class="nc">&nbsp;        btnLogout.setFont(buttonFont);</b>
+<b class="nc">&nbsp;        btnLogout.setBackground(new Color(220, 80, 80)); // Red color for logout</b>
+<b class="nc">&nbsp;        btnLogout.setForeground(Color.WHITE);</b>
+<b class="nc">&nbsp;        panel.add(btnLogout);</b>
+&nbsp;
+&nbsp;        // Button Actions
+<b class="nc">&nbsp;        btnBookSpot.addActionListener(new ActionListener() {</b>
+&nbsp;            @Override
+&nbsp;            public void actionPerformed(ActionEvent e) {
+<b class="nc">&nbsp;                handleBooking();</b>
+&nbsp;            }
+&nbsp;        });
+<b class="nc">&nbsp;        btnViewParkingSpaces.addActionListener(new ActionListener() {</b>
+&nbsp;            @Override
+&nbsp;            public void actionPerformed(ActionEvent e) {
+<b class="nc">&nbsp;                ParkingSpaceViewer viewer = new ParkingSpaceViewer(manager);</b>
+<b class="nc">&nbsp;                viewer.setVisible(true);</b>
+&nbsp;            }
+&nbsp;        });
+<b class="nc">&nbsp;        btnExtendBooking.addActionListener(new ActionListener() {</b>
+&nbsp;            @Override
+&nbsp;            public void actionPerformed(ActionEvent e) {
+<b class="nc">&nbsp;                handleExtendBooking();</b>
+&nbsp;            }
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        btnCancelBooking.addActionListener(new ActionListener() {</b>
+&nbsp;            @Override
+&nbsp;            public void actionPerformed(ActionEvent e) {
+<b class="nc">&nbsp;                handleCancelBooking();</b>
+&nbsp;            }
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        btnLogout.addActionListener(new ActionListener() {</b>
+&nbsp;            @Override
+&nbsp;            public void actionPerformed(ActionEvent e) {
+<b class="nc">&nbsp;                if (bookingTimer != null) {</b>
+<b class="nc">&nbsp;                    bookingTimer.cancel();</b>
+<b class="nc">&nbsp;                    bookingTimer = null;</b>
+&nbsp;                }
+<b class="nc">&nbsp;                cardLayout.show(mainPanel, &quot;Login&quot;);</b>
+&nbsp;            }
+&nbsp;        });
+&nbsp;
+&nbsp;        // Initially disable the extend button
+<b class="nc">&nbsp;        btnExtendBooking.setEnabled(false);</b>
+&nbsp;
+<b class="nc">&nbsp;        return panel;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private JPanel createManagerDashboardPanel() {
+&nbsp;        // Create info panel to display messages
+<b class="nc">&nbsp;        JPanel infoPanel = new JPanel(new BorderLayout());</b>
+<b class="nc">&nbsp;        infoPanel.setBackground(new Color(240, 240, 240));</b>
+<b class="nc">&nbsp;        JTextArea infoArea = new JTextArea(6, 30);</b>
+<b class="nc">&nbsp;        infoArea.setEditable(false);</b>
+<b class="nc">&nbsp;        infoArea.setLineWrap(true);</b>
+<b class="nc">&nbsp;        infoArea.setWrapStyleWord(true);</b>
+<b class="nc">&nbsp;        infoArea.setFont(new Font(&quot;Arial&quot;, Font.PLAIN, 13));</b>
+<b class="nc">&nbsp;        infoArea.setBackground(new Color(250, 250, 250));</b>
+<b class="nc">&nbsp;        JScrollPane infoScrollPane = new JScrollPane(infoArea);</b>
+<b class="nc">&nbsp;        infoScrollPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));</b>
+<b class="nc">&nbsp;        JLabel infoLabel = new JLabel(&quot;System Messages:&quot;);</b>
+<b class="nc">&nbsp;        infoLabel.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 14));</b>
+<b class="nc">&nbsp;        infoPanel.add(infoLabel, BorderLayout.NORTH);</b>
+<b class="nc">&nbsp;        infoPanel.add(infoScrollPane, BorderLayout.CENTER);</b>
+&nbsp;
+&nbsp;        // Add log method to display messages in the info panel
+<b class="nc">&nbsp;        Consumer&lt;String&gt; logMessage = (message) -&gt; {</b>
+<b class="nc">&nbsp;            infoArea.append(message + &quot;\n&quot;);</b>
+<b class="nc">&nbsp;            infoArea.setCaretPosition(infoArea.getDocument().getLength());</b>
+&nbsp;        };
+&nbsp;
+&nbsp;        // Initialize spots message
+<b class="nc">&nbsp;        logMessage.accept(&quot;System initialized with parking spots A1-A9, B1-B9, C1-C9 (all enabled)&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        JPanel panel = new JPanel(new BorderLayout());</b>
+<b class="nc">&nbsp;        panel.setBackground(new Color(240, 240, 240));</b>
+<b class="nc">&nbsp;        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));</b>
+&nbsp;
+<b class="nc">&nbsp;        JLabel lblManagerWelcome = new JLabel(&quot;Manager Dashboard&quot;, SwingConstants.CENTER);</b>
+<b class="nc">&nbsp;        lblManagerWelcome.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 18));</b>
+<b class="nc">&nbsp;        panel.add(lblManagerWelcome, BorderLayout.NORTH);</b>
+&nbsp;
+<b class="nc">&nbsp;        JPanel buttonPanel = new JPanel(new GridLayout(5, 1, 10, 15));</b>
+<b class="nc">&nbsp;        buttonPanel.setBackground(new Color(240, 240, 240));</b>
+<b class="nc">&nbsp;        buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));</b>
+&nbsp;
+&nbsp;        // Style buttons
+<b class="nc">&nbsp;        Font buttonFont = new Font(&quot;Arial&quot;, Font.BOLD, 14);</b>
+<b class="nc">&nbsp;        Color buttonColor = new Color(70, 130, 180);</b>
+&nbsp;
+<b class="nc">&nbsp;        JButton btnAdd = new JButton(&quot;Add Spot&quot;);</b>
+<b class="nc">&nbsp;        btnAdd.setFont(buttonFont);</b>
+<b class="nc">&nbsp;        btnAdd.setBackground(buttonColor);</b>
+<b class="nc">&nbsp;        btnAdd.setForeground(Color.WHITE);</b>
+&nbsp;
+<b class="nc">&nbsp;        JButton btnEnable = new JButton(&quot;Enable Spot&quot;);</b>
+<b class="nc">&nbsp;        btnEnable.setFont(buttonFont);</b>
+<b class="nc">&nbsp;        btnEnable.setBackground(buttonColor);</b>
+<b class="nc">&nbsp;        btnEnable.setForeground(Color.WHITE);</b>
+&nbsp;
+<b class="nc">&nbsp;        JButton btnDisable = new JButton(&quot;Disable Spot&quot;);</b>
+<b class="nc">&nbsp;        btnDisable.setFont(buttonFont);</b>
+<b class="nc">&nbsp;        btnDisable.setBackground(buttonColor);</b>
+<b class="nc">&nbsp;        btnDisable.setForeground(Color.WHITE);</b>
+&nbsp;
+<b class="nc">&nbsp;        JButton btnViewSpaces = new JButton(&quot;View Parking Spaces&quot;);</b>
+<b class="nc">&nbsp;        btnViewSpaces.setFont(buttonFont);</b>
+<b class="nc">&nbsp;        btnViewSpaces.setBackground(buttonColor);</b>
+<b class="nc">&nbsp;        btnViewSpaces.setForeground(Color.WHITE);</b>
+&nbsp;
+<b class="nc">&nbsp;        JButton btnLogout = new JButton(&quot;Logout&quot;);</b>
+<b class="nc">&nbsp;        btnLogout.setFont(buttonFont);</b>
+<b class="nc">&nbsp;        btnLogout.setBackground(new Color(220, 80, 80)); // Red color for logout</b>
+<b class="nc">&nbsp;        btnLogout.setForeground(Color.WHITE);</b>
+&nbsp;
+<b class="nc">&nbsp;        buttonPanel.add(btnAdd);</b>
+<b class="nc">&nbsp;        buttonPanel.add(btnEnable);</b>
+<b class="nc">&nbsp;        buttonPanel.add(btnDisable);</b>
+<b class="nc">&nbsp;        buttonPanel.add(btnViewSpaces);</b>
+<b class="nc">&nbsp;        buttonPanel.add(btnLogout);</b>
+&nbsp;
+<b class="nc">&nbsp;        panel.add(buttonPanel, BorderLayout.CENTER);</b>
+<b class="nc">&nbsp;        panel.add(infoPanel, BorderLayout.SOUTH);</b>
+&nbsp;
+&nbsp;        // Function to validate spot ID format (one letter followed by one digit)
+<b class="nc">&nbsp;        Predicate&lt;String&gt; isValidSpotFormat = (id) -&gt; {</b>
+<b class="nc">&nbsp;            if (id == null || id.length() != 2) return false;</b>
+<b class="nc">&nbsp;            return Character.isLetter(id.charAt(0)) &amp;&amp; Character.isDigit(id.charAt(1));</b>
+&nbsp;        };
+&nbsp;
+&nbsp;        // Add Spot Button
+<b class="nc">&nbsp;        btnAdd.addActionListener(e -&gt; {</b>
+<b class="nc">&nbsp;            String id = JOptionPane.showInputDialog(this,</b>
+&nbsp;                    &quot;Enter Spot ID to add:\n(Format: One letter followed by one digit, e.g. A6, R5, T7)&quot;);
+&nbsp;
+<b class="nc">&nbsp;            if (id != null &amp;&amp; !id.isEmpty()) {</b>
+<b class="nc">&nbsp;                if (isValidSpotFormat.test(id)) {</b>
+&nbsp;                    // Check if max spots limit is reached
+<b class="nc">&nbsp;                    if (manager.getSpotsCount() &gt;= 100) {</b>
+<b class="nc">&nbsp;                        JOptionPane.showMessageDialog(this,</b>
+&nbsp;                                &quot;Maximum limit of 100 parking spots reached!&quot;,
+&nbsp;                                &quot;Limit Reached&quot;, JOptionPane.WARNING_MESSAGE);
+<b class="nc">&nbsp;                        logMessage.accept(&quot;Failed to add spot &quot; + id + &quot; - maximum limit reached&quot;);</b>
+&nbsp;                        return;
+&nbsp;                    }
+&nbsp;
+<b class="nc">&nbsp;                    if (manager.spotExists(id)) {</b>
+<b class="nc">&nbsp;                        JOptionPane.showMessageDialog(this,</b>
+&nbsp;                                &quot;Spot &quot; + id + &quot; already exists!&quot;,
+&nbsp;                                &quot;Duplicate Spot&quot;, JOptionPane.WARNING_MESSAGE);
+<b class="nc">&nbsp;                        logMessage.accept(&quot;Failed to add spot &quot; + id + &quot; - already exists&quot;);</b>
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        Command addCommand = new AddParkingSpotCommand(manager, id);</b>
+<b class="nc">&nbsp;                        addCommand.execute();</b>
+<b class="nc">&nbsp;                        JOptionPane.showMessageDialog(this,</b>
+&nbsp;                                &quot;Added spot: &quot; + id,
+&nbsp;                                &quot;Success&quot;, JOptionPane.INFORMATION_MESSAGE);
+<b class="nc">&nbsp;                        logMessage.accept(&quot;Added new spot: &quot; + id);</b>
+<b class="nc">&nbsp;                    }</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    JOptionPane.showMessageDialog(this,</b>
+&nbsp;                            &quot;Invalid spot ID format. Please use one letter followed by one digit (e.g. A6, R5, T7).&quot;,
+&nbsp;                            &quot;Format Error&quot;, JOptionPane.ERROR_MESSAGE);
+<b class="nc">&nbsp;                    logMessage.accept(&quot;Failed to add spot - invalid format: &quot; + id);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        });
+&nbsp;
+&nbsp;        // Enable Spot Button
+<b class="nc">&nbsp;        btnEnable.addActionListener(e -&gt; {</b>
+<b class="nc">&nbsp;            String id = JOptionPane.showInputDialog(this, &quot;Enter Spot ID to enable:&quot;);</b>
+<b class="nc">&nbsp;            if (id != null &amp;&amp; !id.isEmpty()) {</b>
+<b class="nc">&nbsp;                if (isValidSpotFormat.test(id)) {</b>
+<b class="nc">&nbsp;                    if (manager.spotExists(id)) {</b>
+<b class="nc">&nbsp;                        Command enableCommand = new EnableParkingSpotCommand(manager, id);</b>
+<b class="nc">&nbsp;                        enableCommand.execute();</b>
+<b class="nc">&nbsp;                        JOptionPane.showMessageDialog(this,</b>
+&nbsp;                                &quot;Enabled spot: &quot; + id,
+&nbsp;                                &quot;Success&quot;, JOptionPane.INFORMATION_MESSAGE);
+<b class="nc">&nbsp;                        logMessage.accept(&quot;Enabled spot: &quot; + id);</b>
+<b class="nc">&nbsp;                    } else {</b>
+<b class="nc">&nbsp;                        JOptionPane.showMessageDialog(this,</b>
+&nbsp;                                &quot;Spot &quot; + id + &quot; has not been added. Please add it first using the Add feature.&quot;,
+&nbsp;                                &quot;Spot Not Found&quot;, JOptionPane.WARNING_MESSAGE);
+<b class="nc">&nbsp;                        logMessage.accept(&quot;Failed to enable spot &quot; + id + &quot; - not found&quot;);</b>
+&nbsp;                    }
+&nbsp;                } else {
+<b class="nc">&nbsp;                    JOptionPane.showMessageDialog(this,</b>
+&nbsp;                            &quot;Invalid spot ID format. Please use one letter followed by one digit (e.g. A1, B2, C3).&quot;,
+&nbsp;                            &quot;Format Error&quot;, JOptionPane.ERROR_MESSAGE);
+<b class="nc">&nbsp;                    logMessage.accept(&quot;Failed to enable spot - invalid format: &quot; + id);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        });
+&nbsp;
+&nbsp;        // Disable Spot Button
+<b class="nc">&nbsp;        btnDisable.addActionListener(e -&gt; {</b>
+<b class="nc">&nbsp;            String id = JOptionPane.showInputDialog(this, &quot;Enter Spot ID to disable:&quot;);</b>
+<b class="nc">&nbsp;            if (id != null &amp;&amp; !id.isEmpty()) {</b>
+<b class="nc">&nbsp;                if (isValidSpotFormat.test(id)) {</b>
+<b class="nc">&nbsp;                    if (manager.spotExists(id)) {</b>
+<b class="nc">&nbsp;                        Command disableCommand = new DisableParkingSpotCommand(manager, id);</b>
+<b class="nc">&nbsp;                        disableCommand.execute();</b>
+<b class="nc">&nbsp;                        JOptionPane.showMessageDialog(this,</b>
+&nbsp;                                &quot;Disabled spot: &quot; + id,
+&nbsp;                                &quot;Success&quot;, JOptionPane.INFORMATION_MESSAGE);
+<b class="nc">&nbsp;                        logMessage.accept(&quot;Disabled spot: &quot; + id);</b>
+<b class="nc">&nbsp;                    } else {</b>
+<b class="nc">&nbsp;                        JOptionPane.showMessageDialog(this,</b>
+&nbsp;                                &quot;Spot &quot; + id + &quot; has not been added. Please add it first using the Add feature.&quot;,
+&nbsp;                                &quot;Spot Not Found&quot;, JOptionPane.WARNING_MESSAGE);
+<b class="nc">&nbsp;                        logMessage.accept(&quot;Failed to disable spot &quot; + id + &quot; - not found&quot;);</b>
+&nbsp;                    }
+&nbsp;                } else {
+<b class="nc">&nbsp;                    JOptionPane.showMessageDialog(this,</b>
+&nbsp;                            &quot;Invalid spot ID format. Please use one letter followed by one digit (e.g. A1, B2, C3).&quot;,
+&nbsp;                            &quot;Format Error&quot;, JOptionPane.ERROR_MESSAGE);
+<b class="nc">&nbsp;                    logMessage.accept(&quot;Failed to disable spot - invalid format: &quot; + id);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        });
+&nbsp;
+&nbsp;        // View Parking Spaces Button
+<b class="nc">&nbsp;        btnViewSpaces.addActionListener(e -&gt; {</b>
+<b class="nc">&nbsp;            ParkingSpaceViewer viewer = new ParkingSpaceViewer(manager);</b>
+<b class="nc">&nbsp;            viewer.setVisible(true);</b>
+<b class="nc">&nbsp;            logMessage.accept(&quot;Manager opened parking space viewer&quot;);</b>
+&nbsp;        });
+<b class="nc">&nbsp;        btnLogout.addActionListener(e -&gt; {</b>
+<b class="nc">&nbsp;            logMessage.accept(&quot;Manager logged out&quot;);</b>
+<b class="nc">&nbsp;            cardLayout.show(mainPanel, &quot;Login&quot;);</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        return panel;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private JPanel createSuperManagerDashboardPanel() {
+<b class="nc">&nbsp;        JPanel panel = new JPanel(new GridLayout(4, 1, 15, 20));</b>
+<b class="nc">&nbsp;        panel.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));</b>
+<b class="nc">&nbsp;        panel.setBackground(new Color(240, 240, 240));</b>
+&nbsp;
+&nbsp;        // Welcome label
+<b class="nc">&nbsp;        JLabel lblSuperManagerWelcome = new JLabel(&quot;Super Manager Dashboard&quot;, SwingConstants.CENTER);</b>
+<b class="nc">&nbsp;        lblSuperManagerWelcome.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 18));</b>
+<b class="nc">&nbsp;        panel.add(lblSuperManagerWelcome);</b>
+&nbsp;
+&nbsp;        // Style buttons
+<b class="nc">&nbsp;        Font buttonFont = new Font(&quot;Arial&quot;, Font.BOLD, 14);</b>
+<b class="nc">&nbsp;        Color buttonColor = new Color(70, 130, 180);</b>
+&nbsp;
+<b class="nc">&nbsp;        JButton btnEnableManager = new JButton(&quot;Enable Manager&quot;);</b>
+<b class="nc">&nbsp;        btnEnableManager.setFont(buttonFont);</b>
+<b class="nc">&nbsp;        btnEnableManager.setBackground(buttonColor);</b>
+<b class="nc">&nbsp;        btnEnableManager.setForeground(Color.WHITE);</b>
+<b class="nc">&nbsp;        panel.add(btnEnableManager);</b>
+&nbsp;
+<b class="nc">&nbsp;        JButton btnDisableManager = new JButton(&quot;Disable Manager&quot;);</b>
+<b class="nc">&nbsp;        btnDisableManager.setFont(buttonFont);</b>
+<b class="nc">&nbsp;        btnDisableManager.setBackground(buttonColor);</b>
+<b class="nc">&nbsp;        btnDisableManager.setForeground(Color.WHITE);</b>
+<b class="nc">&nbsp;        panel.add(btnDisableManager);</b>
+&nbsp;
+<b class="nc">&nbsp;        JButton btnSystemStatus = new JButton(&quot;View System Status&quot;);</b>
+<b class="nc">&nbsp;        btnSystemStatus.setFont(buttonFont);</b>
+<b class="nc">&nbsp;        btnSystemStatus.setBackground(buttonColor);</b>
+<b class="nc">&nbsp;        btnSystemStatus.setForeground(Color.WHITE);</b>
+<b class="nc">&nbsp;        panel.add(btnSystemStatus);</b>
+&nbsp;
+<b class="nc">&nbsp;        JButton btnLogout = new JButton(&quot;Logout&quot;);</b>
+<b class="nc">&nbsp;        btnLogout.setFont(buttonFont);</b>
+<b class="nc">&nbsp;        btnLogout.setBackground(new Color(220, 80, 80)); // Red color for logout</b>
+<b class="nc">&nbsp;        btnLogout.setForeground(Color.WHITE);</b>
+<b class="nc">&nbsp;        panel.add(btnLogout);</b>
+&nbsp;
+<b class="nc">&nbsp;        btnEnableManager.addActionListener(e -&gt; enableManager());</b>
+<b class="nc">&nbsp;        btnDisableManager.addActionListener(e -&gt; disableManager());</b>
+&nbsp;
+<b class="nc">&nbsp;        btnLogout.addActionListener(e -&gt; cardLayout.show(mainPanel, &quot;Login&quot;));</b>
+&nbsp;
+<b class="nc">&nbsp;        return panel;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    // enabling the manager
+&nbsp;    private void enableManager() {
+<b class="nc">&nbsp;        if (currentUser instanceof SuperManager) {</b>
+<b class="nc">&nbsp;            ((SuperManager) currentUser).enableManager(new User(&quot;John Doe&quot;, 1002, &quot;manager@yorku.ca&quot;, &quot;password&quot;));</b>
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this, &quot;Manager enabled successfully!&quot;);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this, &quot;Access Denied!&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    // disabling the manager
+&nbsp;    private void disableManager() {
+<b class="nc">&nbsp;        if (currentUser instanceof SuperManager) {</b>
+<b class="nc">&nbsp;            ((SuperManager) currentUser).disableManager(new User(&quot;John Doe&quot;, 1002, &quot;manager@yorku.ca&quot;, &quot;password&quot;));</b>
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this, &quot;Manager disabled successfully!&quot;);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this, &quot;Access Denied!&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private void handleLogin() {
+<b class="nc">&nbsp;        String userType = (String) userTypeBox.getSelectedItem();</b>
+<b class="nc">&nbsp;        String username = txtUsername.getText();</b>
+<b class="nc">&nbsp;        String email = txtEmail.getText();</b>
+<b class="nc">&nbsp;        String password = new String(txtPassword.getPassword());</b>
+&nbsp;
+&nbsp;        int userId;
+&nbsp;        try {
+<b class="nc">&nbsp;            userId = Integer.parseInt(txtUserId.getText());</b>
+<b class="nc">&nbsp;        } catch (NumberFormatException e) {</b>
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this, &quot;Invalid user ID&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</b>
+&nbsp;            return;
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        if (userType != null &amp;&amp; !username.isEmpty() &amp;&amp; !email.isEmpty() &amp;&amp; !password.isEmpty()) {</b>
+<b class="nc">&nbsp;            if (userType.equalsIgnoreCase(&quot;SuperManager&quot;)) {</b>
+<b class="nc">&nbsp;                currentUser = SuperManager.getInstance();  // Singleton Instance</b>
+<b class="nc">&nbsp;                lblWelcome.setText(&quot;Welcome, SuperManager&quot;);</b>
+<b class="nc">&nbsp;                cardLayout.show(mainPanel, &quot;SuperManagerDashboard&quot;);</b>
+<b class="nc">&nbsp;            } else if (userType.equalsIgnoreCase(&quot;Manager&quot;)) {</b>
+<b class="nc">&nbsp;                currentUser = new GeneralManager(username, userId, email, password); // Use a concrete class</b>
+&nbsp;                // storing manager to db
+&nbsp;                try {
+<b class="nc">&nbsp;                    dbDAO.addUserToSpecificTable(currentUser);</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Trying to insert user into DB: &quot; + currentUser.getName() + &quot;, ID: &quot; + currentUser.getId());</b>
+<b class="nc">&nbsp;                } catch (SQLException ex) {</b>
+<b class="nc">&nbsp;                    ex.printStackTrace();</b>
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;                lblWelcome.setText(&quot;Welcome, Manager&quot;);</b>
+<b class="nc">&nbsp;                cardLayout.show(mainPanel, &quot;ManagerDashboard&quot;);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                currentUser = UserFactory.createUser(userType.toUpperCase(), username, userId, email, password);</b>
+&nbsp;
+&nbsp;                // database logic
+&nbsp;                try {
+<b class="nc">&nbsp;                    if(dbDAO != null) {</b>
+<b class="nc">&nbsp;                        dbDAO.addUserToSpecificTable(currentUser);</b>
+<b class="nc">&nbsp;                        System.out.println(&quot;User successfully added to the database: &quot; + currentUser.getName());</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                }catch (SQLException ex) {</b>
+<b class="nc">&nbsp;                    JOptionPane.showMessageDialog(this, &quot;Error saving user to database: &quot; + ex.getMessage(), &quot;Database Error&quot;, JOptionPane.ERROR_MESSAGE);</b>
+&nbsp;                    return;
+<b class="nc">&nbsp;                }</b>
+&nbsp;
+<b class="nc">&nbsp;                String[] paymentOptions = {&quot;Credit Card&quot;, &quot;Debit Card&quot;, &quot;Mobile App&quot;};</b>
+<b class="nc">&nbsp;                String selection = (String) JOptionPane.showInputDialog(this,</b>
+&nbsp;                        &quot;Choose your payment method:&quot;,
+&nbsp;                        &quot;Payment Method&quot;,
+&nbsp;                        JOptionPane.QUESTION_MESSAGE,
+&nbsp;                        null,
+&nbsp;                        paymentOptions,
+&nbsp;                        paymentOptions[0]);
+&nbsp;
+<b class="nc">&nbsp;                switch (selection) {</b>
+&nbsp;                    case &quot;Debit Card&quot;:
+<b class="nc">&nbsp;                        currentUser.setPaymentStrategy(new DebitCardPaymentsStrategy());</b>
+<b class="nc">&nbsp;                        break;</b>
+&nbsp;                    case &quot;Mobile App&quot;:
+<b class="nc">&nbsp;                        currentUser.setPaymentStrategy(new MobileAppPaymentsStrategy());</b>
+<b class="nc">&nbsp;                        break;</b>
+&nbsp;                    default:
+<b class="nc">&nbsp;                        currentUser.setPaymentStrategy(new CreditCardPaymentStrategy());</b>
+&nbsp;                }
+&nbsp;                // setting the pricing strategy based on user type
+<b class="nc">&nbsp;                switch(userType.toLowerCase()) {</b>
+&nbsp;                    case &quot;student&quot;:
+<b class="nc">&nbsp;                        currentUser.setPricingStrategy(new StudentPricing());</b>
+<b class="nc">&nbsp;                        break;</b>
+&nbsp;                    case &quot;faculty&quot;:
+<b class="nc">&nbsp;                        currentUser.setPricingStrategy(new FacultyPricing());</b>
+<b class="nc">&nbsp;                        break;</b>
+&nbsp;                    case &quot;nonfaculty&quot;:
+<b class="nc">&nbsp;                        currentUser.setPricingStrategy(new NonFacultyPricing());</b>
+<b class="nc">&nbsp;                        break;</b>
+&nbsp;                    case &quot;visitor&quot;:
+<b class="nc">&nbsp;                        currentUser.setPricingStrategy(new VisitorPricing());</b>
+&nbsp;                        break;
+&nbsp;                }
+&nbsp;
+<b class="nc">&nbsp;                lblWelcome.setText(&quot;Welcome, &quot; + currentUser.getName());</b>
+<b class="nc">&nbsp;                updateBookingStatusDisplay();</b>
+<b class="nc">&nbsp;                cardLayout.show(mainPanel, &quot;Dashboard&quot;);</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this, &quot;Please fill in all fields!&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    // Booking Logic with duration
+&nbsp;    // Booking Logic with duration and consistent validation
+&nbsp;    private void handleBooking() {
+<b class="nc">&nbsp;        if (currentUser == null) {</b>
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this, &quot;No user logged in!&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (currentBooking != null) {</b>
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this, &quot;You already have a booking!&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;        // Function to validate spot ID format (one letter followed by one digit)
+<b class="nc">&nbsp;        Predicate&lt;String&gt; isValidSpotFormat = (id) -&gt; {</b>
+<b class="nc">&nbsp;            if (id == null || id.length() != 2) return false;</b>
+<b class="nc">&nbsp;            return Character.isLetter(id.charAt(0)) &amp;&amp; Character.isDigit(id.charAt(1));</b>
+&nbsp;        };
+&nbsp;
+&nbsp;        // Asking the user for the parking spot
+<b class="nc">&nbsp;        String spotId = JOptionPane.showInputDialog(this,</b>
+&nbsp;                &quot;Enter Parking Spot ID:\n(Format: One letter followed by one digit, e.g. A1, B2, C3)&quot;);
+&nbsp;
+<b class="nc">&nbsp;        if (spotId == null || spotId.trim().isEmpty()) {</b>
+&nbsp;            return; // User canceled
+&nbsp;        }
+&nbsp;
+&nbsp;        // Validate spot format
+<b class="nc">&nbsp;        if (!isValidSpotFormat.test(spotId)) {</b>
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this,</b>
+&nbsp;                    &quot;Invalid spot ID format. Please use one letter followed by one digit (e.g. A1, B2, C3).&quot;,
+&nbsp;                    &quot;Format Error&quot;, JOptionPane.ERROR_MESSAGE);
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;        // Check if spot exists
+<b class="nc">&nbsp;        if (!manager.spotExists(spotId)) {</b>
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this,</b>
+&nbsp;                    &quot;Spot &quot; + spotId + &quot; has not been added by the manager. Please select a different spot (e.g. A1, B2, C3).&quot;,
+&nbsp;                    &quot;Spot Not Found&quot;, JOptionPane.WARNING_MESSAGE);
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;        // Get the actual spot from the manager
+<b class="nc">&nbsp;        ParkingSpot selectedSpot = manager.getSpots().get(spotId);</b>
+<b class="nc">&nbsp;        Sensor sensor = new Sensor(spotId.hashCode());</b>
+<b class="nc">&nbsp;        selectedSpot.setSensor(sensor);</b>
+&nbsp;
+&nbsp;        // Check if the spot is enabled
+<b class="nc">&nbsp;        if (!selectedSpot.isEnabled()) {</b>
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this,</b>
+&nbsp;                    &quot;Spot &quot; + spotId + &quot; is currently disabled by the manager. Please select a different spot.&quot;,
+&nbsp;                    &quot;Spot Disabled&quot;, JOptionPane.WARNING_MESSAGE);
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;        // Check if spot is already booked
+<b class="nc">&nbsp;        if (selectedSpot.isOccupied()) {</b>
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this,</b>
+&nbsp;                    &quot;Spot &quot; + spotId + &quot; is already occupied. Please select a different spot.&quot;,
+&nbsp;                    &quot;Spot Occupied&quot;, JOptionPane.WARNING_MESSAGE);
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;        // Ask for booking duration
+<b class="nc">&nbsp;        String durationStr = JOptionPane.showInputDialog(this, &quot;Enter parking duration in minutes:&quot;);</b>
+&nbsp;        int duration;
+&nbsp;        try {
+<b class="nc">&nbsp;            duration = Integer.parseInt(durationStr);</b>
+<b class="nc">&nbsp;            if (duration &lt;= 0) {</b>
+<b class="nc">&nbsp;                throw new NumberFormatException();</b>
+&nbsp;            }
+<b class="nc">&nbsp;        } catch (NumberFormatException e) {</b>
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this, &quot;Please enter a valid positive number for duration!&quot;,</b>
+&nbsp;                    &quot;Invalid Duration&quot;, JOptionPane.ERROR_MESSAGE);
+&nbsp;            return;
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        // Calculate cost and process payment
+<b class="nc">&nbsp;        double cost = currentUser.calculateParkingPrice(duration);</b>
+<b class="nc">&nbsp;        PaymentStrategy strategy = currentUser.getPaymentStrategy();</b>
+<b class="nc">&nbsp;        if (strategy == null || !strategy.pay(currentUser, cost)) {</b>
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this, &quot;Payment failed.&quot;, &quot;Payment Error&quot;, JOptionPane.ERROR_MESSAGE);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;        // Mark the spot as occupied
+<b class="nc">&nbsp;        selectedSpot.setOccupied(true);</b>
+&nbsp;
+&nbsp;        // Create booking
+<b class="nc">&nbsp;        currentBooking = new ParkingBooking(currentUser, selectedSpot, duration);</b>
+&nbsp;
+<b class="nc">&nbsp;        String licensePlate = JOptionPane.showInputDialog(this, &quot;Enter your car license plate:&quot;);</b>
+<b class="nc">&nbsp;        if (licensePlate == null || licensePlate.trim().isEmpty()) {</b>
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this, &quot;License plate cannot be empty!&quot;, &quot;Input Error&quot;, JOptionPane.ERROR_MESSAGE);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        currentBooking.setBookingStartTime(ZonedDateTime.now());</b>
+<b class="nc">&nbsp;        currentBooking.setBookingEndTime(ZonedDateTime.now().plusMinutes(duration));</b>
+<b class="nc">&nbsp;        currentBooking.setCarLicensePlate(licensePlate);</b>
+<b class="nc">&nbsp;        currentBooking.setValid(true);</b>
+<b class="nc">&nbsp;        currentBooking.setShowUp(true);</b>
+<b class="nc">&nbsp;        if(selectedSpot.getSensor() != null) {</b>
+<b class="nc">&nbsp;            currentBooking.setSensorId(selectedSpot.getSensor().getSensorId());</b>
+&nbsp;        }else {
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this, &quot;Selected parking spot has no sensor assigned!&quot;, &quot;Sensor Error&quot;, JOptionPane.ERROR_MESSAGE);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        currentBooking.setUserId(currentUser.getId());</b>
+&nbsp;
+&nbsp;        // Save to DB
+&nbsp;        try {
+<b class="nc">&nbsp;            dbDAO.addBooking(currentBooking);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Booking stored successfully!&quot;);</b>
+<b class="nc">&nbsp;        } catch (SQLException e) {</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this, &quot;Failed to save booking to database&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        JOptionPane.showMessageDialog(this,</b>
+<b class="nc">&nbsp;                &quot;Parking Spot &quot; + currentBooking.getSpot().getSpotId() +</b>
+<b class="nc">&nbsp;                        &quot; Booked until &quot; + currentBooking.getExpirationTimeString() +</b>
+&nbsp;                        &quot;!\nCharged: $&quot; + cost +
+<b class="nc">&nbsp;                        &quot;\nRemaining balance: $&quot; + currentUser.getBalance(),</b>
+&nbsp;                &quot;Booking Successful&quot;, JOptionPane.INFORMATION_MESSAGE);
+&nbsp;
+&nbsp;        // Start timer to update booking status
+<b class="nc">&nbsp;        startBookingTimer();</b>
+&nbsp;
+&nbsp;        // Update UI
+<b class="nc">&nbsp;        updateBookingStatusDisplay();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    // Handle extending booking
+&nbsp;    private void handleExtendBooking() {
+<b class="nc">&nbsp;        if (currentUser == null) {</b>
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this, &quot;No user logged in!&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (currentBooking == null) {</b>
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this, &quot;No active booking to extend!&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (currentBooking.isExpired()) {</b>
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this, &quot;Cannot extend an expired booking!&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;        // Extend the booking using the state pattern
+<b class="nc">&nbsp;        currentBooking.extendBooking();</b>
+&nbsp;
+<b class="nc">&nbsp;        JOptionPane.showMessageDialog(this, &quot;Booking extended successfully until &quot; +</b>
+<b class="nc">&nbsp;                currentBooking.getExpirationTimeString());</b>
+&nbsp;
+&nbsp;        // Update UI
+<b class="nc">&nbsp;        updateBookingStatusDisplay();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Cancel Logic
+&nbsp;    // Update handleCancelBooking to release the spot when booking is canceled
+&nbsp;    private void handleCancelBooking() {
+<b class="nc">&nbsp;        if (currentUser == null) {</b>
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this, &quot;No user logged in!&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (currentBooking == null || currentBooking.getSpot() == null) {</b>
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this, &quot;No active booking to cancel!&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        int confirm = JOptionPane.showConfirmDialog(this,</b>
+<b class="nc">&nbsp;                &quot;Cancel booking for spot &quot; + currentBooking.getSpot().getSpotId() + &quot;?&quot;,</b>
+&nbsp;                &quot;Confirm Cancellation&quot;,
+&nbsp;                JOptionPane.YES_NO_OPTION);
+&nbsp;
+<b class="nc">&nbsp;        if (confirm == JOptionPane.YES_OPTION) {</b>
+&nbsp;            // Mark the spot as unoccupied
+<b class="nc">&nbsp;            currentBooking.getSpot().setOccupied(false);</b>
+&nbsp;
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(this,</b>
+<b class="nc">&nbsp;                    &quot;Booking for Spot &quot; + currentBooking.getSpot().getSpotId() + &quot; Canceled!&quot;,</b>
+&nbsp;                    &quot;Booking Canceled&quot;, JOptionPane.INFORMATION_MESSAGE);
+&nbsp;
+&nbsp;            // Cancel the timer if it&#39;s running
+<b class="nc">&nbsp;            if (bookingTimer != null) {</b>
+<b class="nc">&nbsp;                bookingTimer.cancel();</b>
+<b class="nc">&nbsp;                bookingTimer = null;</b>
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            currentBooking = null;</b>
+<b class="nc">&nbsp;            updateBookingStatusDisplay();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    // Start a timer to update booking status
+&nbsp;    private void startBookingTimer() {
+&nbsp;        // Cancel existing timer if any
+<b class="nc">&nbsp;        if (bookingTimer != null) {</b>
+<b class="nc">&nbsp;            bookingTimer.cancel();</b>
+<b class="nc">&nbsp;            bookingTimer = null;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Create new timer
+<b class="nc">&nbsp;        bookingTimer = new Timer();</b>
+<b class="nc">&nbsp;        bookingTimer.scheduleAtFixedRate(new TimerTask() {</b>
+&nbsp;            @Override
+&nbsp;            public void run() {
+<b class="nc">&nbsp;                SwingUtilities.invokeLater(() -&gt; updateBookingStatusDisplay());</b>
+&nbsp;            }
+&nbsp;        }, 0, 30000); // Update every 30 seconds
+&nbsp;    }
+&nbsp;
+&nbsp;    // Update the booking status display
+&nbsp;    private void updateBookingStatusDisplay() {
+<b class="nc">&nbsp;        if (currentBooking == null) {</b>
+<b class="nc">&nbsp;            lblBookingStatus.setText(&quot;No active booking&quot;);</b>
+<b class="nc">&nbsp;            lblExpirationTime.setText(&quot;&quot;);</b>
+<b class="nc">&nbsp;            lblRemainingTime.setText(&quot;&quot;);</b>
+<b class="nc">&nbsp;            btnExtendBooking.setEnabled(false);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            String statusText = &quot;Booking Status: &quot; + currentBooking.getStatus();</b>
+<b class="nc">&nbsp;            lblBookingStatus.setText(statusText);</b>
+&nbsp;
+<b class="nc">&nbsp;            String expirationText = &quot;Expires at: &quot; + currentBooking.getExpirationTimeString();</b>
+<b class="nc">&nbsp;            lblExpirationTime.setText(expirationText);</b>
+&nbsp;
+<b class="nc">&nbsp;            String remainingText = &quot;Remaining time: &quot; + currentBooking.getRemainingTimeString();</b>
+<b class="nc">&nbsp;            lblRemainingTime.setText(remainingText);</b>
+&nbsp;
+&nbsp;            // Only enable extend button if booking is not expired
+<b class="nc">&nbsp;            btnExtendBooking.setEnabled(!currentBooking.isExpired());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public static void main(String[] args) {
+<b class="nc">&nbsp;        new MainUI();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-10 21:16</div>
+</div>
+</body>
+</html>

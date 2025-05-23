@@ -1,0 +1,259 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ParkingManager</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">logic</a>
+</div>
+
+<h1>Coverage Summary for Class: ParkingManager (logic)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ParkingManager</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    73.3%
+  </span>
+  <span class="absValue">
+    (55/75)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package logic;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;  
+&nbsp;public class ParkingManager {
+&nbsp;    private Map&lt;String, ParkingSpot&gt; spots;
+&nbsp;    private List&lt;CompositeParkingLot&gt; parkingLots;
+&nbsp;
+<b class="fc">&nbsp;    public ParkingManager() {</b>
+<b class="fc">&nbsp;        this.spots = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;        this.parkingLots = new ArrayList&lt;&gt;();</b>
+&nbsp;
+&nbsp;        // Create composite parking lots
+<b class="fc">&nbsp;        CompositeParkingLot northLot = new CompositeParkingLot(&quot;North Lot&quot;);</b>
+<b class="fc">&nbsp;        CompositeParkingLot centralLot = new CompositeParkingLot(&quot;Central Lot&quot;);</b>
+<b class="fc">&nbsp;        CompositeParkingLot southLot = new CompositeParkingLot(&quot;South Lot&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        parkingLots.add(northLot);</b>
+<b class="fc">&nbsp;        parkingLots.add(centralLot);</b>
+<b class="fc">&nbsp;        parkingLots.add(southLot);</b>
+&nbsp;
+&nbsp;        // Initialize with default spots A1-A9, B1-B9, C1-C9
+<b class="fc">&nbsp;        for (char section = &#39;A&#39;; section &lt;= &#39;C&#39;; section++) {</b>
+<b class="fc">&nbsp;            for (int number = 1; number &lt;= 9; number++) {</b>
+<b class="fc">&nbsp;                String spotId = &quot;&quot; + section + number;</b>
+&nbsp;                String location;
+&nbsp;
+<b class="fc">&nbsp;                switch(section) {</b>
+&nbsp;                    case &#39;A&#39;:
+<b class="fc">&nbsp;                        location = &quot;North Lot&quot;;</b>
+<b class="fc">&nbsp;                        break;</b>
+&nbsp;                    case &#39;B&#39;:
+<b class="fc">&nbsp;                        location = &quot;Central Lot&quot;;</b>
+<b class="fc">&nbsp;                        break;</b>
+&nbsp;                    case &#39;C&#39;:
+<b class="fc">&nbsp;                        location = &quot;South Lot&quot;;</b>
+<b class="fc">&nbsp;                        break;</b>
+&nbsp;                    default:
+<b class="nc">&nbsp;                        location = &quot;General Lot&quot;;</b>
+&nbsp;                }
+&nbsp;
+<b class="fc">&nbsp;                ParkingSpot spot = new ParkingSpot(spotId, false, true, location);</b>
+<b class="fc">&nbsp;                spots.put(spotId, spot);</b>
+&nbsp;
+&nbsp;                // Add to appropriate composite lot
+<b class="fc">&nbsp;                switch(section) {</b>
+&nbsp;                    case &#39;A&#39;:
+<b class="fc">&nbsp;                        northLot.add(spot);</b>
+<b class="fc">&nbsp;                        break;</b>
+&nbsp;                    case &#39;B&#39;:
+<b class="fc">&nbsp;                        centralLot.add(spot);</b>
+<b class="fc">&nbsp;                        break;</b>
+&nbsp;                    case &#39;C&#39;:
+<b class="fc">&nbsp;                        southLot.add(spot);</b>
+&nbsp;                        break;
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public Map&lt;String, ParkingSpot&gt; getSpots() {
+<b class="fc">&nbsp;        return spots;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;CompositeParkingLot&gt; getParkingLots() {
+<b class="fc">&nbsp;        return parkingLots;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean spotExists(String spotId) {
+<b class="fc">&nbsp;        return spots.containsKey(spotId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean addSpot(String spotId) {
+&nbsp;        // Check if we&#39;ve already reached the maximum of 100 spots
+<b class="fc">&nbsp;        if (spots.size() &gt;= 100) {</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        if (!spotExists(spotId)) {</b>
+&nbsp;            String location;
+<b class="fc">&nbsp;            char section = spotId.charAt(0);</b>
+&nbsp;
+<b class="fc">&nbsp;            switch(section) {</b>
+&nbsp;                case &#39;A&#39;:
+<b class="nc">&nbsp;                    location = &quot;North Lot&quot;;</b>
+<b class="nc">&nbsp;                    break;</b>
+&nbsp;                case &#39;B&#39;:
+<b class="nc">&nbsp;                    location = &quot;Central Lot&quot;;</b>
+<b class="nc">&nbsp;                    break;</b>
+&nbsp;                case &#39;C&#39;:
+<b class="nc">&nbsp;                    location = &quot;South Lot&quot;;</b>
+<b class="nc">&nbsp;                    break;</b>
+&nbsp;                default:
+<b class="fc">&nbsp;                    location = &quot;General Lot&quot;;</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            ParkingSpot spot = new ParkingSpot(spotId, false, true, location);</b>
+<b class="fc">&nbsp;            spots.put(spotId, spot);</b>
+&nbsp;
+&nbsp;            // Add to appropriate composite lot
+<b class="fc">&nbsp;            for (CompositeParkingLot lot : parkingLots) {</b>
+<b class="fc">&nbsp;                if (lot.getId().equals(location)) {</b>
+<b class="nc">&nbsp;                    lot.add(spot);</b>
+<b class="nc">&nbsp;                    break;</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+&nbsp;
+&nbsp;            // If no matching lot found, add to a new general lot
+<b class="fc">&nbsp;            if (section &gt; &#39;C&#39;) {</b>
+<b class="fc">&nbsp;                boolean lotFound = false;</b>
+<b class="fc">&nbsp;                for (CompositeParkingLot lot : parkingLots) {</b>
+<b class="fc">&nbsp;                    if (lot.getId().equals(&quot;General Lot&quot;)) {</b>
+<b class="nc">&nbsp;                        lot.add(spot);</b>
+<b class="nc">&nbsp;                        lotFound = true;</b>
+<b class="nc">&nbsp;                        break;</b>
+&nbsp;                    }
+<b class="fc">&nbsp;                }</b>
+&nbsp;
+<b class="fc">&nbsp;                if (!lotFound) {</b>
+<b class="fc">&nbsp;                    CompositeParkingLot generalLot = new CompositeParkingLot(&quot;General Lot&quot;);</b>
+<b class="fc">&nbsp;                    generalLot.add(spot);</b>
+<b class="fc">&nbsp;                    parkingLots.add(generalLot);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            return true;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return false;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean enableSpot(String spotId) {
+<b class="fc">&nbsp;        if (spotExists(spotId)) {</b>
+<b class="nc">&nbsp;            ParkingSpot spot = spots.get(spotId);</b>
+<b class="nc">&nbsp;            spot.setEnabled(true);</b>
+<b class="nc">&nbsp;            return true;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return false;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean disableSpot(String spotId) {
+<b class="fc">&nbsp;        if (spotExists(spotId)) {</b>
+<b class="nc">&nbsp;            ParkingSpot spot = spots.get(spotId);</b>
+<b class="nc">&nbsp;            spot.setEnabled(false);</b>
+<b class="nc">&nbsp;            return true;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return false;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // New method to get the total number of spots
+&nbsp;    public int getSpotsCount() {
+<b class="fc">&nbsp;        return spots.size();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-10 17:09</div>
+</div>
+</body>
+</html>

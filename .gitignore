@@ -45,3 +45,6 @@ Thumbs.db
 
 # SQLite database file
 parkingsystem.db
+
+# Exclude DatabaseConnection.java
+src/main/Connections/DatabaseConnection.java

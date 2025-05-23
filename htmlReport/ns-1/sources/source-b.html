@@ -1,0 +1,245 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ValidStateTest</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">test.manual_tests.unit_tests</a>
+</div>
+
+<h1>Coverage Summary for Class: ValidStateTest (test.manual_tests.unit_tests)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ValidStateTest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (42/42)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package test.manual_tests.unit_tests;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;import logic.*;
+&nbsp;import org.junit.Before;
+&nbsp;import org.junit.Test;
+&nbsp;import static org.junit.Assert.*;
+&nbsp;import java.time.LocalDateTime;
+&nbsp;import java.time.temporal.ChronoUnit;
+&nbsp;
+<b class="fc">&nbsp;public class ValidStateTest {</b>
+&nbsp;
+&nbsp;    private ValidState validState;
+&nbsp;    private ParkingBooking booking;
+&nbsp;    private User user;
+&nbsp;    private ParkingSpot spot;
+&nbsp;    private static final int TEST_DURATION = 120; // 2 hours
+&nbsp;
+&nbsp;    @Before
+&nbsp;    public void setUp() {
+<b class="fc">&nbsp;        validState = new ValidState(TEST_DURATION);</b>
+<b class="fc">&nbsp;        user = new User(&quot;testUser&quot;, 1, &quot;user@test.com&quot;, &quot;password&quot;);</b>
+<b class="fc">&nbsp;        spot = new ParkingSpot(&quot;A1&quot;, false, true,&quot;A&quot;,123);</b>
+<b class="fc">&nbsp;        booking = new ParkingBooking(user, spot, TEST_DURATION);</b>
+&nbsp;        // Reset the state to a new ValidState to control test environment
+<b class="fc">&nbsp;        booking.setState(new ValidState(TEST_DURATION));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testConstructor() {
+<b class="fc">&nbsp;        assertNotNull(validState);</b>
+&nbsp;
+&nbsp;        // Check that expiration time is set correctly
+<b class="fc">&nbsp;        LocalDateTime now = LocalDateTime.now();</b>
+<b class="fc">&nbsp;        LocalDateTime expTime = validState.getExpirationTime();</b>
+&nbsp;
+<b class="fc">&nbsp;        long diffMinutes = ChronoUnit.MINUTES.between(now, expTime);</b>
+<b class="fc">&nbsp;        assertTrue(Math.abs(diffMinutes - TEST_DURATION) &lt;= 1); // Allow for 1 minute difference due to test execution time</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testExtendBookingNotExpired() {
+&nbsp;        // Ensure booking state is ValidState
+<b class="fc">&nbsp;        assertTrue(booking.getState() instanceof ValidState);</b>
+&nbsp;
+&nbsp;        // Get the current expiration time before extending
+<b class="fc">&nbsp;        LocalDateTime originalExpTime = booking.getExpirationTime();</b>
+&nbsp;
+&nbsp;        // Extend the booking
+<b class="fc">&nbsp;        validState.extendBooking(booking);</b>
+&nbsp;
+&nbsp;        // Check that state is now ExtendedState
+<b class="fc">&nbsp;        assertTrue(booking.getState() instanceof ExtendedState);</b>
+&nbsp;
+&nbsp;        // Check that new expiration time is original time + 60 minutes (default extension)
+<b class="fc">&nbsp;        LocalDateTime newExpTime = booking.getExpirationTime();</b>
+<b class="fc">&nbsp;        long diffMinutes = ChronoUnit.MINUTES.between(originalExpTime, newExpTime);</b>
+<b class="fc">&nbsp;        assertEquals(60, diffMinutes);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testExtendBookingAlreadyExpired() {
+&nbsp;        // Create an expired validState
+<b class="fc">&nbsp;        ValidState expiredState = new ValidState(-10); // -10 minutes, already expired</b>
+<b class="fc">&nbsp;        booking.setState(expiredState);</b>
+&nbsp;
+&nbsp;        // Ensure booking is in expired state
+<b class="fc">&nbsp;        assertTrue(booking.isExpired());</b>
+&nbsp;
+&nbsp;        // Store original state
+<b class="fc">&nbsp;        BookingState originalState = booking.getState();</b>
+&nbsp;
+&nbsp;        // Try to extend
+<b class="fc">&nbsp;        expiredState.extendBooking(booking);</b>
+&nbsp;
+&nbsp;        // State should remain unchanged since it&#39;s expired
+<b class="fc">&nbsp;        assertEquals(originalState, booking.getState());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testIsExpiredWhenNotExpired() {
+&nbsp;        // New ValidState with future expiration should not be expired
+<b class="fc">&nbsp;        assertFalse(validState.isExpired());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testIsExpiredWhenExpired() {
+&nbsp;        // Create an expired ValidState
+<b class="fc">&nbsp;        ValidState expiredState = new ValidState(-10); // -10 minutes</b>
+<b class="fc">&nbsp;        assertTrue(expiredState.isExpired());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testGetStateName() {
+<b class="fc">&nbsp;        assertEquals(&quot;Valid&quot;, validState.getStateName());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testGetExpirationTime() {
+<b class="fc">&nbsp;        LocalDateTime now = LocalDateTime.now();</b>
+<b class="fc">&nbsp;        LocalDateTime expTime = validState.getExpirationTime();</b>
+&nbsp;
+<b class="fc">&nbsp;        long diffMinutes = ChronoUnit.MINUTES.between(now, expTime);</b>
+<b class="fc">&nbsp;        assertTrue(Math.abs(diffMinutes - TEST_DURATION) &lt;= 1); // Allow for 1 minute difference due to test execution time</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testBoundaryConditionJustExpired() {
+&nbsp;        // Create a ValidState that is about to expire (1 second ago)
+<b class="fc">&nbsp;        ValidState justExpiredState = new ValidState(0);</b>
+&nbsp;
+&nbsp;        // Should be expired
+<b class="fc">&nbsp;        assertTrue(justExpiredState.isExpired());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testBoundaryConditionJustNotExpired() {
+&nbsp;        // Create a ValidState that is about to expire but not yet (1 minute from now)
+<b class="fc">&nbsp;        ValidState aboutToExpireState = new ValidState(1);</b>
+&nbsp;
+&nbsp;        // Should not be expired yet
+<b class="fc">&nbsp;        assertFalse(aboutToExpireState.isExpired());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testExtendBookingStateTransition() {
+&nbsp;        // Get original expiration time
+<b class="fc">&nbsp;        LocalDateTime originalExpTime = validState.getExpirationTime();</b>
+&nbsp;
+&nbsp;        // Extend booking
+<b class="fc">&nbsp;        validState.extendBooking(booking);</b>
+&nbsp;
+&nbsp;        // Verify state change
+<b class="fc">&nbsp;        assertTrue(booking.getState() instanceof ExtendedState);</b>
+&nbsp;
+&nbsp;        // Verify the new expiration time matches
+<b class="fc">&nbsp;        ExtendedState extendedState = (ExtendedState) booking.getState();</b>
+<b class="fc">&nbsp;        long diffMinutes = ChronoUnit.MINUTES.between(originalExpTime, extendedState.getExpirationTime());</b>
+<b class="fc">&nbsp;        assertEquals(60, diffMinutes); // Default extension is 60 minutes</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-08 03:13</div>
+</div>
+</body>
+</html>

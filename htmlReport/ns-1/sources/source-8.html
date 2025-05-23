@@ -1,0 +1,287 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ParkingManagerTest</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">test.manual_tests.unit_tests</a>
+</div>
+
+<h1>Coverage Summary for Class: ParkingManagerTest (test.manual_tests.unit_tests)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ParkingManagerTest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (14/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98.8%
+  </span>
+  <span class="absValue">
+    (81/82)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package test.manual_tests.unit_tests;
+&nbsp;
+&nbsp;import logic.CompositeParkingLot;
+&nbsp;import logic.ParkingManager;
+&nbsp;import logic.ParkingSpot;
+&nbsp;import org.junit.Before;
+&nbsp;import org.junit.Test;
+&nbsp;import static org.junit.Assert.*;
+&nbsp;
+<b class="fc">&nbsp;public class ParkingManagerTest {</b>
+&nbsp;
+&nbsp;    private ParkingManager parkingManager;
+&nbsp;
+&nbsp;    @Before
+&nbsp;    public void setUp() {
+<b class="fc">&nbsp;        parkingManager = new ParkingManager();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testInitialization() {
+&nbsp;        // Check initial state
+<b class="fc">&nbsp;        assertNotNull(parkingManager.getSpots());</b>
+<b class="fc">&nbsp;        assertNotNull(parkingManager.getParkingLots());</b>
+&nbsp;
+&nbsp;        // Should have 27 spots (A1-A9, B1-B9, C1-C9)
+<b class="fc">&nbsp;        assertEquals(27, parkingManager.getSpots().size());</b>
+&nbsp;
+&nbsp;        // Should have 3 parking lots (North, Central, South)
+<b class="fc">&nbsp;        assertEquals(3, parkingManager.getParkingLots().size());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testSpotExists() {
+&nbsp;        // Test existing spots
+<b class="fc">&nbsp;        assertTrue(parkingManager.spotExists(&quot;A1&quot;));</b>
+<b class="fc">&nbsp;        assertTrue(parkingManager.spotExists(&quot;B5&quot;));</b>
+<b class="fc">&nbsp;        assertTrue(parkingManager.spotExists(&quot;C9&quot;));</b>
+&nbsp;
+&nbsp;        // Test non-existing spots
+<b class="fc">&nbsp;        assertFalse(parkingManager.spotExists(&quot;D1&quot;));</b>
+<b class="fc">&nbsp;        assertFalse(parkingManager.spotExists(&quot;A10&quot;));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testAddSpot() {
+&nbsp;        // Add a new spot
+<b class="fc">&nbsp;        assertTrue(parkingManager.addSpot(&quot;D1&quot;));</b>
+<b class="fc">&nbsp;        assertTrue(parkingManager.spotExists(&quot;D1&quot;));</b>
+&nbsp;
+&nbsp;        // Add an existing spot (should fail)
+<b class="fc">&nbsp;        assertFalse(parkingManager.addSpot(&quot;A1&quot;));</b>
+&nbsp;
+&nbsp;        // Check if the spot was added to the General Lot
+<b class="fc">&nbsp;        boolean foundInGeneralLot = false;</b>
+<b class="fc">&nbsp;        for (CompositeParkingLot lot : parkingManager.getParkingLots()) {</b>
+<b class="fc">&nbsp;            if (lot.getId().equals(&quot;General Lot&quot;)) {</b>
+<b class="fc">&nbsp;                foundInGeneralLot = true;</b>
+<b class="fc">&nbsp;                break;</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        assertTrue(foundInGeneralLot);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testAddSpotToExistingLot() {
+&nbsp;        // Add a new spot to North Lot
+<b class="fc">&nbsp;        assertTrue(parkingManager.addSpot(&quot;A10&quot;));</b>
+<b class="fc">&nbsp;        assertTrue(parkingManager.spotExists(&quot;A10&quot;));</b>
+&nbsp;
+&nbsp;        // Check if added to correct lot
+<b class="fc">&nbsp;        CompositeParkingLot northLot = null;</b>
+<b class="fc">&nbsp;        for (CompositeParkingLot lot : parkingManager.getParkingLots()) {</b>
+<b class="fc">&nbsp;            if (lot.getId().equals(&quot;North Lot&quot;)) {</b>
+<b class="fc">&nbsp;                northLot = lot;</b>
+<b class="fc">&nbsp;                break;</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        assertNotNull(northLot);</b>
+<b class="fc">&nbsp;        boolean spotFound = northLot.getComponents().stream()</b>
+<b class="fc">&nbsp;                .anyMatch(component -&gt; component instanceof ParkingSpot &amp;&amp;</b>
+<b class="fc">&nbsp;                        ((ParkingSpot)component).getId().equals(&quot;A10&quot;));</b>
+<b class="fc">&nbsp;        assertTrue(spotFound);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testEnableSpot() {
+&nbsp;        // Disable a spot first to test enabling it
+<b class="fc">&nbsp;        ParkingSpot spot = parkingManager.getSpots().get(&quot;A1&quot;);</b>
+<b class="fc">&nbsp;        spot.setEnabled(false);</b>
+<b class="fc">&nbsp;        assertFalse(spot.isEnabled());</b>
+&nbsp;
+&nbsp;        // Test enabling
+<b class="fc">&nbsp;        assertTrue(parkingManager.enableSpot(&quot;A1&quot;));</b>
+<b class="fc">&nbsp;        assertTrue(spot.isEnabled());</b>
+&nbsp;
+&nbsp;        // Test enabling non-existent spot
+<b class="fc">&nbsp;        assertFalse(parkingManager.enableSpot(&quot;Z9&quot;));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testDisableSpot() {
+&nbsp;        // Test disabling
+<b class="fc">&nbsp;        assertTrue(parkingManager.disableSpot(&quot;B2&quot;));</b>
+<b class="fc">&nbsp;        assertFalse(parkingManager.getSpots().get(&quot;B2&quot;).isEnabled());</b>
+&nbsp;
+&nbsp;        // Test disabling non-existent spot
+<b class="fc">&nbsp;        assertFalse(parkingManager.disableSpot(&quot;Z9&quot;));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testGetSpotsCount() {
+<b class="fc">&nbsp;        assertEquals(27, parkingManager.getSpotsCount());</b>
+&nbsp;
+&nbsp;        // Add a new spot and check count
+<b class="fc">&nbsp;        parkingManager.addSpot(&quot;D1&quot;);</b>
+<b class="fc">&nbsp;        assertEquals(28, parkingManager.getSpotsCount());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testMaximumSpotLimit() {
+&nbsp;        // Initially has 27 spots, add 73 more to reach the 100 limit
+<b class="fc">&nbsp;        for (int i = 1; i &lt;= 73; i++) {</b>
+<b class="fc">&nbsp;            assertTrue(parkingManager.addSpot(&quot;D&quot; + i));</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Should now have 100 spots
+<b class="fc">&nbsp;        assertEquals(100, parkingManager.getSpotsCount());</b>
+&nbsp;
+&nbsp;        // Trying to add one more should fail
+<b class="fc">&nbsp;        assertFalse(parkingManager.addSpot(&quot;E1&quot;));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testParkingLotOrganization() {
+&nbsp;        // Check that spots are in the correct lots
+<b class="fc">&nbsp;        CompositeParkingLot northLot = null;</b>
+<b class="fc">&nbsp;        CompositeParkingLot centralLot = null;</b>
+<b class="fc">&nbsp;        CompositeParkingLot southLot = null;</b>
+&nbsp;
+<b class="fc">&nbsp;        for (CompositeParkingLot lot : parkingManager.getParkingLots()) {</b>
+<b class="fc">&nbsp;            if (lot.getId().equals(&quot;North Lot&quot;)) {</b>
+<b class="fc">&nbsp;                northLot = lot;</b>
+<b class="fc">&nbsp;            } else if (lot.getId().equals(&quot;Central Lot&quot;)) {</b>
+<b class="fc">&nbsp;                centralLot = lot;</b>
+<b class="fc">&nbsp;            } else if (lot.getId().equals(&quot;South Lot&quot;)) {</b>
+<b class="fc">&nbsp;                southLot = lot;</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        assertNotNull(northLot);</b>
+<b class="fc">&nbsp;        assertNotNull(centralLot);</b>
+<b class="fc">&nbsp;        assertNotNull(southLot);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(9, northLot.getComponents().size());</b>
+<b class="fc">&nbsp;        assertEquals(9, centralLot.getComponents().size());</b>
+<b class="fc">&nbsp;        assertEquals(9, southLot.getComponents().size());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testAddNewSectionCreatesGeneralLot() {
+&nbsp;        // Add a spot from a new section
+<b class="fc">&nbsp;        parkingManager.addSpot(&quot;Z1&quot;);</b>
+&nbsp;
+&nbsp;        // Check if General Lot was created
+<b class="fc">&nbsp;        boolean foundGeneralLot = false;</b>
+<b class="fc">&nbsp;        CompositeParkingLot generalLot = null;</b>
+&nbsp;
+<b class="fc">&nbsp;        for (CompositeParkingLot lot : parkingManager.getParkingLots()) {</b>
+<b class="fc">&nbsp;            if (lot.getId().equals(&quot;General Lot&quot;)) {</b>
+<b class="fc">&nbsp;                foundGeneralLot = true;</b>
+<b class="fc">&nbsp;                generalLot = lot;</b>
+<b class="fc">&nbsp;                break;</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        assertTrue(foundGeneralLot);</b>
+<b class="fc">&nbsp;        assertNotNull(generalLot);</b>
+<b class="fc">&nbsp;        boolean spotFound = generalLot.getComponents().stream()</b>
+<b class="fc">&nbsp;                .anyMatch(component -&gt; component instanceof ParkingSpot &amp;&amp;</b>
+<b class="fc">&nbsp;                        ((ParkingSpot)component).getId().equals(&quot;Z1&quot;));</b>
+<b class="fc">&nbsp;        assertTrue(spotFound);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-08 03:13</div>
+</div>
+</body>
+</html>
